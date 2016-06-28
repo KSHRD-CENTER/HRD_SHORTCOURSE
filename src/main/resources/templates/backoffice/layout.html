@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">HRD	CENTER</title>
+	<link th:replace="backoffice/fragments/style" />
+</head>
+<body>
+	<div class="wrapper">
+	
+		<div th:replace="backoffice/fragments/header"></div>
+	
+		<div th:replace="backoffice/fragments/sidebar"></div>
+	
+		<div layout:fragment="backoffice/content"></div>
+	
+		<div th:replace="backoffice/fragments/footer"></div>
+	
+	</div>
+	
+	<div th:replace="backoffice/fragments/js"></div>
+	
+	<th:block layout:fragment="backoffice/javascript">
+	
+	</th:block>
+</body>
+</html>
