@@ -362,7 +362,7 @@
 	
 	<!-- BEGIN ADD NEW COURSE MODAL -->
 	<div class="modal fade full-height in" id="modalAddNewStudent" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog modal-lg" style="width:100%">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">REGISTER NEW STUDENT</h4>
@@ -398,7 +398,7 @@
 									<div class="col-md-9">
 										<div class="inputer">
 											<div class="input-wrapper">
-												<input type="text" name="" class="form-control">
+												<input type="email" name="" class="form-control">
 											</div>
 										</div>
 									</div>
@@ -416,68 +416,28 @@
 								</div><!--.form-group-->
 								
 								<div class="form-group">
-									<label class="control-label col-md-3">Course Type</label>
+									<label class="control-label col-md-3">Year</label>
 									<div class="col-md-9">
 										<select class="selectpicker" style="display: none;">
-											<option>Choose Course Type</option>
-											<option value="1">Pre Course</option>
-											<option value="2">Short Course</option>
+											<option>Choose Year</option>
+											<option value="1">1st Year</option>
+											<option value="2">2nd Year</option>
+											<option value="3">3rd Year</option>
+											<option value="4">4th Year</option>
 										</select>
 									</div>
 								</div><!--.form-group-->
 								
 								<div class="form-group">
-									<label class="control-label col-md-3">Generation</label>
+									<label class="control-label col-md-3">Address</label>
 									<div class="col-md-9">
-										<select class="selectpicker" style="display: none;">
-											<option>Choose Generation</option>
-											<option value="1">1st Generation</option>
-											<option value="2">2nd Generation</option>
-										</select>
-									</div>
-								</div><!--.form-group-->
-								
-								<div class="form-group">
-									<label class="control-label col-md-3">Course</label>
-									<div class="col-md-9">
-										<select class="selectpicker" style="display: none;">
-											<option>Choose Course</option>
-											<option value="1">Android</option>
-											<option value="2">IOS</option>
-										</select>
-									</div>
-								</div><!--.form-group-->
-								
-								<div class="form-group">
-									<label class="control-label col-md-3">Shift</label>
-									<div class="col-md-9">
-										<select class="selectpicker" style="display: none;">
-											<option>Choose Shifts</option>
-											<option value="1">Mon-Fri</option>
-											<option value="2">Sat-Sun</option>
-										</select>
-									</div>
-								</div><!--.form-group-->
-								
-								<div class="form-group">
-									<label class="control-label col-md-3">Time</label>
-									<div class="col-md-9">
-										<select class="selectpicker" style="display: none;">
-											<option>Choose Time</option>
-											<option value="1">08:00AM-12:00AM</option>
-											<option value="2">06:00PM-08:00PM</option>
-										</select>
-									</div>
-								</div><!--.form-group-->
-								
-								<div class="form-group">
-									<label class="control-label col-md-3">Payment</label>
-									<div class="col-md-9">
-										<div class="input-wrapper">
-											<input type="text" name="" class="form-control number">
+										<div class="inputer">
+											<div class="input-wrapper">
+												<textarea name="" class="form-control"></textarea>
+											</div>
 										</div>
 									</div>
-								</div><!--.form-group-->
+								</div>
 
 								<div class="form-group">
 									<label class="control-label col-md-3">Status</label>
@@ -492,14 +452,221 @@
 										</div>
 									</div>
 								</div><!--.form-group-->
-
+								
+								
+								<!-- <div class="form-group">
+									<label class="control-label col-md-3">Course Type</label>
+									<div class="col-md-9">
+										<select class="selectpicker" style="display: none;">
+											<option>Choose Course Type</option>
+											<option value="1">Pre Course</option>
+											<option value="2">Short Course</option>
+										</select>
+									</div>
+								</div>.form-group
+								
+								<div class="form-group">
+									<label class="control-label col-md-3">Generation</label>
+									<div class="col-md-9">
+										<select class="selectpicker" style="display: none;">
+											<option>Choose Generation</option>
+											<option value="1">1st Generation</option>
+											<option value="2">2nd Generation</option>
+										</select>
+									</div>
+								</div>.form-group
+								
+								<div class="form-group">
+									<label class="control-label col-md-3">Course</label>
+									<div class="col-md-9">
+										<select class="selectpicker" style="display: none;">
+											<option>Choose Course</option>
+											<option value="1">Android</option>
+											<option value="2">IOS</option>
+										</select>
+									</div>
+								</div>.form-group
+								
+								<div class="form-group">
+									<label class="control-label col-md-3">Shift</label>
+									<div class="col-md-9">
+										<select class="selectpicker" style="display: none;">
+											<option>Choose Shifts</option>
+											<option value="1">Mon-Fri</option>
+											<option value="2">Sat-Sun</option>
+										</select>
+									</div>
+								</div>.form-group
+								
+								<div class="form-group">
+									<label class="control-label col-md-3">Time</label>
+									<div class="col-md-9">
+										<select class="selectpicker" style="display: none;">
+											<option>Choose Time</option>
+											<option value="1">08:00AM-12:00AM</option>
+											<option value="2">06:00PM-08:00PM</option>
+										</select>
+									</div>
+								</div>.form-group
+								
+								<div class="form-group">
+									<label class="control-label col-md-3">Payment</label>
+									<div class="col-md-9">
+										<div class="input-group">
+											<div class="inputer">
+												<div class="input-wrapper">
+													<input type="text" class="form-control">
+												</div>
+											</div>
+											<span class="input-group-addon">$</span>
+										</div>
+									</div>
+								</div>.form-group -->
+								
+								<h4>Course Information</h4>
+								<div class="row">
+									<div class="col-md-2">
+										<div class="form-group">
+											<!-- <label class="control-label col-md-3">Type</label> -->
+											<select class="selectpicker" style="display: none;">
+												<option>Choose Course Type</option>
+												<option value="1">Pre Course</option>
+												<option value="2">Short Course</option>
+											</select>
+										</div><!--.form-group-->
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<!-- <label class="control-label col-md-3">Generation</label> -->
+											<select class="selectpicker" style="display: none;">
+												<option>Choose Generation</option>
+												<option value="1">1st Generation</option>
+												<option value="2">2nd Generation</option>
+											</select>
+										</div><!--.form-group-->
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<!-- <label class="control-label col-md-3">Course</label> -->
+											<select class="selectpicker" style="display: none;">
+												<option>Choose Course</option>
+												<option value="1">Android</option>
+												<option value="2">IOS</option>
+											</select>
+										</div><!--.form-group-->
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<!-- <label class="control-label col-md-3">Shift</label> -->
+											<select class="selectpicker" style="display: none;">
+												<option>Choose Shifts</option>
+												<option value="1">Mon-Fri</option>
+												<option value="2">Sat-Sun</option>
+											</select>
+										</div><!--.form-group-->
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<!-- <label class="control-label col-md-3">Shift</label> -->
+											<select class="selectpicker" style="display: none;">
+												<option>Choose Time</option>
+												<option value="1">08:00AM-12:00AM</option>
+												<option value="2">06:00PM-08:00PM</option>
+											</select>
+										</div><!--.form-group-->
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="col-md-2">
+										<div class="form-group">
+											<div class="input-group">
+												<span class="input-group-addon">$</span>
+												<div class="inputer">
+													<div class="input-wrapper">
+														<input type="text" class="form-control" placeholder="Cost Price">
+													</div>
+												</div>
+											</div>
+										</div><!--.form-group-->
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<div class="input-group">
+												<span class="input-group-addon">%</span>
+												<div class="inputer">
+													<div class="input-wrapper">
+														<input type="text" class="form-control" placeholder="Discount">
+													</div>
+												</div>
+											</div>
+										</div><!--.form-group-->
+									</div>
+									
+									<div class="col-md-2">
+										<div class="form-group">
+											<div class="input-group">
+												<span class="input-group-addon">$</span>
+												<div class="inputer">
+													<div class="input-wrapper">
+														<input type="text" class="form-control" placeholder="Payment">
+													</div>
+												</div>
+											</div>
+										</div><!--.form-group-->
+									</div>
+									
+									<div class="col-md-6">
+										<div class="form-group">
+											<input type="button" class=" btn btn-indigo btn-ripple pull-right" value="Add Course"/>
+										</div><!--.form-group-->
+									</div>
+									
+								</div>
+								
+								<div class="flip-scroll">
+									<table class="table table-bordered table-striped table-condensed cf">
+										<thead class="cf">
+											<tr>
+												<th style="text-align:center;">No</th>
+												<th>Course</th>
+												<th>Course Type</th>
+												<th>Generation</th>
+												<th>Shift</th>
+												<th>Time</th>
+												<th>Cost Price</th>
+												<th>Discount</th>
+												<th>Payment</th>
+												<th>Paymented Date</th>
+												<th>Action</th>
+										  	</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>1</td>
+												<td>Android</td>
+												<td>Short Course</td>
+												<td>1st Generation</td>      
+												<td>Mon-Fri</td>
+												<td>06:00PM-08:00PM</td>
+												<td><span class="badge badge-success">$100</span></td>
+												<td><span class="badge badge-success">0%</span></td>
+												<td><span class="badge badge-success">$100</span></td>
+												<td>28-06-2016</td>
+												<td>
+													<input type="button" class="btn btn-red btn-ripple" value="REMOVE"/>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div><!--.flip-scroll-->
 							</div><!--.form-content-->
 						</form>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-flat btn-default btn-ripple" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-flat btn-primary btn-ripple">Save changes</button>
+					<button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-indigo btn-ripple">Save changes</button>
 				</div>
 			</div><!--.modal-content-->
 		</div><!--.modal-dialog-->
