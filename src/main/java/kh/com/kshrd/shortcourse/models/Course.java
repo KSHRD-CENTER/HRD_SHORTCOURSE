@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Course implements Serializable{
@@ -46,7 +47,11 @@ public class Course implements Serializable{
 	@JsonProperty("STATUS")
 	private String status;
 	
+	@JsonIgnore
 	private List<CourseDetails> courseDetails = new ArrayList<CourseDetails>();
+	
+	@JsonProperty("SHIFT")
+	private String shift;
 	
 	public Long getId() {
 		return id;
@@ -123,11 +128,17 @@ public class Course implements Serializable{
 	public void setCourseDetails(List<CourseDetails> courseDetails) {
 		this.courseDetails = courseDetails;
 	}
+	public String getShift() {
+		return shift;
+	}
+	public void setShift(String shift) {
+		this.shift = shift;
+	}
 	@Override
 	public String toString() {
 		return "Course [id=" + id + ", course=" + course + ", description=" + description + ", generation=" + generation
 				+ ", createdDate=" + createdDate + ", createdBy=" + createdBy + ", updatedDate=" + updatedDate
-				+ ", updatedBy=" + updatedBy + ", cost=" + cost + ", discount=" + discount + ", status=" + status + "]";
+				+ ", updatedBy=" + updatedBy + ", cost=" + cost + ", discount=" + discount + ", status=" + status
+				+ ", courseDetails=" + courseDetails + ", shift=" + shift + "]";
 	}
-	
 }
