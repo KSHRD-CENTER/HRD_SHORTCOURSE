@@ -13,6 +13,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		super.addViewControllers(registry);
+		registry.addViewController("/swagger").setViewName("swagger/index");
 		registry.addViewController("/administrator/courses").setViewName("backoffice/courses/index");
 		registry.addViewController("/administrator/students").setViewName("backoffice/students/index");
 	}
