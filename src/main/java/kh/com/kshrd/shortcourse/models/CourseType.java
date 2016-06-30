@@ -1,5 +1,6 @@
 package kh.com.kshrd.shortcourse.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CourseType {
@@ -10,13 +11,13 @@ public class CourseType {
 	@JsonProperty("NAME")
 	private String name;
 	
-	@JsonProperty("CREATED_DATE")
+	@JsonIgnore
 	private String createdDate;
 	
-	@JsonProperty("CREATED_BY")
+	@JsonIgnore
 	private User createdBy;
 	
-	@JsonProperty("STATUS")
+	@JsonIgnore
 	private String status;
 	
 	public Long getId() {

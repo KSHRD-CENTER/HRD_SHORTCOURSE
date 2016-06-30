@@ -1,1 +1,23 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<!-- BEGIN GLOBAL AND THEME VENDORS -->
+<script th:src="@{/static/assets/globals/js/global-vendors.js}"></script>
+<!-- END GLOBAL AND THEME VENDORS -->
+
+<!-- PLEASURE -->
+<script th:src="@{/static/assets/globals/js/pleasure.js}"></script>
+<!-- ADMIN 1 -->
+<script th:src="@{/static/assets/admin1/js/layout.js}"></script>
+
+<script th:src="@{/static/javascripts/libraries/jquery.tmpl.min.js}"></script>
+<script th:src="@{/static/javascripts/libraries/jquery.bootpag.min.js}"></script>
+<script th:src="@{/static/javascripts/libraries/jquery.bpopup.min.js}"></script>
+
+<!-- BEGIN INITIALIZATION-->
+<script>
+$(document).ready(function () {
+	Pleasure.init();
+	Layout.init();
+});
+</script>
+<!-- END INITIALIZATION-->

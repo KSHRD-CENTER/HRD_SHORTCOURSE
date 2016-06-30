@@ -2,6 +2,7 @@ package kh.com.kshrd.shortcourse.models;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Generation implements Serializable{
@@ -17,16 +18,16 @@ public class Generation implements Serializable{
 	@JsonProperty("GENERATION")
 	private String generation;
 	
-	@JsonProperty("IS_DEFAULT")
+	@JsonIgnore
 	private String isDefault;
 	
 	@JsonProperty("COURSE_TYPE")
 	private CourseType courseType;
 	
-	@JsonProperty("CREATED_DATE")
+	@JsonIgnore
 	private String createdDate;
 	
-	@JsonProperty("CREATED_BY")
+	@JsonIgnore
 	private User createdBy;
 	
 	public Long getId() {
