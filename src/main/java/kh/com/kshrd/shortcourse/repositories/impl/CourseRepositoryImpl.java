@@ -34,7 +34,7 @@ public class CourseRepositoryImpl implements CourseRepository{
 				   + "	   , A.course "
 				   + "	   , A.description "
 				   + "	   , B.id AS generation_id "
-				   + "	   , B.generation "
+				   + "	   , B.name "
 				   + "	   , A.created_date "
 				   + "	   , A.status "
 				   + "     , A.cost "
@@ -42,11 +42,15 @@ public class CourseRepositoryImpl implements CourseRepository{
 				   + "FROM courses A "
 				   + "LEFT JOIN generations B ON A.generation = B.id AND B.status = '1' "
 				   + "LEFT JOIN users C ON A.created_by = C.id AND A.status = '1' "
+				   + "WHERE LOWER(A.course) LIKE LOWER(?) "
+				   + "AND A.status = '1' "
+				   + "ORDER BY 1"
 				   + "LIMIT ? "
 				   + "OFFSET ? ";
 		return jdbcTemplate.query(
 				sql,
 				new Object[]{
+						"%" + filter.getCourse() + "%",
 						pagination.getLimit(), 
 						pagination.offset()
 				},
@@ -65,7 +69,7 @@ public class CourseRepositoryImpl implements CourseRepository{
 				
 				Generation generation = new Generation();
 				generation.setId(rs.getLong("generation_id"));
-				generation.setGeneration(rs.getString("generation"));
+				generation.setName(rs.getString("name"));
 				course.setGeneration(generation);
 				
 				return course;
@@ -75,10 +79,16 @@ public class CourseRepositoryImpl implements CourseRepository{
 	
 	@Override
 	public Long count(CourseFilter filter) throws SQLException {
+		System.out.println("COUNTING===>"+filter);
 		String sql = "SELECT COUNT(1) " 
 				   + "FROM courses A "
-				   + "WHERE A.status = '1'";
+				   + "WHERE LOWER(A.course) LIKE LOWER(?) "
+				   + "AND A.status = '1'";
 		return jdbcTemplate.queryForObject(
-				sql, Long.class);
+				sql,
+				new Object[]{
+					"%" + filter.getCourse() + "%",
+				},
+				Long.class);
 	}
 }

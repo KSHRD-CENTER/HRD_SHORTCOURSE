@@ -87,9 +87,9 @@ public class Pagination implements Serializable{
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
 		this.totalPages = (long) totalPages();
-		if(this.totalPages() < this.page){
+		/*if(this.totalPages() < this.page){
 			throw new CustomGenericException("7777", "THE TOTAL PAGES HAS ONLY " + this.totalPages() +" AND YOUR CURRENT PAGE IS "+ this.page);
-		}
+		}*/
 	}
 
 	public Long getTotalPages() {

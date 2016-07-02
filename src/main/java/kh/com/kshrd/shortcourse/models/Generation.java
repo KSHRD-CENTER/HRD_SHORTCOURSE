@@ -15,13 +15,13 @@ public class Generation implements Serializable{
 	@JsonProperty("ID")
 	private Long id;
 	
-	@JsonProperty("GENERATION")
-	private String generation;
+	@JsonProperty("NAME")
+	private String name;
 	
 	@JsonIgnore
 	private String isDefault;
 	
-	@JsonProperty("COURSE_TYPE")
+	@JsonIgnore
 	private CourseType courseType;
 	
 	@JsonIgnore
@@ -36,11 +36,11 @@ public class Generation implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getGeneration() {
-		return generation;
+	public String getName() {
+		return name;
 	}
-	public void setGeneration(String generation) {
-		this.generation = generation;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getIsDefault() {
 		return isDefault;
@@ -66,9 +66,12 @@ public class Generation implements Serializable{
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	@Override
 	public String toString() {
-		return "Generation [id=" + id + ", generation=" + generation + ", isDefault=" + isDefault + ", courseType="
-				+ courseType + ", createdDate=" + createdDate + ", createdBy=" + createdBy + "]";
+		return "Generation [id=" + id + ", name=" + name + ", isDefault=" + isDefault + ", courseType=" + courseType
+				+ ", createdDate=" + createdDate + ", createdBy=" + createdBy + "]";
 	}
 }

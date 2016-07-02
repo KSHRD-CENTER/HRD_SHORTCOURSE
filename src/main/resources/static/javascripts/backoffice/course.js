@@ -1,4 +1,7 @@
 $(function() {
+	
+	//$('.selectpicker').selectpicker();
+	//Pleasure.initSelectPicker();
 	var course = {};
 	var checkPagination = true;
 	var currentPage = 1;
@@ -19,8 +22,9 @@ $(function() {
 		    type: 'GET', 
 		    dataType: 'JSON', 
 		    data : {
-		    	"limit" : 15,
-		    	"page" : 1
+		    	"limit" : $("#SELECT_PER_PAGE").val(),
+		    	"page" : currentPage,
+		    	"course" : $("#txtSearch").val()
 		    },
 		    beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -29,25 +33,28 @@ $(function() {
 		    success: function(response) { 
 		    	if(response.CODE=="0000"){
 		    		$("#COURSE").html("");
-		    		$("#COURSE_TEMPLATE").tmpl(response.DATA).appendTo("tbody#COURSE");
-		    		if(checkPagination){
-		    			$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
-		    			$("#ALERT").trigger("click");
-			    		course.setPagination(response.PAGINATION.TOTAL_PAGES);
-			    		checkPagination=false;
-			    	}
+		    		if(response.DATA.length > 0){
+		    			$("#COURSE_TEMPLATE").tmpl(response.DATA).appendTo("tbody#COURSE");
+		    			if(checkPagination){
+		    				/*$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+		    				$("#ALERT").trigger("click");*/
+		    				course.setPagination(response.PAGINATION.TOTAL_PAGES);
+		    				checkPagination=false;
+		    			}
+		    		}else{
+		    			$("#COURSE").html("<tr style='text-align:center;'><td colspan='7'>NO CONTENT</td></tr>");
+		    			$("#PAGINATION").html("");
+		    		}
 		    	}
 		    },
-		    error:function(data,status,er) { 
-		        console.log("error: "+data+" status: "+status+" er:"+er);
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
 		    }
 		}).done(function(response){
 			/*$("#ALERT").attr("data-toastr-notification", response);
 			$("#ALERT").trigger("click");*/
 		});			
 	};
-	
-	course.findAll();
 	
 	//TODO: TO SET THE PAGINATION FOR THE USERS LIST
 	course.setPagination = function(totalPage){
@@ -69,8 +76,42 @@ $(function() {
 	    }).on("page", function(event, page){
 	    	checkPagination = false;
 	    	currentPage = page;
-	    	course.findAll(currentPage);
+	    	course.findAll();
 	    }); 
 	};
 	
+	//TODO: LOADING THE COURSE TYPE TO COMBO BOX
+	courseType.findAll(function(response){
+		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSETYPE");
+		$(".selectpicker").selectpicker('refresh');
+	});
+	
+	//TODO: LOADING THE GENERATION TO COMBO BOX
+	generation.findAll(function(response){
+		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_GENERATION");
+		$(".selectpicker").selectpicker('refresh');
+	});
+	
+	//TODO: LOADING THE SHIFT TO COMBO BOX
+	shift.findAll(function(response){
+		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_SHIFT");
+		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_SHIFT");
+		
+		$(".selectpicker").selectpicker('refresh');
+	});
+	
+	//TODO: LOADING THE DATA
+	course.findAll();
+	
+	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
+	$("#SELECT_PER_PAGE").change(function(){
+		checkPagination = true;
+		course.findAll();
+	});
+	
+	$("#btnSearch").click(function(){
+		checkPagination = true;
+		currentPage = 1;
+		course.findAll();
+	});
 });

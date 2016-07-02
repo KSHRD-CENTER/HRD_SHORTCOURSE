@@ -24,6 +24,7 @@ public class RestCourseController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseModel<List<Course>> findAllCourses(CourseFilter filter, Pagination pagination) throws BusinessException{
+		System.out.println("FILTERING ==> " + filter);
 		ResponseModel<List<Course>> response = new ResponseModel<List<Course>>();
 		response.setCode(StatusCode.SUCCESS);
 		response.setData(courseService.findAllCourses(filter, pagination));

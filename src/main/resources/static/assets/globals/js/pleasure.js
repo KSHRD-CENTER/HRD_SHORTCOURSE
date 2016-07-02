@@ -544,7 +544,7 @@ var Pleasure = {
 		this.handleFastClick();
 
 		// Form Elements
-		this.initSelectPicker();
+		//this.initSelectPicker();
 		this.initAutoSizeTextarea();
 		this.listenInputs();
 		this.initInputerBorders();

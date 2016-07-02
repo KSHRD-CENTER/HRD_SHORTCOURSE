@@ -86,20 +86,14 @@
 								</div>
 								<div class="row" id="ACTION">
 									<div class="col-md-8">
-										<select class="selectpicker" style="display: none;">
+										<select class="selectpicker" id="SELECT_COURSETYPE">
 											<option>Choose Course Type</option>
-											<option value="1">Pre Course</option>
-											<option value="2">Short Course</option>
 										</select>
-										<select class="selectpicker" style="display: none;">
+										<select class="selectpicker" id="SELECT_GENERATION">
 											<option>All Generations</option>
-											<option value="1">1st Generation</option>
-											<option value="2">2nd Generation</option>
 										</select>
-										<select class="selectpicker" style="display: none;">
+										<select class="selectpicker" id="SELECT_SHIFT">
 											<option>All Shifts</option>
-											<option value="1">Mon-Fri (08:00AM-11:00AM)</option>
-											<option value="2">Sat-Sun (06:00PM-08:00PM)</option>
 										</select>
 									</div>
 									<div class="col-md-4">
@@ -109,7 +103,7 @@
 											</div>
 										</div>
 										<div class="col-md-4">
-											<input type="button" class="btn btn-indigo btn-ripple pull-right" value="SEARCH"/>
+											<input type="button" class="btn btn-indigo btn-ripple pull-right" value="SEARCH" id="btnSearch"/>
 										</div>
 									</div>
 								</div>
@@ -211,26 +205,17 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div id="INFORMATION">Showing 1 to 10 of 57 entries</div>
-										<select class="selectpicker" style="display: none;">
-											<option>Total Rows</option>
-											<option value="1">15</option>
-											<option value="2">30</option>
-											<option value="1">50</option>
-											<option value="2">100</option>
+										<select class="selectpicker" style="display: none;" id="SELECT_PER_PAGE">
+											<option value="1">Total Rows</option>
+											<option value="15">15</option>
+											<option value="30">30</option>
+											<option value="50">50</option>
+											<option value="100">100</option>
 										</select>
 									</div>
 									<div class="col-md-6">
 										<!-- BEGIN PAGINATION -->
 										<div id="PAGINATION" class="pull-right">
-											<!-- <ul class="pagination">
-												<li class="prev disabled"><a href="#">← Previous</a></li>
-												<li class="active"><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li class="next"><a href="#">Next → </a></li>
-											</ul> -->
 										</div>
 										<!-- END PAGINATION -->
 									</div>
@@ -284,6 +269,10 @@
 				</td>
 			</tr>
     	</script>
+    	
+    	<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
+			<option value="{{= ID}}">{{= NAME}}</option>
+		</script>
 	
 		<!-- BEGIN REGISTER NEW COURSE MODAL -->
 		<div class="modal fade full-height in" id="modalAddNewCourse" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
@@ -373,25 +362,14 @@
 									
 									<h4>Shift Information</h4>
 									<div class="row">
-										<div class="col-md-2">
+										<div class="col-md-offset-3 col-md-3">
 											<div class="form-group">
-												<select class="selectpicker" style="display: none;">
+												<select class="selectpicker" style="display: none;" id="SELECT_REGISTER_SHIFT">
 													<option>Choose Shifts</option>
-													<option value="1">Mon-Fri</option>
-													<option value="2">Sat-Sun</option>
 												</select>
 											</div><!--.form-group-->
 										</div>
 										
-										<div class="col-md-2">
-											<div class="form-group">
-												<select class="selectpicker" style="display: none;">
-													<option>Choose Time</option>
-													<option value="1">08:00AM-12:00AM</option>
-													<option value="2">06:00PM-08:00PM</option>
-												</select>
-											</div><!--.form-group-->
-										</div>
 										<div class="col-md-3">
 											<div class="form-group">
 												<input type="button" class=" btn btn-indigo btn-ripple" value="Add Shift"/>
@@ -436,6 +414,9 @@
 	</div>
 	<!-- END REGISTER NEW COURSE MODAL -->
 	<th:block layout:fragment="backoffice/javascript">
+		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/course-type.js}"></script>
+		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/generation.js}"></script>
+		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/shift.js}"></script>
     	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/course.js}"></script>
     </th:block>
 </body>

@@ -8,23 +8,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
-import kh.com.kshrd.shortcourse.models.CourseType;
+import kh.com.kshrd.shortcourse.models.Generation;
 import kh.com.kshrd.shortcourse.models.ResponseModel;
 import kh.com.kshrd.shortcourse.models.StatusCode;
-import kh.com.kshrd.shortcourse.services.CourseTypeService;
+import kh.com.kshrd.shortcourse.services.GenerationService;
 
 @RestController
-@RequestMapping("/v1/api/admin/course-types")
-public class RestCourseTypeController {
+@RequestMapping("/v1/api/admin/generations")
+public class RestGenerationController {
 	
 	@Autowired
-	private CourseTypeService courseTypeService;
+	private GenerationService generationService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseModel<List<CourseType>> findAllCourses() throws BusinessException{
-		ResponseModel<List<CourseType>> response = new ResponseModel<List<CourseType>>();
+	public ResponseModel<List<Generation>> findAllCourses() throws BusinessException{
+		ResponseModel<List<Generation>> response = new ResponseModel<List<Generation>>();
 		response.setCode(StatusCode.SUCCESS);
-		response.setData(courseTypeService.findAllCourseTypes());
+		response.setData(generationService.findAllGenerations());
 		return response;
 	}
 
