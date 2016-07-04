@@ -3,16 +3,24 @@ package kh.com.kshrd.shortcourse.restcontrollers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
 import kh.com.kshrd.shortcourse.filtering.CourseFilter;
+import kh.com.kshrd.shortcourse.forms.CourseForm;
 import kh.com.kshrd.shortcourse.models.Course;
+import kh.com.kshrd.shortcourse.models.Generation;
+import kh.com.kshrd.shortcourse.models.Response;
 import kh.com.kshrd.shortcourse.models.ResponseModel;
+import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.models.StatusCode;
+import kh.com.kshrd.shortcourse.models.User;
 import kh.com.kshrd.shortcourse.services.CourseService;
+import kh.com.kshrd.shortcourse.services.ShiftService;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 @RestController
@@ -22,6 +30,9 @@ public class RestCourseController {
 	@Autowired
 	private CourseService courseService;
 	
+	@Autowired
+	private ShiftService shiftService;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseModel<List<Course>> findAllCourses(CourseFilter filter, Pagination pagination) throws BusinessException{
 		System.out.println("FILTERING ==> " + filter);
@@ -29,6 +40,42 @@ public class RestCourseController {
 		response.setCode(StatusCode.SUCCESS);
 		response.setData(courseService.findAllCourses(filter, pagination));
 		response.setPagination(pagination);
+		return response;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public Response addNewCourse(@RequestBody CourseForm.RegisterCourseForm form) throws BusinessException{
+		Response response = new Response();
+		Course course = new Course();
+		course.setCourse(form.getCourseName());
+		course.setDescription(form.getDescription());
+		course.setCost(form.getCostPrice());
+		course.setDiscount(form.getDiscount());
+		course.setStatus(form.getStatus());
+		User user = new User();
+		user.setId(1L);
+		Generation generation = new Generation();
+		generation.setId(form.getGeneration());
+		for(Long id : form.getShifts()){
+			Shift shift = new Shift();
+			shift.setId(id);
+			course.getShifts().add(shift);
+		}
+		course.setGeneration(generation);
+		course.setCreatedBy(user);
+		if(courseService.addNewCourse(course)!=null){
+			response.setCode(StatusCode.SUCCESS);
+		}else{
+			response.setCode(StatusCode.NOT_SUCCESS);
+		}
+		return response;
+	}
+	
+	@RequestMapping(value="/{id}/shifts", method = RequestMethod.GET)
+	public ResponseModel<List<Shift>> findAllCourses(@PathVariable("id") Long courseId) throws BusinessException{
+		ResponseModel<List<Shift>> response = new ResponseModel<List<Shift>>();
+		response.setCode(StatusCode.SUCCESS);
+		response.setData(shiftService.findAllShiftsByCourseId(courseId));
 		return response;
 	}
 

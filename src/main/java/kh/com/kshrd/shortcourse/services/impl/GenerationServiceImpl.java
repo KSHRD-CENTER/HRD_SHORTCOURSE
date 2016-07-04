@@ -27,4 +27,14 @@ public class GenerationServiceImpl implements GenerationService{
 		}
 	}
 
+	@Override
+	public List<Generation> findAllGenerations(Long courseTypeId) throws BusinessException {
+		try {
+			return generationRepository.findAllByCourseTypeId(courseTypeId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
 }

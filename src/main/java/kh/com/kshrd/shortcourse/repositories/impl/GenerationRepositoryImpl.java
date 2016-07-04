@@ -23,8 +23,7 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 		String sql = "SELECT id " 
 				   + "	   , name " 
 				   + "FROM generations " 
-				   + "WHERE course_type = 1 "
-				   + "AND status = '1'";
+				   + "WHERE status = '1'";
 
 		return jdbcTemplate.query(sql, new RowMapper<Generation>() {
 			@Override
@@ -36,5 +35,31 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 			}
 		});
 	}
+
+	@Override
+	public List<Generation> findAllByCourseTypeId(Long courseTypeId) throws SQLException {
+		String sql = "SELECT id " 
+				   + "	   , name " 
+				   + "FROM generations " 
+				   + "WHERE course_type = ? "
+				   + "AND status = '1'";
+
+		return jdbcTemplate.query(
+				sql,
+				new Object[]{
+					courseTypeId	
+				},
+				new RowMapper<Generation>() {
+			@Override
+			public Generation mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Generation generation = new Generation();
+				generation.setId(rs.getLong("id"));
+				generation.setName(rs.getString("name"));
+				return generation;
+			}
+		});
+	}
+	
+	
 
 }

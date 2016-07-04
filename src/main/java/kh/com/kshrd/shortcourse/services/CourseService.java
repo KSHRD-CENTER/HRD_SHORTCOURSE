@@ -12,5 +12,10 @@ public interface CourseService {
 	
 	//TODO: TO FIND ALL COURSES FILTERING BY CourseFilter AND Pagination 
 	public List<Course> findAllCourses(CourseFilter filter, Pagination pagination) throws BusinessException ;
+	
+	//TODO: TO FIND ALL COURSES BY GENERATION ID
+	public List<Course> findAllCoursesByGenerationId(Long generationId) throws BusinessException ;
+	
+	public Long addNewCourse(Course course) throws BusinessException;
 
 }

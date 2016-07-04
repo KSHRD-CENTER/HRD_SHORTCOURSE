@@ -1,10 +1,8 @@
 package kh.com.kshrd.shortcourse.models;
 
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Response {
+public class Response{
 
 	@JsonProperty("CODE")
 	public String code;
@@ -21,6 +19,9 @@ public class Response {
 		switch(code){
 			case StatusCode.SUCCESS:
 				message = "SUCCESSFULLY...";
+				break;
+			case StatusCode.NOT_SUCCESS:
+				message = "NOT SUCCESSFULLY...";
 				break;
 			default:
 				message = "GO HOME YOU ARE DRUNK"; 

@@ -8,4 +8,6 @@ import kh.com.kshrd.shortcourse.models.Generation;
 public interface GenerationRepository {
 
 	public List<Generation> findAll() throws SQLException;
+	
+	public List<Generation> findAllByCourseTypeId(Long courseTypeId) throws SQLException;
 }

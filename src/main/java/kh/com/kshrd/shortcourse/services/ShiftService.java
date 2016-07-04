@@ -8,4 +8,6 @@ import kh.com.kshrd.shortcourse.models.Shift;
 public interface ShiftService {
 
 	public List<Shift> findAllShifts() throws BusinessException;
+	
+	public List<Shift> findAllShiftsByCourseId(Long courseId) throws BusinessException;
 }

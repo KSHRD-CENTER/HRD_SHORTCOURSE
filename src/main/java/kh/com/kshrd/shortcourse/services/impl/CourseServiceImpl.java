@@ -28,4 +28,28 @@ public class CourseServiceImpl implements CourseService {
 			throw new BusinessException();
 		}
 	}
+
+	@Override
+	public List<Course> findAllCoursesByGenerationId(Long generationId) throws BusinessException{
+		try {
+			return courseRepository.findAllByGenerationId(generationId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
+	@Override
+	public Long addNewCourse(Course course) throws BusinessException {
+		try {
+			return courseRepository.save(course);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+	
+	
+	
+
 }

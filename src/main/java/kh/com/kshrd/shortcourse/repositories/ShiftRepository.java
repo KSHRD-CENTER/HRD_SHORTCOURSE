@@ -8,4 +8,8 @@ import kh.com.kshrd.shortcourse.models.Shift;
 public interface ShiftRepository {
 
 	public List<Shift> findAll() throws SQLException;
+	
+	public List<Shift> findAllByCourseId(Long courseId) throws SQLException;
 }
+
+

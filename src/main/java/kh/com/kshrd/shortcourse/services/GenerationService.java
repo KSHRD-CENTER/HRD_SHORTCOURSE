@@ -7,4 +7,5 @@ import kh.com.kshrd.shortcourse.models.Generation;
 
 public interface GenerationService {
 	public List<Generation> findAllGenerations() throws BusinessException;
+	public List<Generation> findAllGenerations(Long courseTypeId) throws BusinessException;
 }

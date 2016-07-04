@@ -26,4 +26,16 @@ public class ShiftServiceImpl implements ShiftService {
 			throw new BusinessException();
 		}
 	}
+
+	@Override
+	public List<Shift> findAllShiftsByCourseId(Long courseId) throws BusinessException {
+		try {
+			return shiftRepository.findAllByCourseId(courseId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+	
+	
 }

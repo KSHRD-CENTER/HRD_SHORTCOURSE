@@ -1,7 +1,5 @@
 $(function() {
 	
-	//$('.selectpicker').selectpicker();
-	//Pleasure.initSelectPicker();
 	var course = {};
 	var checkPagination = true;
 	var currentPage = 1;
@@ -24,7 +22,11 @@ $(function() {
 		    data : {
 		    	"limit" : $("#SELECT_PER_PAGE").val(),
 		    	"page" : currentPage,
-		    	"course" : $("#txtSearch").val()
+		    	"course" : $("#txtSearch").val(),
+		    	"courseTypeId" : $("#SELECT_COURSETYPE").val(),
+		    	"generationId" : $("#SELECT_GENERATION").val(),
+		    	"courseId" : $("#SELECT_COURSE").val(),
+		    	"shiftId" : $("#SELECT_SHIFT").val()
 		    },
 		    beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -50,9 +52,49 @@ $(function() {
 		    error:function(data,status,err) { 
 		        console.log("error: "+data+" status: "+status+" err:"+err);
 		    }
-		}).done(function(response){
-			/*$("#ALERT").attr("data-toastr-notification", response);
-			$("#ALERT").trigger("click");*/
+		});			
+	};
+	
+	//TODO: TO REGISTER A NEW COURSE
+	course.addNewCourse = function(data, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/courses", 
+		    type: 'POST', 
+		    dataType: 'JSON',
+		    data : JSON.stringify(data),
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});
+	}
+	
+	//TODO: TO FIND ALL COURSES BY FILTERING AND PAGINATION
+	course.findAllShiftsByCourseId = function(id, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/courses/"+id+"/shifts", 
+		    type: 'GET', 
+		    dataType: 'JSON', 
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
 		});			
 	};
 	
@@ -82,22 +124,49 @@ $(function() {
 	
 	//TODO: LOADING THE COURSE TYPE TO COMBO BOX
 	courseType.findAll(function(response){
+		$("#SELECT_GENERATION").html("<option value=''>All Course Types</option>");
 		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSETYPE");
 		$(".selectpicker").selectpicker('refresh');
 	});
 	
 	//TODO: LOADING THE GENERATION TO COMBO BOX
 	generation.findAll(function(response){
+		$("#SELECT_GENERATION").html("<option value=''>All Generations</option>");
 		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_GENERATION");
 		$(".selectpicker").selectpicker('refresh');
 	});
 	
 	//TODO: LOADING THE SHIFT TO COMBO BOX
 	shift.findAll(function(response){
+		$("#SELECT_SHIFT").html("<option value=''>All Shifts</option>");
 		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_SHIFT");
+		$("#SELECT_REGISTER_SHIFT").html("<option value=''>Choose Shifts</option>")
 		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_SHIFT");
-		
 		$(".selectpicker").selectpicker('refresh');
+	});
+	
+	$("#SELECT_COURSETYPE").change(function(){
+		courseType.findAllGenerations($(this).val(), function(response){
+			$("#SELECT_GENERATION").html("<option value=''>All Generations</option>");
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_GENERATION");
+			$(".selectpicker").selectpicker('refresh');
+		});
+	});
+	
+	$("#SELECT_GENERATION").change(function(){
+		generation.findAllCoursesByGenerationId($(this).val(), function(response){
+			$("#SELECT_COURSE").html("<option value=''>All Courses</option>");
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSE");
+			$(".selectpicker").selectpicker('refresh');
+		});
+	});
+	
+	$("#SELECT_COURSE").change(function(){
+		course.findAllShiftsByCourseId($(this).val(), function(response){
+			$("#SELECT_SHIFT").html("<option value=''>All Shifts</option>");
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_SHIFT");
+			$(".selectpicker").selectpicker('refresh');
+		});
 	});
 	
 	//TODO: LOADING THE DATA
@@ -114,4 +183,73 @@ $(function() {
 		currentPage = 1;
 		course.findAll();
 	});
+	
+	var index = 0;
+	$("#btnAddMoreShift").click(function(){
+		if($("#SELECT_REGISTER_SHIFT").val()!=""){
+			var shiftRow = "<tr data-id='"+$("#SELECT_REGISTER_SHIFT").val()+"'>" +
+							"	<td>" + ++index + "</td>" +
+							"	<td>" + $("#SELECT_REGISTER_SHIFT option:selected").text()+"</td>" +
+							"	<td><input type='button' class='btn btn-red btn-ripple' value='REMOVE'/></td>" +
+							"</tr>";
+			$("#TABLE_SHIFT tbody").append(shiftRow);
+			$('#SELECT_REGISTER_SHIFT option:selected').remove();
+			$(".selectpicker").selectpicker('refresh');
+		}
+	});
+	
+	$("#btnRegisterNewCourse").click(function(){
+		$("#TABLE_SHIFT tbody").html("");
+		
+		//TODO: LOADING THE SHIFT TO COMBO BOX
+		shift.findAll(function(response){
+			$("#SELECT_REGISTER_SHIFT").html("<option value=''>Choose Shifts</option>")
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_SHIFT");
+			$(".selectpicker").selectpicker('refresh');
+		});
+		
+		//TODO: LOADING THE COURSE TYPE TO COMBO BOX
+		courseType.findAll(function(response){
+			$("#SELECT_REGISTER_COURSETYPE").html("<option value=''>All Course Types</option>");
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_COURSETYPE");
+			$(".selectpicker").selectpicker('refresh');
+		});
+		
+		generation.findAll(function(response){
+			$("#SELECT_REGISTER_GENERATION").html("<option value=''>All Generations</option>");
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_GENERATION");
+			$(".selectpicker").selectpicker('refresh');
+		});
+		
+	});
+	
+	$("#SELECT_REGISTER_COURSETYPE").change(function(){
+		courseType.findAllGenerations($(this).val(), function(response){
+			$("#SELECT_REGISTER_GENERATION").html("<option value=''>All Generations</option>");
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_GENERATION");
+			$(".selectpicker").selectpicker('refresh');
+		});
+	});
+	
+	//TODO: WHEN CLICK ON THE SAVE CHANGE BUTTON
+	$("#btnSaveChange").click(function(){
+		var shifts = [];
+		$("#TABLE_SHIFT tbody tr").each(function(key, value){
+			shifts.push($(this).data("id"));
+		});
+		var input = {
+			"COURSE_NAME" : $("#txtCourseName").val(),
+			"COST_PRICE" : $("#txtCostPrice").val(),
+			"DESCRIPTION" : $("#txtDescription").val(),
+			"DISCOUNT" : $("#txtDiscount").val(),
+			"COURSE_TYPE" : $("#SELECT_REGISTER_COURSETYPE").val(),
+			"GENERATION" : $("#SELECT_REGISTER_GENERATION").val(),
+			"STATUS" : $('input[name=radioStatus]:checked').val(),
+			"SHIFTS" : shifts
+		}
+		course.addNewCourse(input, function(response){
+			console.log(response);
+		});
+	});
+	
 });

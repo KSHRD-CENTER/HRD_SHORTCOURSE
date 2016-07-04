@@ -17,7 +17,7 @@ public class Course implements Serializable{
 	@JsonProperty("ID")
 	private Long id;
 	
-	@JsonProperty("COURSE")
+	@JsonProperty("NAME")
 	private String course;
 	
 	@JsonProperty("DESCRIPTION")
@@ -49,6 +49,9 @@ public class Course implements Serializable{
 	
 	@JsonIgnore
 	private List<CourseDetails> courseDetails = new ArrayList<CourseDetails>();
+	
+	@JsonIgnore
+	private List<Shift> shifts = new ArrayList<Shift>();
 	
 	@JsonProperty("SHIFT")
 	private String shift;
@@ -134,11 +137,17 @@ public class Course implements Serializable{
 	public void setShift(String shift) {
 		this.shift = shift;
 	}
+	public List<Shift> getShifts() {
+		return shifts;
+	}
+	public void setShifts(List<Shift> shifts) {
+		this.shifts = shifts;
+	}
 	@Override
 	public String toString() {
 		return "Course [id=" + id + ", course=" + course + ", description=" + description + ", generation=" + generation
 				+ ", createdDate=" + createdDate + ", createdBy=" + createdBy + ", updatedDate=" + updatedDate
 				+ ", updatedBy=" + updatedBy + ", cost=" + cost + ", discount=" + discount + ", status=" + status
-				+ ", courseDetails=" + courseDetails + ", shift=" + shift + "]";
+				+ ", courseDetails=" + courseDetails + ", shifts=" + shifts + ", shift=" + shift + "]";
 	}
 }
