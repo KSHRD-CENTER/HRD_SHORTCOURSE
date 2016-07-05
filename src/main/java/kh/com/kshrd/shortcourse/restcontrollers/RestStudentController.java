@@ -44,5 +44,4 @@ public class RestStudentController {
 		return response;
 	}
 	
-	public Response saveStudent(@RequestBody Stu)
 }

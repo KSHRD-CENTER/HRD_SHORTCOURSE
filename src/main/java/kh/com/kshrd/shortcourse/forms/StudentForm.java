@@ -6,12 +6,11 @@ public class StudentForm {
 		private String studentName;
 		private String telephone;
 		private String email;
-		private String gender
+		private String gender;
 		private Long university;
 		private String year;
 		private String address;
 		private String status;
-		private 
 	}
 
 }
