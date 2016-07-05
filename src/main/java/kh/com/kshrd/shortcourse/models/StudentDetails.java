@@ -14,13 +14,16 @@ public class StudentDetails {
 	private Course course;
 	
 	@JsonProperty("SHIFT")
-	private Integer shift;
+	private Shift shift;
 	
 	@JsonProperty("COST")
 	private double cost;
 	
 	@JsonProperty("DISCOUNT")
 	private double discount;
+	
+	@JsonProperty("PAID_AMOUNT")
+	private double paidAmount;
 	
 	@JsonProperty("REGISTERED_DATE")
 	private String registeredDate;
@@ -49,10 +52,10 @@ public class StudentDetails {
 	public void setCourse(Course course) {
 		this.course = course;
 	}
-	public Integer getShift() {
+	public Shift getShift() {
 		return shift;
 	}
-	public void setShift(Integer shift) {
+	public void setShift(Shift shift) {
 		this.shift = shift;
 	}
 	public double getCost() {
@@ -85,10 +88,16 @@ public class StudentDetails {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public double getPaidAmount() {
+		return paidAmount;
+	}
+	public void setPaidAmount(double paidAmount) {
+		this.paidAmount = paidAmount;
+	}
 	@Override
 	public String toString() {
-		return "StudentDetail [id=" + id + ", student=" + student + ", course=" + course + ", shift=" + shift
-				+ ", cost=" + cost + ", discount=" + discount + ", registeredDate=" + registeredDate + ", registeredBy="
-				+ registeredBy + ", status=" + status + "]";
+		return "StudentDetails [id=" + id + ", student=" + student + ", course=" + course + ", shift=" + shift
+				+ ", cost=" + cost + ", discount=" + discount + ", paidAmount=" + paidAmount + ", registeredDate="
+				+ registeredDate + ", registeredBy=" + registeredBy + ", status=" + status + "]";
 	}
 }

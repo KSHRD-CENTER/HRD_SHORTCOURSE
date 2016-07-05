@@ -80,7 +80,7 @@
 									<input type="button" class="btn btn-red btn-ripple pull-right" value="REGISTER NEW COURSE" data-target="#modalAddNewCourse" data-toggle="modal" id="btnRegisterNewCourse"/>
 								</div>
 							</div><!--.panel-heading-->
-							<div class="panel-body">
+							<div class="panel-body" style="margin-bottom:50px;">
 								<div class="row" id="FILTERING">
 									
 								</div>
@@ -118,6 +118,7 @@
 												<th>Course Name</th>
 												<th>Cost Price</th>
 												<th>Discount</th>
+												<th>Paid Amount</th>
 												<th>Generation</th>
 												<th>Shift</th>
 												<th>Action</th>
@@ -205,11 +206,11 @@
 										</tbody>
 									</table>
 								</div><!--.flip-scroll-->
-								<div class="row">
-									<div class="col-md-6">
+								<div class="row" style="height:250px;">
+									<div class="col-md-6" style="height:100px;">
 										<div id="INFORMATION">Showing 1 to 10 of 57 entries</div>
 										<select class="selectpicker" style="display: none;" id="SELECT_PER_PAGE">
-											<option value="1">Total Rows</option>
+											<option value="15">Total Rows</option>
 											<option value="15">15</option>
 											<option value="30">30</option>
 											<option value="50">50</option>
@@ -223,7 +224,6 @@
 										<!-- END PAGINATION -->
 									</div>
 								</div>
-								
 							</div><!--.panel-body-->
 						</div><!--.panel-->
 					</div>
@@ -262,10 +262,11 @@
 		<script id="COURSE_TEMPLATE" type="text/x-jquery-tmpl">
 	        <tr>
 				<td>{{= ID}}</td>
-				<td>{{= NAME}}</td>
+				<td><strong>{{= NAME}}</strong></td>
 				<td><span class="badge badge-primary">$ {{= COST}}</span></td>
 				<td><span class="badge badge-danger">{{= DISCOUNT}} %</span></td>
-				<td>{{= GENERATION.NAME}}</td>
+				<td><span class="badge badge-danger">$ {{= PAID_AMOUNT}} </span></td>
+				<td><span class="badge badge-success">{{= GENERATION.NAME}}</span></td>
 				<td>{{= SHIFT}}</td>
 				<td>
 					<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
@@ -293,7 +294,7 @@
 										<div class="col-md-9">
 											<div class="inputer">
 												<div class="input-wrapper">
-													<input type="text" name="" class="form-control" id="txtCourseName">
+													<input type="text" name="" class="form-control" id="txtCourseName" required>
 												</div>
 											</div>
 										</div>
@@ -303,7 +304,7 @@
 										<div class="col-md-9">
 											<div class="inputer">
 												<div class="input-wrapper">
-													<input type="text" name="" class="form-control" id="txtDescription">
+													<input type="text" name="" class="form-control" id="txtDescription" required>
 												</div>
 											</div>
 										</div>
@@ -315,7 +316,7 @@
 											<div class="input-group">
 												<div class="inputer">
 													<div class="input-wrapper">
-														<input type="text" class="form-control" id="txtCostPrice">
+														<input type="number" class="form-control" id="txtCostPrice" required>
 													</div>
 												</div>
 												<span class="input-group-addon">$</span>
@@ -329,7 +330,7 @@
 											<div class="input-group">
 												<div class="inputer">
 													<div class="input-wrapper">
-														<input type="text" class="form-control" id="txtDiscount">
+														<input type="number" class="form-control" id="txtDiscount" required>
 													</div>
 												</div>
 												<span class="input-group-addon">%</span>
@@ -363,11 +364,11 @@
 										<label class="control-label col-md-3">Status</label>
 										<div class="col-md-9">
 											<div class="radioer">
-												<input type="radio" name="radioStatus" id="radioColor1a" value="option1" checked="checked">
+												<input type="radio" name="radioStatus" id="radioColor1a" value="1" checked="checked">
 												<label for="radioColor1a">Active</label>
 											</div>
 											<div class="radioer">
-												<input type="radio" name="radioStatus" id="radioColor1b" value="option1">
+												<input type="radio" name="radioStatus" id="radioColor1b" value="0">
 												<label for="radioColor1b">Inactive</label>
 											</div>
 										</div>
@@ -408,7 +409,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-flat btn-default btn-ripple" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-flat btn-default btn-ripple" data-dismiss="modal" id="btnClose">Close</button>
 						<button type="button" class="btn btn-flat btn-primary btn-ripple" id="btnSaveChange">Save changes</button>
 					</div>
 				</div><!--.modal-content-->

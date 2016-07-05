@@ -44,6 +44,9 @@ public class Course implements Serializable{
 	@JsonProperty("DISCOUNT")
 	private double discount;
 	
+	@JsonProperty("PAID_AMOUNT")
+	private double paidAmount;
+	
 	@JsonProperty("STATUS")
 	private String status;
 	
@@ -143,11 +146,18 @@ public class Course implements Serializable{
 	public void setShifts(List<Shift> shifts) {
 		this.shifts = shifts;
 	}
+	public double getPaidAmount() {
+		return paidAmount;
+	}
+	public void setPaidAmount(double paidAmount) {
+		this.paidAmount = paidAmount;
+	}
 	@Override
 	public String toString() {
 		return "Course [id=" + id + ", course=" + course + ", description=" + description + ", generation=" + generation
 				+ ", createdDate=" + createdDate + ", createdBy=" + createdBy + ", updatedDate=" + updatedDate
-				+ ", updatedBy=" + updatedBy + ", cost=" + cost + ", discount=" + discount + ", status=" + status
-				+ ", courseDetails=" + courseDetails + ", shifts=" + shifts + ", shift=" + shift + "]";
+				+ ", updatedBy=" + updatedBy + ", cost=" + cost + ", discount=" + discount + ", paidAmount="
+				+ paidAmount + ", status=" + status + ", courseDetails=" + courseDetails + ", shifts=" + shifts
+				+ ", shift=" + shift + "]";
 	}
 }

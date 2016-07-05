@@ -1,31 +1,33 @@
 package kh.com.kshrd.shortcourse.models;
 	
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
-public class ResponseModel<T> extends Response {
+public class ResponseList<T> extends Response {
 
 	@JsonProperty("DATA")
-	public T data;
+	public List<T> data;
 	
 	@JsonProperty("PAGINATION")
-	public Pagination pagination; 
-	
-	public T getData() {
+	public Pagination pagination;
+
+	public List<T> getData() {
 		return data;
 	}
-	public void setData(T data) {
+
+	public void setData(List<T> data) {
 		this.data = data;
 	}
+
 	public Pagination getPagination() {
 		return pagination;
 	}
+
 	public void setPagination(Pagination pagination) {
 		this.pagination = pagination;
-	}
-	@Override
-	public String toString() {
-		return "ResponseModel [data=" + data + ", pagination=" + pagination + "]";
-	}
+	} 
+	
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
 import kh.com.kshrd.shortcourse.models.CourseType;
 import kh.com.kshrd.shortcourse.models.Generation;
-import kh.com.kshrd.shortcourse.models.ResponseModel;
+import kh.com.kshrd.shortcourse.models.ResponseList;
 import kh.com.kshrd.shortcourse.models.StatusCode;
 import kh.com.kshrd.shortcourse.services.CourseTypeService;
 import kh.com.kshrd.shortcourse.services.GenerationService;
@@ -27,16 +27,16 @@ public class RestCourseTypeController {
 	private GenerationService generationService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseModel<List<CourseType>> findAllCourses() throws BusinessException{
-		ResponseModel<List<CourseType>> response = new ResponseModel<List<CourseType>>();
+	public ResponseList<CourseType> findAllCourses() throws BusinessException{
+		ResponseList<CourseType> response = new ResponseList<CourseType>();
 		response.setCode(StatusCode.SUCCESS);
 		response.setData(courseTypeService.findAllCourseTypes());
 		return response;
 	}
 	
 	@RequestMapping(value="/{id}/generations", method = RequestMethod.GET)
-	public ResponseModel<List<Generation>> findAllCourses(@PathVariable("id") Long courseTypeId) throws BusinessException{
-		ResponseModel<List<Generation>> response = new ResponseModel<List<Generation>>();
+	public ResponseList<Generation> findAllCourses(@PathVariable("id") Long courseTypeId) throws BusinessException{
+		ResponseList<Generation> response = new ResponseList<Generation>();
 		response.setCode(StatusCode.SUCCESS);
 		response.setData(generationService.findAllGenerations(courseTypeId));
 		return response;

@@ -10,6 +10,7 @@ public interface ShiftRepository {
 	public List<Shift> findAll() throws SQLException;
 	
 	public List<Shift> findAllByCourseId(Long courseId) throws SQLException;
+	
 }
 
 

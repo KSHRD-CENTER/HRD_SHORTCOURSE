@@ -124,7 +124,7 @@ $(function() {
 	
 	//TODO: LOADING THE COURSE TYPE TO COMBO BOX
 	courseType.findAll(function(response){
-		$("#SELECT_GENERATION").html("<option value=''>All Course Types</option>");
+		$("#SELECT_COURSETYPE").html("<option value=''>All Course Types</option>");
 		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSETYPE");
 		$(".selectpicker").selectpicker('refresh');
 	});
@@ -249,6 +249,11 @@ $(function() {
 		}
 		course.addNewCourse(input, function(response){
 			console.log(response);
+			if(response.CODE=="0000"){
+				checkPagination = true;
+				course.findAll();
+				$("#btnClose").trigger('click');
+			}
 		});
 	});
 	

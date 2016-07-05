@@ -58,6 +58,5 @@ public class ShiftRepositoryImpl implements ShiftRepository{
 			}
 		});
 	}
-	
-	
+
 }

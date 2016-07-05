@@ -1,5 +1,8 @@
 package kh.com.kshrd.shortcourse.models;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Student {
@@ -45,6 +48,9 @@ public class Student {
 	
 	@JsonProperty("DELETED_BY")
 	private User deletedBy;
+	
+	@JsonIgnore
+	private List<StudentDetails> studentDetails;
 	
 	public Long getId() {
 		return id;
@@ -129,6 +135,12 @@ public class Student {
 	}
 	public void setDeletedBy(User deletedBy) {
 		this.deletedBy = deletedBy;
+	}
+	public List<StudentDetails> getStudentDetails() {
+		return studentDetails;
+	}
+	public void setStudentDetails(List<StudentDetails> studentDetails) {
+		this.studentDetails = studentDetails;
 	}
 	@Override
 	public String toString() {

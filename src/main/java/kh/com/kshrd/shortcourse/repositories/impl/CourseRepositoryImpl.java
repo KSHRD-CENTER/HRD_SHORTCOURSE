@@ -1,10 +1,12 @@
 package kh.com.kshrd.shortcourse.repositories.impl;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import kh.com.kshrd.shortcourse.filtering.CourseFilter;
 import kh.com.kshrd.shortcourse.models.Course;
 import kh.com.kshrd.shortcourse.models.Generation;
+import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.repositories.CourseRepository;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
@@ -38,7 +41,8 @@ public class CourseRepositoryImpl implements CourseRepository{
 				   + "	   , A.created_date "
 				   + "	   , A.status "
 				   + "     , A.cost "
-				   + "     , A.discount "
+				   + "     , A.discount"
+				   + "	   , (A.cost - (A.cost * A.discount / 100)) AS paid_amount "
 				   + "FROM courses A "
 				   + "LEFT JOIN generations B ON A.generation = B.id AND B.status = '1' "
 				   + "LEFT JOIN course_types C ON C.id = B.course_type AND C.status = '1' "
@@ -79,6 +83,7 @@ public class CourseRepositoryImpl implements CourseRepository{
 				course.setDiscount(rs.getDouble("discount"));
 				course.setCost(rs.getDouble("cost"));
 				course.setShift(rs.getString("shift"));
+				course.setPaidAmount(rs.getDouble("paid_amount"));
 				
 				Generation generation = new Generation();
 				generation.setId(rs.getLong("generation_id"));
@@ -175,5 +180,54 @@ public class CourseRepositoryImpl implements CourseRepository{
 		}
 		return null;
 	}
+
+	@Override
+	public int[] save(List<Shift> shifts, Long courseId) throws SQLException {
+		try{
+			String sql = "INSERT INTO course_details("
+												  + "course_id, "
+												  + "shift, "
+												  + "created_date, "
+												  + "status, "
+												  + "created_by) "
+						 + "VALUES(?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MMSS'), '1', ?);";
+			int results[]= jdbcTemplate.batchUpdate(sql,new BatchPreparedStatementSetter() {
+				    @Override
+				    public void setValues(PreparedStatement ps, int i) throws SQLException {
+				    	ps.setLong(1, courseId);
+				    	ps.setLong(2, shifts.get(i).getId());
+				    	ps.setLong(3, shifts.get(i).getCreatedBy().getId());
+				    }
+				    
+				    @Override
+				    public int getBatchSize() {
+				        return shifts.size();
+				    }
+			  });
+			return results;
+		}catch(org.springframework.dao.DataIntegrityViolationException  ex)
+        {
+            System.out.println("data integrity ex="+ex.getMessage());
+            Throwable innerex = ex.getMostSpecificCause();
+            if(innerex instanceof java.sql.BatchUpdateException)
+            {
+                java.sql.BatchUpdateException batchex = (java.sql.BatchUpdateException) innerex ;
+                SQLException current = batchex;
+                int count=1;
+                   do {
+
+                       System.out.println("inner ex " + count + " =" + current.getMessage());
+                       count++;
+
+                   } while ((current = current.getNextException()) != null);
+            }
+
+            throw ex;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 }

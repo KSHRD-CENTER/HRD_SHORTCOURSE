@@ -1,7 +1,5 @@
 package kh.com.kshrd.shortcourse.restcontrollers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,13 +7,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mangofactory.swagger.annotations.ApiIgnore;
+import com.wordnik.swagger.annotations.ApiImplicitParam;
+import com.wordnik.swagger.annotations.ApiImplicitParams;
+
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
 import kh.com.kshrd.shortcourse.filtering.CourseFilter;
 import kh.com.kshrd.shortcourse.forms.CourseForm;
 import kh.com.kshrd.shortcourse.models.Course;
 import kh.com.kshrd.shortcourse.models.Generation;
 import kh.com.kshrd.shortcourse.models.Response;
-import kh.com.kshrd.shortcourse.models.ResponseModel;
+import kh.com.kshrd.shortcourse.models.ResponseList;
 import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.models.StatusCode;
 import kh.com.kshrd.shortcourse.models.User;
@@ -33,10 +35,18 @@ public class RestCourseController {
 	@Autowired
 	private ShiftService shiftService;
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "course", dataType = "string", paramType = "query", defaultValue="",
+	            value = "Course Title"),
+	    @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", defaultValue="1",
+	            value = "Results page you want to retrieve (1..N)"),
+	    @ApiImplicitParam(name = "limit", dataType = "integer", paramType = "query", defaultValue="15",
+	            value = "Number of records per page."),
+	})
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseModel<List<Course>> findAllCourses(CourseFilter filter, Pagination pagination) throws BusinessException{
+	public ResponseList<Course> findAllCourses(@ApiIgnore CourseFilter filter, @ApiIgnore Pagination pagination) throws BusinessException{
 		System.out.println("FILTERING ==> " + filter);
-		ResponseModel<List<Course>> response = new ResponseModel<List<Course>>();
+		ResponseList<Course> response = new ResponseList<Course>();
 		response.setCode(StatusCode.SUCCESS);
 		response.setData(courseService.findAllCourses(filter, pagination));
 		response.setPagination(pagination);
@@ -59,6 +69,7 @@ public class RestCourseController {
 		for(Long id : form.getShifts()){
 			Shift shift = new Shift();
 			shift.setId(id);
+			shift.setCreatedBy(user);
 			course.getShifts().add(shift);
 		}
 		course.setGeneration(generation);
@@ -72,8 +83,8 @@ public class RestCourseController {
 	}
 	
 	@RequestMapping(value="/{id}/shifts", method = RequestMethod.GET)
-	public ResponseModel<List<Shift>> findAllCourses(@PathVariable("id") Long courseId) throws BusinessException{
-		ResponseModel<List<Shift>> response = new ResponseModel<List<Shift>>();
+	public ResponseList<Shift> findAllCourses(@PathVariable("id") Long courseId) throws BusinessException{
+		ResponseList<Shift> response = new ResponseList<Shift>();
 		response.setCode(StatusCode.SUCCESS);
 		response.setData(shiftService.findAllShiftsByCourseId(courseId));
 		return response;

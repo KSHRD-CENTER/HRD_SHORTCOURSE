@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
 import kh.com.kshrd.shortcourse.filtering.CourseFilter;
@@ -14,12 +15,14 @@ import kh.com.kshrd.shortcourse.services.CourseService;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService {
 	
 	@Autowired
 	private CourseRepository courseRepository;
 	
 	@Override
+	@Transactional
 	public List<Course> findAllCourses(CourseFilter filter, Pagination pagination) throws BusinessException{
 		try {
 			return courseRepository.findAll(filter, pagination);
@@ -30,6 +33,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
+	@Transactional
 	public List<Course> findAllCoursesByGenerationId(Long generationId) throws BusinessException{
 		try {
 			return courseRepository.findAllByGenerationId(generationId);
@@ -40,9 +44,14 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
+	@Transactional
 	public Long addNewCourse(Course course) throws BusinessException {
 		try {
-			return courseRepository.save(course);
+			Long courseId = courseRepository.save(course);
+			if(courseId!=null){
+				courseRepository.save(course.getShifts(), courseId);
+			}
+			return courseId;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new BusinessException();
