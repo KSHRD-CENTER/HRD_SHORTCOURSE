@@ -3,6 +3,7 @@ package kh.com.kshrd.shortcourse.models;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 public class PaymentHistory implements Serializable{
 	/**
@@ -33,6 +34,9 @@ public class PaymentHistory implements Serializable{
 	
 	@JsonProperty("UPDATED_BY")
 	private User updatedBy;
+	
+	@JsonProperty("PAID_BY")
+	private User paidBy;
 	
 	@JsonProperty("STATUS")
 	private String status;
@@ -91,10 +95,17 @@ public class PaymentHistory implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public User getPaidBy() {
+		return paidBy;
+	}
+	public void setPaidBy(User paidBy) {
+		this.paidBy = paidBy;
+	}
 	@Override
 	public String toString() {
 		return "PaymentHistory [id=" + id + ", studentDetails=" + studentDetails + ", paidAmount=" + paidAmount
 				+ ", paidDate=" + paidDate + ", createdDate=" + createdDate + ", createdBy=" + createdBy
-				+ ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy + ", status=" + status + "]";
+				+ ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy + ", paidBy=" + paidBy + ", status="
+				+ status + "]";
 	}
 }
