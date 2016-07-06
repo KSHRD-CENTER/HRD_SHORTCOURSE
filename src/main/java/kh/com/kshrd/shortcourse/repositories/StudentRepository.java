@@ -16,4 +16,6 @@ public interface StudentRepository {
 	
 	public Long save(Student student) throws SQLException;
 	
+	public int[] save(List<StudentDetails> studentDetails, Long studentId);
+	
 }

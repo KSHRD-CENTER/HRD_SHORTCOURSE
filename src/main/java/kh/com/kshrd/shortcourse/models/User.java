@@ -3,7 +3,6 @@ package kh.com.kshrd.shortcourse.models;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User implements Serializable{

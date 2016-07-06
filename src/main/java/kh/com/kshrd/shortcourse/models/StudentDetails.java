@@ -29,7 +29,7 @@ public class StudentDetails {
 	private String registeredDate;
 	
 	@JsonProperty("REGISTERED_BY")
-	private String registeredBy;
+	private User registeredBy;
 	
 	@JsonProperty("STATUS")
 	private String status;
@@ -76,10 +76,10 @@ public class StudentDetails {
 	public void setRegisteredDate(String registeredDate) {
 		this.registeredDate = registeredDate;
 	}
-	public String getRegisteredBy() {
+	public User getRegisteredBy() {
 		return registeredBy;
 	}
-	public void setRegisteredBy(String registeredBy) {
+	public void setRegisteredBy(User registeredBy) {
 		this.registeredBy = registeredBy;
 	}
 	public String getStatus() {

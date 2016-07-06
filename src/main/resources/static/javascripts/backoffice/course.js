@@ -36,10 +36,11 @@ $(function() {
 		    	if(response.CODE=="0000"){
 		    		$("#COURSE").html("");
 		    		if(response.DATA.length > 0){
+		    			$.each(response.DATA, function(key,value){
+		    				response.DATA[key]["NO"] = (key+1)+((response.PAGINATION.PAGE-1) * response.PAGINATION.LIMIT);
+						});
 		    			$("#COURSE_TEMPLATE").tmpl(response.DATA).appendTo("tbody#COURSE");
 		    			if(checkPagination){
-		    				/*$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
-		    				$("#ALERT").trigger("click");*/
 		    				course.setPagination(response.PAGINATION.TOTAL_PAGES);
 		    				checkPagination=false;
 		    			}
@@ -250,9 +251,11 @@ $(function() {
 		course.addNewCourse(input, function(response){
 			console.log(response);
 			if(response.CODE=="0000"){
+				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+				$("#ALERT").trigger("click");
 				checkPagination = true;
 				course.findAll();
-				$("#btnClose").trigger('click');
+				//$("#btnClose").trigger('click');
 			}
 		});
 	});

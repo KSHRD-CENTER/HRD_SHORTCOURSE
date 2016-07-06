@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
 import kh.com.kshrd.shortcourse.filtering.StudentFilter;
@@ -15,6 +16,7 @@ import kh.com.kshrd.shortcourse.services.StudentService;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 @Service
+@Transactional
 public class StudentServiceImpl implements StudentService{
 
 	@Autowired
@@ -31,9 +33,13 @@ public class StudentServiceImpl implements StudentService{
 	}
 
 	@Override
+	@Transactional
 	public Long save(Student student) throws BusinessException {
 		try{
-			return studentRepository.save(student);
+			Long studentId = studentRepository.save(student);
+			student.setId(studentId);
+			studentRepository.save(student.getStudentDetails(), studentId);
+			return studentId;
 		}catch(SQLException e){
 			e.printStackTrace();
 			throw new BusinessException();

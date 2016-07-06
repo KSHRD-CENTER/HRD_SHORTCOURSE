@@ -1,5 +1,6 @@
 package kh.com.kshrd.shortcourse.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +24,7 @@ public class Student {
 	private String gender;
 	
 	@JsonProperty("UNIVERSITY")
-	private String university;
+	private Long university;
 	
 	@JsonProperty("YEAR")
 	private String year;
@@ -49,8 +50,11 @@ public class Student {
 	@JsonProperty("DELETED_BY")
 	private User deletedBy;
 	
+	@JsonProperty("STATUS")
+	private String status;
+	
 	@JsonIgnore
-	private List<StudentDetails> studentDetails;
+	private List<StudentDetails> studentDetails = new ArrayList<StudentDetails>();
 	
 	public Long getId() {
 		return id;
@@ -82,10 +86,10 @@ public class Student {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getUniversity() {
+	public Long getUniversity() {
 		return university;
 	}
-	public void setUniversity(String university) {
+	public void setUniversity(Long university) {
 		this.university = university;
 	}
 	public String getYear() {
@@ -142,11 +146,18 @@ public class Student {
 	public void setStudentDetails(List<StudentDetails> studentDetails) {
 		this.studentDetails = studentDetails;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", name=" + name + ", telephone=" + telephone + ", email=" + email + ", gender="
 				+ gender + ", university=" + university + ", year=" + year + ", address=" + address + ", createdDate="
 				+ createdDate + ", createdBy=" + createdBy + ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy
-				+ ", deletedDate=" + deletedDate + ", deletedBy=" + deletedBy + "]";
+				+ ", deletedDate=" + deletedDate + ", deletedBy=" + deletedBy + ", status=" + status
+				+ ", studentDetails=" + studentDetails + "]";
 	}
 }

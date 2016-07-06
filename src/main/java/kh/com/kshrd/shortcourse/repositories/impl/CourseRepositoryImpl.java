@@ -125,7 +125,8 @@ public class CourseRepositoryImpl implements CourseRepository{
 	@Override
 	public List<Course> findAllByGenerationId(Long generationId) {
 		String sql = "SELECT A.id " 
-				   + "	   , A.course "
+				   + "	   , A.course " 
+				   + "	   , A.cost "
 				   + "FROM courses A "
 				   + "WHERE A.generation = ? "
 				   + "AND A.status = '1' ";
@@ -140,6 +141,7 @@ public class CourseRepositoryImpl implements CourseRepository{
 				Course course = new Course();
 				course.setId(rs.getLong("id"));
 				course.setCourse(rs.getString("course"));
+				course.setCost(rs.getDouble("cost"));
 				return course;
 			}
 		});
@@ -228,6 +230,5 @@ public class CourseRepositoryImpl implements CourseRepository{
 		}
 		return null;
 	}
-	
 	
 }

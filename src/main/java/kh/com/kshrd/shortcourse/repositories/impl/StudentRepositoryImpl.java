@@ -1,10 +1,12 @@
 package kh.com.kshrd.shortcourse.repositories.impl;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,7 @@ import kh.com.kshrd.shortcourse.models.Generation;
 import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.models.Student;
 import kh.com.kshrd.shortcourse.models.StudentDetails;
+import kh.com.kshrd.shortcourse.models.User;
 import kh.com.kshrd.shortcourse.repositories.StudentRepository;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
@@ -39,25 +42,33 @@ public class StudentRepositoryImpl implements StudentRepository{
 						 "		 TO_CHAR(TO_TIMESTAMP(B.registered_date,'YYYYMMDDHH24MI'),'DD-Mon-YYYY HH24:MI') AS registered_date, " +
 						 "		 B.registered_by, " + 
 						 "		 (SELECT STRING_AGG(BB.name,', ') " + 
-						 "		 FROM course_details AA " +
+						 "		 FROM student_details AA " +
 						 "		 INNER JOIN shifts BB ON AA.shift = BB.id " + 
-						 "	 	 WHERE AA.course_id = D.id " + 
-						 "	     GROUP BY AA.course_id " + 
+						 "	 	 WHERE AA.student_id = A.id " + 
+						 "	     GROUP BY AA.student_id " + 
 						 "		 ) AS shift, " +
 						 "		 D.course, " +
 						 "		 B.cost, " +
 						 " 		 (SELECT SUM(paid_amount) " +
-						 "	 	 FROM payment_history " +
+						 "	 	 FROM payment_histories " +
 						 "		 WHERE student_details_id = B.student_details_id " +
 						 "	 	 AND status='1') AS paid_amount, " +
 						 "	 	 B.student_details_id, "
 						 + "	 B.status " + 
 						 "FROM students A " +
-						 "INNER JOIN student_details B ON A.id = B.student_id AND B.status = '1' " + 
-						 "INNER JOIN shifts C ON B.shift = C.id AND C.status = '1' " +
-						 "INNER JOIN courses D ON B.course_id = D.id AND D.status = '1' " +
-						 "INNER JOIN generations E ON D.generation = E.id AND E.status = '1' "; 
-			return jdbcTemplate.query(sql, new RowMapper<StudentDetails>(){
+						 "LEFT JOIN student_details B ON A.id = B.student_id AND B.status = '1' " + 
+						 "LEFT JOIN shifts C ON B.shift = C.id AND C.status = '1' " +
+						 "LEFT JOIN courses D ON B.course_id = D.id AND D.status = '1' " +
+						 "LEFT JOIN generations E ON D.generation = E.id AND E.status = '1' " +
+						 "LIMIT ?" +
+						 "OFFSET ?"; 
+			return jdbcTemplate.query(
+					sql,
+					new Object[]{
+						pagination.getLimit(),
+						pagination.offset()
+					},
+					new RowMapper<StudentDetails>(){
 				@Override
 				public StudentDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
 					StudentDetails studentDetails = new StudentDetails();
@@ -65,7 +76,10 @@ public class StudentRepositoryImpl implements StudentRepository{
 					studentDetails.setCost(rs.getDouble("cost"));
 					studentDetails.setPaidAmount(rs.getDouble("paid_amount"));
 					studentDetails.setRegisteredDate(rs.getString("registered_date"));
-					studentDetails.setRegisteredBy(rs.getString("registered_by"));
+					
+					User user = new User();
+					user.setId(rs.getLong("registered_by"));
+					studentDetails.setRegisteredBy(user);
 					
 					Shift shift = new Shift();
 					shift.setName(rs.getString("shift"));
@@ -76,7 +90,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 					student.setName(rs.getString("name"));
 					student.setEmail(rs.getString("email"));
 					student.setGender(rs.getString("gender"));
-					student.setUniversity(rs.getString("university"));
+					student.setUniversity(rs.getLong("university"));
 					student.setTelephone(rs.getString("telephone"));
 					student.setAddress(rs.getString("address"));
 					
@@ -140,9 +154,59 @@ public class StudentRepositoryImpl implements StudentRepository{
 			throw new SQLException();
 		}
 		return null;
-		
 	}
-	
-	
+
+	@Override
+	public int[] save(List<StudentDetails> studentDetails, Long studentId) {
+		try{
+			String sql = "INSERT INTO student_details("
+												  + "student_id, "
+												  + "course_id, "
+												  + "shift, "
+												  + "cost, "
+												  + "discount, "
+												  + "registered_date, "
+												  + "status, "
+												  + "registered_by, "
+												  + "paid) "
+						 + "VALUES(?, ?, ?, ?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MMSS'), '1', ?, ?);";
+			int results[]= jdbcTemplate.batchUpdate(sql,new BatchPreparedStatementSetter() {
+				    @Override
+				    public void setValues(PreparedStatement ps, int i) throws SQLException {
+				    	ps.setLong(1, studentId);
+				    	ps.setLong(2, studentDetails.get(i).getCourse().getId());
+				    	ps.setLong(3, studentDetails.get(i).getShift().getId());
+				    	ps.setDouble(4, studentDetails.get(i).getCost());
+				    	ps.setDouble(5, studentDetails.get(i).getDiscount());
+				    	ps.setLong(6, studentDetails.get(i).getRegisteredBy().getId());
+				    	ps.setDouble(7, studentDetails.get(i).getPaidAmount());
+				    }
+				    
+				    @Override
+				    public int getBatchSize() {
+				        return studentDetails.size();
+				    }
+			  });
+			return results;
+		}catch(org.springframework.dao.DataIntegrityViolationException  ex)
+        {
+            System.out.println("data integrity ex="+ex.getMessage());
+            Throwable innerex = ex.getMostSpecificCause();
+            if(innerex instanceof java.sql.BatchUpdateException)
+            {
+                java.sql.BatchUpdateException batchex = (java.sql.BatchUpdateException) innerex ;
+                SQLException current = batchex;
+                int count=1;
+                   do {
+                       System.out.println("inner ex " + count + " =" + current.getMessage());
+                       count++;
+                   } while ((current = current.getNextException()) != null);
+            }
+            throw ex;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
 	
 }
