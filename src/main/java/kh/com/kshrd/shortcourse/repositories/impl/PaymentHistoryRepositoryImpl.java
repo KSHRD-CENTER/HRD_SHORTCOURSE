@@ -21,11 +21,11 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 	private JdbcTemplate jdbcTemplate;
 	
 	@Override
-	public List<PaymentHistory> findAllByStudentDetailsId(Long studentDetailsId) {
+	public List<PaymentHistory> findAllByStudentDetailsId(Long studentDetailsId) throws SQLException {
 		String sql = "SELECT id "
 				   + "	   , student_details_id "
 				   + "	   , paid_amount "
-				   + "     , paid_date "
+				   + "	   , TO_CHAR(TO_TIMESTAMP(paid_date,'YYYYMMDDHH24MI'),'DD-Mon-YYYY HH24:MI') AS paid_date "
 				   + "	   , paid_by "
 				   + "	   , created_date "
 				   + "	   , created_by "
@@ -39,33 +39,60 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 				new Object[]{
 					studentDetailsId	
 				}, new RowMapper<PaymentHistory>(){
-					@Override
-					public PaymentHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
-						PaymentHistory paymentHistory = new PaymentHistory();
-						paymentHistory.setId(rs.getLong("id"));
-						paymentHistory.setPaidAmount(rs.getDouble("paid_amount"));
-						paymentHistory.setPaidDate(rs.getString("paid_date"));
-						
-						StudentDetails studentDetails = new StudentDetails();
-						studentDetails.setId(rs.getLong("student_details_id"));
-						
-						paymentHistory.setStatus(rs.getString("status"));
-						paymentHistory.setUpdatedDate(rs.getString("updated_date"));
-						
-						User createdBy = new User();
-						createdBy.setId(rs.getLong("created_by"));
-						paymentHistory.setCreatedBy(createdBy);
-						
-						User updatedBy = new User();
-						updatedBy.setId(rs.getLong("updated_by"));
-						paymentHistory.setUpdatedBy(updatedBy);
-						
-						User paidBy = new User();
-						paidBy.setId(rs.getLong("paid_by"));
-						paymentHistory.setPaidBy(paidBy);
-						return paymentHistory;
-					}
-				});
+				@Override
+				public PaymentHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
+					PaymentHistory paymentHistory = new PaymentHistory();
+					paymentHistory.setId(rs.getLong("id"));
+					paymentHistory.setPaidAmount(rs.getDouble("paid_amount"));
+					paymentHistory.setPaidDate(rs.getString("paid_date"));
+					
+					StudentDetails studentDetails = new StudentDetails();
+					studentDetails.setId(rs.getLong("student_details_id"));
+					
+					paymentHistory.setStatus(rs.getString("status"));
+					paymentHistory.setUpdatedDate(rs.getString("updated_date"));
+					
+					User createdBy = new User();
+					createdBy.setId(rs.getLong("created_by"));
+					paymentHistory.setCreatedBy(createdBy);
+					
+					User updatedBy = new User();
+					updatedBy.setId(rs.getLong("updated_by"));
+					paymentHistory.setUpdatedBy(updatedBy);
+					
+					User paidBy = new User();
+					paidBy.setId(rs.getLong("paid_by"));
+					paymentHistory.setPaidBy(paidBy);
+					return paymentHistory;
+				}
+			});
 	}
 
+	@Override
+	public Long save(PaymentHistory paymentHistory) throws SQLException {
+		Long id = jdbcTemplate.queryForObject("SELECT nextval('payment_history_id_seq')",Long.class);
+		String sql = "INSERT INTO payment_histories( "
+				   + "		student_details_id, "
+				   + "		paid_amount, "
+				   + "		paid_by, "
+				   + "		paid_date, "
+				   + "		created_date, "
+				   + "		created_by, "
+				   + "		status) "
+				   + "VALUES( ?, ?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), ?,'1') ";
+		
+		int result = jdbcTemplate.update(
+					sql,
+					new Object[]{
+						paymentHistory.getStudentDetails().getId(),
+						paymentHistory.getPaidAmount(),
+						paymentHistory.getPaidBy().getId(),
+						paymentHistory.getCreatedBy().getId()
+					});
+		if(result > 0){
+			return id;
+		}
+		return null;
+	}
+	
 }

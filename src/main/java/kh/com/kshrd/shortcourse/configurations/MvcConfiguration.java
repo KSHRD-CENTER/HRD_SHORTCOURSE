@@ -26,6 +26,8 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 		registry.addViewController("/swagger").setViewName("swagger/index");
 		registry.addViewController("/administrator/courses").setViewName("backoffice/courses/index");
 		registry.addViewController("/administrator/students").setViewName("backoffice/students/index");
+		registry.addViewController("/administrator/generations").setViewName("backoffice/generations/index");
+		registry.addViewController("/administrator/shifts").setViewName("backoffice/shifts/index");
 	}
 
 	@Override

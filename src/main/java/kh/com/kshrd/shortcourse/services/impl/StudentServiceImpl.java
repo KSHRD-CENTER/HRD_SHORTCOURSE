@@ -45,5 +45,5 @@ public class StudentServiceImpl implements StudentService{
 			throw new BusinessException();
 		}
 	}
-	
+
 }

@@ -52,10 +52,53 @@ $(function() {
 		});			
 	};
 	
+	//TODO: TO FIND ALL STUDENT PAYMENT BY STUDENT DETAILS ID
+	student.findAllPaymentHistories = function(id, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/students/"+id+"/payment-histories", 
+		    type: 'GET', 
+		    dataType: 'JSON', 
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});			
+	};
+	
 	//TODO: TO ADD NEW STUDENT 
 	student.addNewStudent = function(data, fnCallback){
 		$.ajax({ 
 		    url: "/v1/api/admin/students", 
+		    type: 'POST', 
+		    dataType: 'JSON', 
+		    data : JSON.stringify(data),
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});			
+	};
+	
+	//TODO: TO ADD NEW STUDENT 
+	student.addNewPayment = function(studentDetailsId, data, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/students/"+studentDetailsId+"/payment-histories", 
 		    type: 'POST', 
 		    dataType: 'JSON', 
 		    data : JSON.stringify(data),
@@ -269,5 +312,50 @@ $(function() {
 	
 	$(document).on('click',"#btnRemove", function(){
 		$(this).parents("tr").remove();
+	});
+	
+	$(document).on('click', "#btnPayment", function(){
+		var id = $(this).parents("tr").data("id");
+		$("#btnSaveNewPayment").data("id", id);
+		student.findAllPaymentHistories(id, function(response){
+			$.each(response.DATA, function(key,value){
+				response.DATA[key]["NO"] = (key+1);
+			});
+			$("#TABLE_PAYMENT_HISTORY tbody").html('');
+			$("#PAYMENT_HISTORY_TEMPLATE").tmpl(response.DATA).appendTo("#TABLE_PAYMENT_HISTORY tbody");
+			$("#modalPaymentHistories").show();
+		});
+	});
+	
+	$(document).on('click', "#btnView", function(){
+		var id = $(this).parents("tr").data("id");
+		student.findAllPaymentHistories(id, function(response){
+			console.log(response);
+		});
+	});
+	
+	$(document).on('click', "#btnClosePaymentHistories", function(){
+		$("#modalPaymentHistories").hide();
+	});
+	
+	$("#btnSaveNewPayment").click(function(){
+		var id = $(this).data("id");
+		if($("#txtPaymentAmount").val()==""){
+			alert("PLEASE FILL YOUR PAYMENT AMOUNT.")
+		}
+		var data ={
+				"PAID_AMOUNT" : $("#txtPaymentAmount").val()
+		}
+		student.addNewPayment(id, data, function(response){
+			if(response.CODE=="0000"){
+				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+				$("#ALERT").trigger("click");
+				checkPagination = true;
+				student.findAll();
+			}else{
+				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+				$("#ALERT").trigger("click");
+			}
+		});
 	});
 });

@@ -1,6 +1,7 @@
 package kh.com.kshrd.shortcourse.restcontrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,15 +12,18 @@ import com.wordnik.swagger.annotations.ApiImplicitParam;
 import com.wordnik.swagger.annotations.ApiImplicitParams;
 
 import kh.com.kshrd.shortcourse.filtering.StudentFilter;
+import kh.com.kshrd.shortcourse.forms.PaymentForm;
 import kh.com.kshrd.shortcourse.forms.StudentForm;
 import kh.com.kshrd.shortcourse.models.Course;
-import kh.com.kshrd.shortcourse.models.Generation;
+import kh.com.kshrd.shortcourse.models.PaymentHistory;
 import kh.com.kshrd.shortcourse.models.Response;
 import kh.com.kshrd.shortcourse.models.ResponseList;
 import kh.com.kshrd.shortcourse.models.Shift;
+import kh.com.kshrd.shortcourse.models.StatusCode;
 import kh.com.kshrd.shortcourse.models.Student;
 import kh.com.kshrd.shortcourse.models.StudentDetails;
 import kh.com.kshrd.shortcourse.models.User;
+import kh.com.kshrd.shortcourse.services.PaymentHistoryService;
 import kh.com.kshrd.shortcourse.services.StudentService;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
@@ -29,6 +33,9 @@ public class RestStudentController {
 	
 	@Autowired
 	private StudentService studentService;
+	
+	@Autowired
+	private PaymentHistoryService paymentHistoryService;
 
 	@ApiImplicitParams({
 	    @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", defaultValue="1",
@@ -89,6 +96,44 @@ public class RestStudentController {
 				response.setCode("0000");
 			}else{
 				response.setCode("9999");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@RequestMapping(value="/{id}/payment-histories",method = RequestMethod.GET)
+	public ResponseList<PaymentHistory> findAllPaymentByStudentDetailsId(@PathVariable("id") Long id){
+		ResponseList<PaymentHistory> response = new ResponseList<PaymentHistory>();
+		try {
+			response.setCode("0000");
+			response.setData(paymentHistoryService.getAllPaymentHistoryByStudentDetailsId(id));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@RequestMapping(value="/{id}/payment-histories", method = RequestMethod.POST)
+	public Response saveNewPayment(@PathVariable("id")Long id, @RequestBody PaymentForm.RegisterNewPayment form){
+		Response response = new Response();
+		try{
+			PaymentHistory paymentHistory = new PaymentHistory();
+			paymentHistory.setPaidAmount(form.getPaidAmount());
+			
+			StudentDetails studentDetails = new StudentDetails();
+			studentDetails.setId(id);
+			
+			User user = new User();
+			user.setId(1L);
+			paymentHistory.setStudentDetails(studentDetails);
+			paymentHistory.setCreatedBy(user);
+			paymentHistory.setPaidBy(user);
+			if(paymentHistoryService.save(paymentHistory)!=null){
+				response.setCode(StatusCode.SUCCESS);
+			}else{
+				response.setCode(StatusCode.NOT_SUCCESS);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
