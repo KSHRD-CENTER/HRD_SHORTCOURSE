@@ -41,11 +41,11 @@ public class StudentRepositoryImpl implements StudentRepository{
 						 "		 E.name AS generation, " +
 						 "		 TO_CHAR(TO_TIMESTAMP(B.registered_date,'YYYYMMDDHH24MI'),'DD-Mon-YYYY HH24:MI') AS registered_date, " +
 						 "		 B.registered_by, " + 
-						 "		 (SELECT STRING_AGG(BB.name,', ') " + 
-						 "		 FROM student_details AA " +
-						 "		 INNER JOIN shifts BB ON AA.shift = BB.id " + 
-						 "	 	 WHERE AA.student_id = A.id " + 
-						 "	     GROUP BY AA.student_id " + 
+						 "		 (  SELECT STRING_AGG(BB.name,', ') " + 
+						 "		 	FROM student_details AA " +
+						 "		 	INNER JOIN shifts BB ON AA.shift = BB.id " + 
+						 "	 	 	WHERE AA.student_details_id = B.student_details_id" + 
+						 "	     	GROUP BY AA.student_id " + 
 						 "		 ) AS shift, " +
 						 "		 D.course, " +
 						 "		 B.cost, " +
