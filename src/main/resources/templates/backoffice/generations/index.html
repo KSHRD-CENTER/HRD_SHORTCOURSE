@@ -72,7 +72,7 @@
 			<div class="page-header full-content">
 				<div class="row">
 					<div class="col-sm-6">
-						<h1>STUDENTS</h1>
+						<h1>GENERATIONS</h1>
 					</div><!--.col-->
 					<div class="col-sm-6">
 						<ol class="breadcrumb">
@@ -87,8 +87,8 @@
 					<div class="col-md-12">
 						<div class="panel indigo">
 							<div class="panel-heading">
-								<div class="panel-title"><h4>ALL STUDENTS</h4>
-									<input type="button" class="btn btn-red btn-ripple pull-right" value="REGISTER NEW STUDENT" data-target="#modalAddNewStudent" data-toggle="modal"/>
+								<div class="panel-title"><h4>ALL GENERATIONS</h4>
+									<input type="button" class="btn btn-red btn-ripple pull-right" value="REGISTER NEW GENERATION" data-target="#modalAddNewGeneration" data-toggle="modal"/>
 								</div>
 							</div><!--.panel-heading-->
 							<div class="panel-body">
@@ -101,26 +101,6 @@
 											<option>Choose Course</option>
 											<option value="1">Pre-Course</option>
 											<option value="2">Short-Course</option>
-										</select>
-										<select class="selectpicker" style="display: none;" id="SELECT_GENERATION">
-											<option>All Generations</option>
-											<option value="1">1st Generation</option>
-											<option value="2">2nd Generation</option>
-										</select>
-										<select class="selectpicker" style="display: none;" id="SELECT_COURSE">
-											<option>All Courses</option>
-											<option value="1">iOS</option>
-											<option value="2">Android</option>
-										</select>
-										<select class="selectpicker" style="display: none;" id="SELECT_SHIFT">
-											<option>All Shifts</option>
-											<option value="1">Mon-Fri (06:00PM-08:00PM)</option>
-											<option value="2">Sat-Sun (08:00AM-11:00AM)</option>
-										</select>
-										<select class="selectpicker" style="display: none;" id="SELECT_PAYMENT">
-											<option>All</option>
-											<option value="1">Paid</option>
-											<option value="2">Not Paid All</option>
 										</select>
 									</div>
 									<div class="col-md-4">
@@ -139,129 +119,24 @@
 										<thead class="cf">
 											<tr>
 												<th style="text-align:center;">No</th>
-												<th>Student Name</th>
-												<th>Phone</th>
-												<th>Email</th>
-												<th>Gender</th>
-												<th>Course</th>
-												<th>Shift</th>
 												<th>Generation</th>
-												<th>Price</th>
-												<th>Paid</th>
-												<th>Registered Date</th>
+												<th>Course Type</th>
 												<th>Action</th>
 										  	</tr>
 										</thead>
-										<tbody id="STUDENT">
-<!-- 											<tr>
+										<tbody id="GENERATION">
+											<tr>
 												<td>1</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Android</td>
-												<td>Sat-Sun</td>
 												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
+												<td>Short Course</td>
 												<td>
 													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
 												</td>
 											</tr>
-											<tr>
-												<td>2</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>IOS</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>3</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Java SE</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Web Design</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>5</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Spring Framework</td>
-												<td>Sat-Sun (8:00AM-11:00AM)</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>6</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Java EE</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>7</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Oracle</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr> -->
 										</tbody>
 									</table>
 								</div><!--.flip-scroll-->
-								<div class="row">
+<!-- 								<div class="row">
 									<div class="col-md-6">
 										<div id="INFORMATION">Showing 1 to 10 of 57 entries</div>
 										<select class="selectpicker" style="display: none;" id="SELECT_PER_PAGE">
@@ -273,21 +148,10 @@
 										</select>
 									</div>
 									<div class="col-md-6">
-										<!-- BEGIN PAGINATION -->
 										<div id="PAGINATION" class="pull-right">
-											<!-- <ul class="pagination">
-												<li class="prev disabled"><a href="#">← Previous</a></li>
-												<li class="active"><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li class="next"><a href="#">Next → </a></li>
-											</ul> -->
 										</div>
-										<!-- END PAGINATION -->
 									</div>
-								</div>
+								</div> -->
 								
 							</div><!--.panel-body-->
 						</div><!--.panel-->
@@ -295,13 +159,9 @@
 				</div><!--.row-->
 	
 			</div><!--.display-animation-->
-			
-			
 	
 		</div><!--.content-->
 		
-		
-	
 		<div class="layer-container">
 	
 			<!-- BEGIN MENU LAYER -->
@@ -313,6 +173,8 @@
 					<li>
 						<a href="javascript:;">COURSES</a>
 						<ul class="child-menu">
+							<li><a th:href="@{/administrator/generations}">ALL GENERATIONS</a></li>
+							<li><a th:href="@{/administrator/shifts}">ALL SHIFTS</a></li>
 							<li><a th:href="@{/administrator/courses}">ALL COURSES</a></li>
 						</ul>
 					</li>
@@ -328,265 +190,26 @@
 			
 		</div><!--.layer-container-->
 		
-		<script id="STUDENT_TEMPLATE" type="text/x-jquery-tmpl">
+		<script id="GENERATION_TEMPLATE" type="text/x-jquery-tmpl">
 			<tr data-id="{{= ID}}">
 				<td>{{= NO}}</td>
-				<td><strong>{{= STUDENT.NAME}}</strong></td>
-				<td>{{= STUDENT.TELEPHONE}}</td>
-				<td>{{= STUDENT.EMAIL}}</td>      
-				<td>{{= STUDENT.GENDER}}</td>
-				<td>{{= COURSE.NAME}}</td>
-				<td>{{= SHIFT.NAME}}</td>
-				<td>{{= COURSE.GENERATION.NAME}}</td>
-				<td><span class="badge badge-success">$ {{= COST}}</span></td>
-				<td><span class="badge badge-success">$ {{= PAID_AMOUNT}}</span></td>
-				<td>{{= REGISTERED_DATE}}</td>
+				<td><strong>{{= NAME}}</strong></td>
+				<td>{{= COURSE_TYPE.NAME}}</td>
 				<td>
-					<input type="button" class="btn btn-success btn-ripple" id="btnPayment" value="PAYMENT"/>
-					<input type="button" class="btn btn-success btn-ripple" id="btnView" value="VIEW"/>
+					<input type="button" class="btn btn-success btn-ripple" id="btnEdit" value="Edit"/>
 				</td>
 			</tr>
 		</script>
 		
 		<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
-			<option value="{{= ID}}" data-cost="{{= COST}}">{{= NAME}}</option>
+			<option value="{{= ID}}">{{= NAME}}</option>
 		</script>
-		<!-- BEGIN ADD NEW COURSE MODAL -->
-		<div class="modal fade full-height in" id="modalAddNewStudent" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-			<div class="modal-dialog modal-lg" style="width:100%">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">REGISTER NEW STUDENT</h4>
-					</div>
-					<div class="modal-body">
-						<div class="panel-body">
-							<form action="#" class="form-horizontal">
-								<div class="form-content">
-									<div class="form-group">
-										<label class="control-label col-md-3">Student Name</label>
-										<div class="col-md-9">
-											<div class="inputer">
-												<div class="input-wrapper">
-													<input type="text" name="" class="form-control" id="txtStudentName">
-												</div>
-											</div>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">Telephone</label>
-										<div class="col-md-9">
-											<div class="inputer">
-												<div class="input-wrapper">
-													<input type="text" name="" class="form-control" id="txtTelephone">
-												</div>
-											</div>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">Email</label>
-										<div class="col-md-9">
-											<div class="inputer">
-												<div class="input-wrapper">
-													<input type="email" name="" class="form-control" id="txtEmail">
-												</div>
-											</div>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">Gender</label>
-										<div class="col-md-9">
-											<select class="selectpicker" style="display: none;" id="SELECT_GENDER">
-												<option>Choose Gender</option>
-												<option value="1">Male</option>
-												<option value="2">Female</option>
-											</select>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">University</label>
-										<div class="col-md-9">
-											<select class="selectpicker" style="display: none;" id="SELECT_UNIVERSITY">
-												<option>Choose Year</option>
-												<option value="1">Royal University of Phnom Penh</option>
-												<option value="2">ICT</option>
-												<option value="3">Norton</option>
-												<option value="4">AEU</option>
-											</select>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">Year</label>
-										<div class="col-md-9">
-											<select class="selectpicker" style="display: none;" id="SELECT_YEAR">
-												<option>Choose Year</option>
-												<option value="1">1st Year</option>
-												<option value="2">2nd Year</option>
-												<option value="3">3rd Year</option>
-												<option value="4">4th Year</option>
-											</select>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">Address</label>
-										<div class="col-md-9">
-											<div class="inputer">
-												<div class="input-wrapper">
-													<textarea name="" class="form-control" id="textAreaAddress"></textarea>
-												</div>
-											</div>
-										</div>
-									</div>
-	
-									<div class="form-group">
-										<label class="control-label col-md-3">Status</label>
-										<div class="col-md-9">
-											<div class="radioer">
-												<input type="radio" name="radioStatus" id="radioColorActive" value="1" checked="checked">
-												<label for="radioColor1a">Active</label>
-											</div>
-											<div class="radioer">
-												<input type="radio" name="radioStatus" id="radioColorInactive" value="0">
-												<label for="radioColor1b">Inactive</label>
-											</div>
-										</div>
-									</div><!--.form-group-->
-									<h4>Course Information</h4>
-									<div class="row">
-										<div class="col-md-2">
-											<div class="form-group">
-												<!-- <label class="control-label col-md-3">Type</label> -->
-												<select class="selectpicker" style="display: none;" id="SELECT_REGISTER_COURSETYPE">
-													<option>Choose Course Type</option>
-													<option value="1">Pre Course</option>
-													<option value="2">Short Course</option>
-												</select>
-											</div><!--.form-group-->
-										</div>
-										<div class="col-md-2">
-											<div class="form-group">
-												<!-- <label class="control-label col-md-3">Generation</label> -->
-												<select class="selectpicker" style="display: none;" id="SELECT_REGISTER_GENERATION">
-													<option>Choose Generation</option>
-													<option value="1">1st Generation</option>
-													<option value="2">2nd Generation</option>
-												</select>
-											</div><!--.form-group-->
-										</div>
-										<div class="col-md-2">
-											<div class="form-group">
-												<!-- <label class="control-label col-md-3">Course</label> -->
-												<select class="selectpicker" style="display: none;" id="SELECT_REGISTER_COURSE">
-													<option>Choose Course</option>
-													<option value="1">Android</option>
-													<option value="2">IOS</option>
-												</select>
-											</div><!--.form-group-->
-										</div>
-										<div class="col-md-2">
-											<div class="form-group">
-												<div class="input-group">
-													<span class="input-group-addon">$</span>
-													<div class="inputer">
-														<div class="input-wrapper">
-															<input type="number" class="form-control" placeholder="Cost Price" id="txtCostPrice" readonly>
-														</div>
-													</div>
-												</div>
-											</div><!--.form-group-->
-										</div>
-										<div class="col-md-2">
-											<div class="form-group">
-												<!-- <label class="control-label col-md-3">Shift</label> -->
-												<select class="selectpicker" style="display: none;" id="SELECT_REGISTER_SHIFT">
-													<option>Choose Shifts</option>
-													<option value="1">Mon-Fri(06:00PM-08:00PM)</option>
-													<option value="2">Sat-Sun(08:00AM-12:00AM)</option>
-												</select>
-											</div><!--.form-group-->
-										</div>
-									</div>
-									
-									<div class="row">
-
-										<div class="col-md-2">
-											<div class="form-group">
-												<div class="input-group">
-													<span class="input-group-addon">%</span>
-													<div class="inputer">
-														<div class="input-wrapper">
-															<input type="number" class="form-control" placeholder="Discount" id="txtDiscount" value="0">
-														</div>
-													</div>
-												</div>
-											</div><!--.form-group-->
-										</div>
-										
-										<div class="col-md-2">
-											<div class="form-group">
-												<div class="input-group">
-													<span class="input-group-addon">$</span>
-													<div class="inputer">
-														<div class="input-wrapper">
-															<input type="number" class="form-control" placeholder="Paid" id="txtPaid">
-														</div>
-													</div>
-												</div>
-											</div><!--.form-group-->
-										</div>
-										
-										<div class="col-md-6">
-											<div class="form-group">
-												<input type="button" class=" btn btn-indigo btn-ripple pull-right" value="Add Course" id="btnAddMoreCourse"/>
-											</div><!--.form-group-->
-										</div>
-										
-									</div>
-									
-									<div class="flip-scroll" style="height:600px;">
-										<table class="table table-bordered table-striped table-condensed cf" id="TABLE_COURSE">
-											<thead class="cf">
-												<tr>
-													<th style="text-align:center;">No</th>
-													<th>Course</th>
-													<th>Course Type</th>
-													<th>Generation</th>
-													<th>Shift</th>
-													<th>Cost Price</th>
-													<th>Discount</th>
-													<th>Paid</th>
-													<th>Paid Date</th>
-													<th>Action</th>
-											  	</tr>
-											</thead>
-											<tbody>
-											</tbody>
-										</table>
-									</div><!--.flip-scroll-->
-								</div><!--.form-content-->
-							</form>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-indigo btn-ripple" id="btnSave">Save changes</button>
-					</div>
-				</div><!--.modal-content-->
-			</div><!--.modal-dialog-->
-		</div>
-		<!-- END ADD NEW COURSE MODAL -->
 	</div>
 	<!-- END REGISTER NEW COURSE MODAL -->
 	<th:block layout:fragment="backoffice/javascript">
 		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/course-type.js}"></script>
 		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/generation.js}"></script>
-		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/shift.js}"></script>
-    	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/student.js}"></script>
+    	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/generation-page.js}"></script>
     </th:block>
 </body>
 </html>

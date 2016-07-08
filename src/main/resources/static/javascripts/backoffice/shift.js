@@ -19,11 +19,9 @@ shift.findAll = function(callback){
             xhr.setRequestHeader("Content-Type", "application/json");
         },
 	    success: function(response) { 
-	    	if(response.CODE=="0000"){
-	    		if(callback){
-	    			callback(response);
-	    		}
-	    	}
+    		if(callback){
+    			callback(response);
+    		}
 	    },
 	    error:function(data,status,err) { 
 	        console.log("error: "+data+" status: "+status+" err:"+err);

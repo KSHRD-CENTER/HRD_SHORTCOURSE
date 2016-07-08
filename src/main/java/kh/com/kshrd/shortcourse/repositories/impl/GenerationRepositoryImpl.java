@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import kh.com.kshrd.shortcourse.models.CourseType;
 import kh.com.kshrd.shortcourse.models.Generation;
 import kh.com.kshrd.shortcourse.repositories.GenerationRepository;
 
@@ -20,10 +21,13 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 
 	@Override
 	public List<Generation> findAll() throws SQLException {
-		String sql = "SELECT id " 
-				   + "	   , name " 
-				   + "FROM generations " 
-				   + "WHERE status = '1'";
+		String sql = "SELECT A.id " 
+				   + "	   , A.name "
+				   + "	   , B.name AS course_type " 
+				   + "FROM generations A " 
+				   + "INNER JOIN course_types B ON B.id = A.course_type AND B.status ='1' " 
+				   + "WHERE A.status = '1' "
+				   + "ORDER BY B.id ";
 
 		return jdbcTemplate.query(sql, new RowMapper<Generation>() {
 			@Override
@@ -31,6 +35,10 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 				Generation generation = new Generation();
 				generation.setId(rs.getLong("id"));
 				generation.setName(rs.getString("name"));
+				
+				CourseType courseType = new CourseType();
+				courseType.setName(rs.getString("course_type"));
+				generation.setCourseType(courseType);
 				return generation;
 			}
 		});

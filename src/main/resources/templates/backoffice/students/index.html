@@ -35,9 +35,6 @@
 		#TABLE_PAYMENT_HISTORY td:nth-child(2),
 		th:last-child,
 		td:last-child { text-align: center }
-		
-	
-	
 	</style>
 </head>
 <body>
@@ -157,111 +154,6 @@
 										  	</tr>
 										</thead>
 										<tbody id="STUDENT">
-<!-- 											<tr>
-												<td>1</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Android</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>2</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>IOS</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>3</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Java SE</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Web Design</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>5</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Spring Framework</td>
-												<td>Sat-Sun (8:00AM-11:00AM)</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>6</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Java EE</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr>
-											<tr>
-												<td>7</td>
-												<td>Phoeurk Samnang</td>
-												<td>093 489 498</td>
-												<td>psn_thomas@yahoo.com</td>      
-												<td>male</td>
-												<td>Oracle</td>
-												<td>Sat-Sun</td>
-												<td>1st Generation</td>
-												<td><span class="badge badge-success">Paid</span></td>
-												<td>28-06-2016</td>
-												<td>
-													<input type="button" class="btn btn-success btn-ripple" value="VIEW / EDIT"/>
-												</td>
-											</tr> -->
 										</tbody>
 									</table>
 								</div><!--.flip-scroll-->
@@ -279,15 +171,6 @@
 									<div class="col-md-6">
 										<!-- BEGIN PAGINATION -->
 										<div id="PAGINATION" class="pull-right">
-											<!-- <ul class="pagination">
-												<li class="prev disabled"><a href="#">← Previous</a></li>
-												<li class="active"><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li class="next"><a href="#">Next → </a></li>
-											</ul> -->
 										</div>
 										<!-- END PAGINATION -->
 									</div>
@@ -299,12 +182,8 @@
 				</div><!--.row-->
 	
 			</div><!--.display-animation-->
-			
-			
 	
 		</div><!--.content-->
-		
-		
 	
 		<div class="layer-container">
 	
@@ -317,6 +196,8 @@
 					<li>
 						<a href="javascript:;">COURSES</a>
 						<ul class="child-menu">
+							<li><a th:href="@{/administrator/generations}">ALL GENERATIONS</a></li>
+							<li><a th:href="@{/administrator/shifts}">ALL SHIFTS</a></li>
 							<li><a th:href="@{/administrator/courses}">ALL COURSES</a></li>
 						</ul>
 					</li>
@@ -439,6 +320,7 @@
 												<option value="2">2nd Year</option>
 												<option value="3">3rd Year</option>
 												<option value="4">4th Year</option>
+												<option value="5">Others</option>
 											</select>
 										</div>
 									</div><!--.form-group-->
