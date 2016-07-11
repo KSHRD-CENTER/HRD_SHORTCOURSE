@@ -49,7 +49,7 @@ public class CourseServiceImpl implements CourseService {
 		try {
 			Long courseId = courseRepository.save(course);
 			if(courseId!=null){
-				courseRepository.save(course.getShifts(), courseId);
+				courseRepository.save(course.getCourseDetails(), courseId);
 			}
 			return courseId;
 		} catch (SQLException e) {

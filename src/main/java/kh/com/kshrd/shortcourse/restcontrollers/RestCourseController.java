@@ -14,7 +14,9 @@ import com.wordnik.swagger.annotations.ApiImplicitParams;
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
 import kh.com.kshrd.shortcourse.filtering.CourseFilter;
 import kh.com.kshrd.shortcourse.forms.CourseForm;
+import kh.com.kshrd.shortcourse.forms.CourseForm.CourseDetailsForm;
 import kh.com.kshrd.shortcourse.models.Course;
+import kh.com.kshrd.shortcourse.models.CourseDetails;
 import kh.com.kshrd.shortcourse.models.Generation;
 import kh.com.kshrd.shortcourse.models.Response;
 import kh.com.kshrd.shortcourse.models.ResponseList;
@@ -55,6 +57,8 @@ public class RestCourseController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public Response addNewCourse(@RequestBody CourseForm.RegisterCourseForm form) throws BusinessException{
+		
+		System.out.println("FORMING ==> " + form);
 		Response response = new Response();
 		Course course = new Course();
 		course.setCourse(form.getCourseName());
@@ -62,15 +66,21 @@ public class RestCourseController {
 		course.setCost(form.getCostPrice());
 		course.setDiscount(form.getDiscount());
 		course.setStatus(form.getStatus());
+		course.setTotalHour(form.getTotalHour());
 		User user = new User();
 		user.setId(1L);
 		Generation generation = new Generation();
 		generation.setId(form.getGeneration());
-		for(Long id : form.getShifts()){
+		for(CourseDetailsForm courseDetailsForm : form.getCourseDetails()){
 			Shift shift = new Shift();
-			shift.setId(id);
+			shift.setId(courseDetailsForm.getShift());
 			shift.setCreatedBy(user);
 			course.getShifts().add(shift);
+			CourseDetails courseDetails = new CourseDetails();
+			courseDetails.setShift(shift);
+			courseDetails.setCreatedBy(user);
+			courseDetails.setStartDate(courseDetailsForm.getStartDate());
+			course.getCourseDetails().add(courseDetails);
 		}
 		course.setGeneration(generation);
 		course.setCreatedBy(user);

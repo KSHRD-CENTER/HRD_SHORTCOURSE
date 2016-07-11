@@ -33,7 +33,8 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 				   + "	   , updated_by "
 				   + "	   , status "
 				   + "FROM payment_histories "
-				   + "WHERE student_details_id = ? " ;
+				   + "WHERE student_details_id = ? "
+				   + "ORDER BY created_date" ;
 		return jdbcTemplate.query(
 				sql,
 				new Object[]{

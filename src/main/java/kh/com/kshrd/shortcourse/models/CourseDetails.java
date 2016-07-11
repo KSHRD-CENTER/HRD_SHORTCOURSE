@@ -32,6 +32,9 @@ public class CourseDetails implements Serializable{
 	@JsonProperty("STATUS")
 	private String status;
 	
+	@JsonProperty("START_DATE")
+	private String startDate;
+	
 	public Course getCourse() {
 		return course;
 	}
@@ -74,10 +77,17 @@ public class CourseDetails implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
 	@Override
 	public String toString() {
 		return "CourseDetails [course=" + course + ", shift=" + shift + ", createdDate=" + createdDate + ", createdBy="
-				+ createdBy + ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy + ", status=" + status + "]";
+				+ createdBy + ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy + ", status=" + status
+				+ ", startDate=" + startDate + "]";
 	}
 	
 }
