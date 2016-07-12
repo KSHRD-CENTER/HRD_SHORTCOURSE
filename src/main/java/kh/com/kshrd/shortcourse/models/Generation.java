@@ -18,6 +18,9 @@ public class Generation implements Serializable{
 	@JsonProperty("NAME")
 	private String name;
 	
+	@JsonProperty("STATUS")
+	private String status;
+	
 	@JsonIgnore
 	private String isDefault;
 	
@@ -69,9 +72,25 @@ public class Generation implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "Generation [id=" + id + ", name=" + name + ", isDefault=" + isDefault + ", courseType=" + courseType
-				+ ", createdDate=" + createdDate + ", createdBy=" + createdBy + "]";
+		return "Generation [id=" + id + ", name=" + name + ", status=" + status + ", isDefault=" + isDefault
+				+ ", courseType=" + courseType + ", createdDate=" + createdDate + ", createdBy=" + createdBy + "]";
 	}
 }

@@ -37,4 +37,53 @@ public class GenerationServiceImpl implements GenerationService{
 		}
 	}
 
+	@Override
+	public Generation findGeneration(int id) throws BusinessException{
+		try{
+			return generationRepository.findOne(id);
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
+	@Override
+	public Long addGeneration(Generation generation) throws BusinessException{
+		try{
+			Long generationId = generationRepository.save(generation);
+			if(generationId != null)
+				return generationId;
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+		return null;
+	}
+
+	@Override
+	public Long updateGeneration(Generation generation) throws BusinessException{
+		try{
+			Long generationId = generationRepository.update(generation);
+			if(generationId != null)
+				return generationId;
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean deleteGeneration(int id) throws BusinessException{
+		try{
+			if(generationRepository.delete(id))
+				return true;
+			else
+				return false;
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
 }

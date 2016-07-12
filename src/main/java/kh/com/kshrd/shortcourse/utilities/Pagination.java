@@ -2,9 +2,8 @@ package kh.com.kshrd.shortcourse.utilities;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import kh.com.kshrd.shortcourse.exceptions.CustomGenericException;
 
 public class Pagination implements Serializable{
 	
@@ -21,6 +20,9 @@ public class Pagination implements Serializable{
 	
 	@JsonProperty("TOTAL_PAGES")
 	private Long totalPages;
+	
+	@JsonIgnore
+	private int offset;
 	
 	public Pagination(){
 		this(1,15,0L,0L);
@@ -65,11 +67,13 @@ public class Pagination implements Serializable{
 	}	
 	
 	public int offset(){
-		return (this.page-1)* limit;
+		this.offset = (this.page-1)* limit;
+		return this.offset();
 	}
 	
 	public void setPage(int currentPage) {
 		this.page = currentPage;
+		this.offset();
 	}
 
 	public int getLimit() {
@@ -98,6 +102,27 @@ public class Pagination implements Serializable{
 
 	public void setTotalPages(Long totalPages) {
 		this.totalPages = totalPages;
+	}
+
+	/**
+	 * @return the offset
+	 */
+	public int getOffset() {
+		return offset;
+	}
+
+	/**
+	 * @param offset the offset to set
+	 */
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }
