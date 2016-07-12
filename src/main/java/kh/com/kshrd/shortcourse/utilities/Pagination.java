@@ -68,7 +68,7 @@ public class Pagination implements Serializable{
 	
 	public int offset(){
 		this.offset = (this.page-1)* limit;
-		return this.offset();
+		return this.offset;
 	}
 	
 	public void setPage(int currentPage) {
