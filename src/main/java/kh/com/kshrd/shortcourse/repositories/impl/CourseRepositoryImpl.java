@@ -33,7 +33,8 @@ public class CourseRepositoryImpl implements CourseRepository{
 				   + " 	   , (SELECT STRING_AGG(CONCAT('(START DATE: ',AA.start_date, ') SHIFT: ' ,BB.name),',') "   
 				   + "		FROM course_details AA " 
 				   + "		INNER JOIN shifts BB ON AA.shift = BB.id " 
-				   + "		WHERE AA.course_id = A.id "  
+				   + "		WHERE AA.course_id = A.id "
+				   + "	    AND AA.status = '1' "  
 				   + "		GROUP BY AA.course_id "
 				   + "	) AS shift "
 				   + "	   , A.course "
@@ -244,6 +245,32 @@ public class CourseRepositoryImpl implements CourseRepository{
 
 	@Override
 	public Long update(Course course) throws SQLException {
+		String sql = "UPDATE courses "
+				   + "SET course = ?, "
+				   + "	  description = ?, "
+				   + "	  generation = ?, "
+				   + "    updated_date = TO_CHAR(NOW(),'YYYYMMDDHH24MMSS'), "
+				   + "	  updated_by = ?, "
+				   + "	  cost = ? , "
+				   + "	  discount = ? , "
+				   + "	  total_hours = ? "
+				   + "WHERE id = ? ";
+		
+		int result = jdbcTemplate.update(
+				sql,
+				new Object[]{
+					course.getCourse(),
+					course.getDescription(),
+					course.getGeneration().getId(),
+					course.getUpdatedBy().getId(),
+					course.getCost(),
+					course.getDiscount(),
+					course.getTotalHour(),
+					course.getId(), 
+				});
+		if(result>0){
+			return course.getId();
+		}
 		return null;
 	}
 
@@ -271,7 +298,8 @@ public class CourseRepositoryImpl implements CourseRepository{
 				   + " 	   , (SELECT STRING_AGG(CONCAT('(START DATE: ',AA.start_date, ') SHIFT: ' ,BB.name),',') "   
 				   + "		FROM course_details AA " 
 				   + "		INNER JOIN shifts BB ON AA.shift = BB.id " 
-				   + "		WHERE AA.course_id = A.id "  
+				   + "		WHERE AA.course_id = A.id "
+				   + "		AND AA.status = '1' "  
 				   + "		GROUP BY AA.course_id "
 				   + "	) AS shift "
 				   + "	   , A.course "
@@ -364,6 +392,24 @@ public class CourseRepositoryImpl implements CourseRepository{
 				return courseDetails;
 			}
 		});
+	}
+
+	@Override
+	public boolean deleteCourseDetails(Long courseId) throws SQLException {
+		String sql = "UPDATE course_details "
+				   + "SET status = '0' "
+				   + "WHERE course_id = ? ";
+		
+		int result = jdbcTemplate.update(
+				sql,
+				new Object[]{
+					courseId, 
+				});
+		if(result>0){
+			System.out.println(courseId);
+			return true;
+		}
+		return false;
 	}
 	
 }

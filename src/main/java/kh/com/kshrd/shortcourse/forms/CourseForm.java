@@ -84,6 +84,9 @@ public class CourseForm {
 
 	public static class RegisterCourseForm extends CourseForm{
 		
+	}
+	
+	public static class UpdateCourseForm extends CourseForm{
 		
 	}
 	

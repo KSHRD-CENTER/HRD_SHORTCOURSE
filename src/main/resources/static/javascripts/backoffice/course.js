@@ -46,7 +46,7 @@ $(function() {
 		    				course.setPagination(response.PAGINATION.TOTAL_PAGES);
 		    			}
 		    		}else{
-		    			$("#COURSE").html("<tr style='text-align:center;'><td colspan='7'>NO CONTENT</td></tr>");
+		    			$("#COURSE").html("<tr style='text-align:center;'><td colspan='8'>NO CONTENT</td></tr>");
 		    			$("#PAGINATION").html("");
 		    		}
 		    	}
@@ -85,6 +85,49 @@ $(function() {
 		    type: 'POST', 
 		    dataType: 'JSON',
 		    data : JSON.stringify(data),
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});
+	}
+	
+	//TODO: TO UPDATE A COURSE BY ID
+	course.updateCourse = function(id, data, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/courses/"+id, 
+		    type: 'PUT', 
+		    dataType: 'JSON',
+		    data : JSON.stringify(data),
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});
+	}
+	
+	//TODO: TO DELETE A COURSE BY ID
+	course.deleteCourse = function(id, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/courses/"+id, 
+		    type: 'DELETE', 
+		    dataType: 'JSON',
 		    beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -217,7 +260,7 @@ $(function() {
 							"	<td>" + ++index + "</td>" +
 							"	<td>" + $("#SELECT_REGISTER_SHIFT option:selected").text()+"</td>" +
 							"	<td>" + $("#txtStartDate").val()+"</td>" +
-							"	<td><input type='button' class='btn btn-red btn-ripple' value='REMOVE'/></td>" +
+							"	<td><input type='button' class='btn btn-red btn-ripple' value='REMOVE' id='btnRemoveShift'/></td>" +
 							"</tr>";
 			$("#TABLE_SHIFT tbody").append(shiftRow);
 			$('#SELECT_REGISTER_SHIFT option:selected').remove();
@@ -260,9 +303,9 @@ $(function() {
 	
 	//TODO: WHEN CLICK ON THE SAVE CHANGE BUTTON
 	$("#btnSaveChange").click(function(){
-		var shifts = [];
+		var courseDetails = [];
 		$("#TABLE_SHIFT tbody tr").each(function(key, value){
-			shifts.push({
+			courseDetails.push({
 				"SHIFT":$(this).data("id"),
 				"START_DATE" : $(this).data("start_date")
 			});
@@ -276,18 +319,35 @@ $(function() {
 			"GENERATION" : $("#SELECT_REGISTER_GENERATION").val(),
 			"STATUS" : $('input[name=radioStatus]:checked').val(),
 			"TOTAL_HOUR" : $("#txtTotalHour").val(),
-			"COURSE_DETAILS" : shifts
+			"COURSE_DETAILS" : courseDetails
 		}
-		course.addNewCourse(input, function(response){
-			console.log(response);
-			if(response.CODE=="0000"){
-				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
-				$("#ALERT").trigger("click");
-				checkPagination = true;
-				course.findAll();
-				//$("#btnClose").trigger('click');
-			}
-		});
+		
+		//TODO: TO UPDATE THE COURSE
+		if($(this).data("id")!=null || $(this).data("id")!=""){
+			course.updateCourse($(this).data("id"), input, function(response){
+				if(response.CODE=="0000"){
+					$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+					$("#ALERT").trigger("click");
+				}else{
+					$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+					$("#ALERT").trigger("click");
+				}
+				console.log("RESPONSE DATA==>",response);
+			});
+			
+		//TODO: TO DELETE THE COURSE
+		}else{
+			course.addNewCourse(input, function(response){
+				console.log(response);
+				if(response.CODE=="0000"){
+					$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+					$("#ALERT").trigger("click");
+					checkPagination = true;
+					course.findAll();
+					$("#btnClose").trigger('click');
+				}
+			});
+		}
 	});
 	
 	//TODO: EVENT WHEN EDIT
@@ -305,6 +365,24 @@ $(function() {
 				$("#txtTotalHour").val(response.DATA.TOTAL_HOUR);
 				$("#SELECT_REGISTER_GENERATION").val(response.DATA.GENERATION.ID);
 				$(".selectpicker").selectpicker('refresh');
+				
+				var index = 0;
+				$("#TABLE_SHIFT tbody").html("");
+				$.each(response.DATA.COURSE_DETAILS, function(key,value){
+					var shiftRow = "<tr data-id='"+value.SHIFT.ID+"' data-start_date='"+ $("#txtStartDate").val() +"'>" +
+								   "	<td>" + ++index + "</td>" +
+								   "	<td>" + value.SHIFT.NAME +
+								   "	<td>" + value.START_DATE +"</td>" +
+								   "	<td><input type='button' class='btn btn-red btn-ripple' value='REMOVE' id='btnRemoveShift'/></td>" +
+								   "</tr>";
+					$("#TABLE_SHIFT tbody").append(shiftRow);
+    				console.log(value);
+				});
+				
+				//TODO: TO SET THE ID TO THE BUTTON
+				$("#btnSaveChange").data("id", id);
+				
+				//TODO: TO SHOW THE UPDATE MODAL
 				$("#modalAddNewCourse").modal("show");
 			}
 		});
@@ -313,6 +391,29 @@ $(function() {
 	$("#btnRegisterNewCourse").click(function(){
 		$("#TITLE").html("REGISTER NEW COURSE");
 		$("#modalAddNewCourse").modal("show");
+	});
+	
+	$(document).on('click', "#btnRemoveShift", function(){
+		$(this).parents("tr").remove();
+	});
+	
+	$(document).on('click', '#btnDelete', function(){
+		$("#modalMessage").modal("show");
+		$("#btnOk").data("id", $(this).parents("tr").data("id"));
+	});
+	
+	$("#btnOk").click(function(){
+		course.deleteCourse($(this).data("id"), function(response){
+			if(response.CODE=="0000"){
+				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+				$("#ALERT").trigger("click");
+				course.findAll();
+				$("#modalMessage").modal("hide");
+			}else{
+				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+				$("#ALERT").trigger("click");
+			}
+		});
 	});
 	
 });

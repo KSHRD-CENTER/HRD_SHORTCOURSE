@@ -37,4 +37,7 @@ public interface CourseRepository {
 	//TODO: TO FIND ALL COURSE DETAILS BY COURSE ID
 	public List<CourseDetails> findAllCourseDetailsByCourseId(Long id) throws SQLException;
 	
+	//TODO: TO DELETE THE COURSE DETAILS BY COURSE ID
+	public boolean deleteCourseDetails(Long courseId) throws SQLException;
+	
 }

@@ -59,6 +59,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
+	@Transactional
 	public Course findCourseById(Long id) throws BusinessException {
 		try{
 			return courseRepository.findOne(id);
@@ -69,12 +70,27 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
+	@Transactional
 	public Course updateCourse(Course course) throws BusinessException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Course updatedCourse = courseRepository.findOne(course.getId());
+			if(updatedCourse != null){
+				Long courseId = courseRepository.update(course);
+				if(courseId!=null){
+					if(courseRepository.deleteCourseDetails(courseId)){						
+						courseRepository.save(course.getCourseDetails(), courseId);
+					}
+				}
+			}
+			return course;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BusinessException();
+		}
 	}
 
 	@Override
+	@Transactional
 	public boolean deleteCourse(Long id) throws BusinessException  {
 		try{
 			if(courseRepository.delete(id) != null){
