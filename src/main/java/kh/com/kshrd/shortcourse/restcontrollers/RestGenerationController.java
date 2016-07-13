@@ -16,6 +16,7 @@ import kh.com.kshrd.shortcourse.models.CourseType;
 import kh.com.kshrd.shortcourse.models.Generation;
 import kh.com.kshrd.shortcourse.models.Response;
 import kh.com.kshrd.shortcourse.models.ResponseList;
+import kh.com.kshrd.shortcourse.models.ResponseRecord;
 import kh.com.kshrd.shortcourse.models.StatusCode;
 import kh.com.kshrd.shortcourse.models.User;
 import kh.com.kshrd.shortcourse.services.CourseService;
@@ -44,6 +45,23 @@ public class RestGenerationController {
 		ResponseList<Course> response = new ResponseList<Course>();
 		response.setCode(StatusCode.SUCCESS);
 		response.setData(courseService.findAllCoursesByGenerationId(generationId));
+		return response;
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseRecord<Generation> findGeneration(@PathVariable("id") int id){
+		ResponseRecord<Generation> response = new ResponseRecord<>();
+		try {
+			Generation generation = generationService.findGeneration(id);
+			if(generation != null){
+				response.setCode(StatusCode.SUCCESS);
+				response.setData(generation);
+			}else{
+				response.setCode(StatusCode.NOT_SUCCESS);
+			}
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
 		return response;
 	}
 	
@@ -89,7 +107,8 @@ public class RestGenerationController {
 		return response;
 	}
 	
-	public Response updateGeneration(@RequestBody GenerationForm.UpdateGenerationForm updateGenerationForm){
+	@RequestMapping(method = RequestMethod.PUT)
+	public Response updateGeneration(@Valid @RequestBody GenerationForm.UpdateGenerationForm updateGenerationForm){
 		Response response = new Response();
 		try{
 			Generation generation = new Generation();
@@ -98,6 +117,8 @@ public class RestGenerationController {
 			generation.setCourseType(courseType);
 			generation.setStatus(updateGenerationForm.getStatus());
 			generation.setName(updateGenerationForm.getName());
+			generation.setIsDefault(updateGenerationForm.getIsDefault());
+			generation.setId(updateGenerationForm.getId());
 			if(generationService.updateGeneration(generation) > 0){
 				response.setCode(StatusCode.SUCCESS);
 			}else{

@@ -64,8 +64,9 @@ public class GenerationServiceImpl implements GenerationService{
 	public Long updateGeneration(Generation generation) throws BusinessException{
 		try{
 			Long generationId = generationRepository.update(generation);
-			if(generationId != null)
+			if(generationId != null){
 				return generationId;
+			}
 		}catch(SQLException e){
 			e.printStackTrace();
 			throw new BusinessException();

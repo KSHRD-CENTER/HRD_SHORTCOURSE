@@ -154,8 +154,9 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 							generation.getCourseType().getId(),
 							generation.getId()
 					});
-			if(result > 0)
+			if(result > 0){
 				return generation.getId();
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
