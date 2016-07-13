@@ -21,7 +21,7 @@ public class Generation implements Serializable{
 	@JsonProperty("STATUS")
 	private String status;
 	
-	@JsonIgnore
+	@JsonProperty("IS_DEFAULT")
 	private String isDefault;
 	
 	@JsonProperty("COURSE_TYPE")

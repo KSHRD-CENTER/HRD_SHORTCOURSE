@@ -9,27 +9,6 @@ $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
 });
 
 //TODO: TO FIND ALL GENERATION
-generation.findAll = function(callback){
-	$.ajax({ 
-	    url: "/v1/api/admin/generations", 
-	    type: 'GET', 
-	    dataType: 'JSON', 
-	    beforeSend: function(xhr) {
-            xhr.setRequestHeader("Accept", "application/json");
-            xhr.setRequestHeader("Content-Type", "application/json");
-        },
-	    success: function(response) { 
-    		if(callback){
-    			callback(response);
-    		}
-	    },
-	    error:function(data,status,err) { 
-	        console.log("error: "+data+" status: "+status+" err:"+err);
-	    }
-	});			
-};
-
-//TODO: TO FIND ALL GENERATION
 generation.findAllCoursesByGenerationId = function(id, callback){
 	$.ajax({ 
 	    url: "/v1/api/admin/generations/"+ id + "/courses", 
@@ -49,3 +28,86 @@ generation.findAllCoursesByGenerationId = function(id, callback){
 	    }
 	});			
 };
+
+generation.addGeneration = function(generation, callback){
+	$.ajax({ 
+	    url: "/v1/api/admin/generations", 
+	    type: 'POST', 
+	    dataType: 'JSON', 
+	    data : JSON.stringify(generation),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+    		if(callback){
+    			callback(response);
+    		}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});
+};
+
+generation.deleteGeneration = function(id, callback){
+	$.ajax({ 
+	    url: "/v1/api/admin/generations/"+id, 
+	    type: 'DELETE', 
+	    dataType: 'JSON', 
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+    		if(callback){
+    			callback(response);
+    		}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});
+}
+
+generation.getGeneration = function(id, callback){
+	console.log(id);
+	$.ajax({ 
+	    url: "/v1/api/admin/generations/"+id,
+	    type: 'GET',
+	    dataType: 'JSON', 
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+    		if(callback){
+    			callback(response);
+    		}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});
+}
+
+generation.updateGeneration = function(generation, callback){
+	$.ajax({ 
+	    url: "/v1/api/admin/generations",
+	    type: 'PUT',
+	    dataType: 'JSON', 
+	    data : JSON.stringify(generation),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+    		if(callback){
+    			callback(response);
+    		}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});
+}

@@ -171,7 +171,7 @@ $(function() {
 	});
 	
 	//TODO: LOADING THE DATA
-	course.findAll();
+	course.findAll();ge
 	
 	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
 	$("#SELECT_PER_PAGE").change(function(){

@@ -9,10 +9,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import kh.com.kshrd.shortcourse.filtering.GenerationFilter;
 import kh.com.kshrd.shortcourse.models.CourseType;
 import kh.com.kshrd.shortcourse.models.Generation;
 import kh.com.kshrd.shortcourse.models.User;
 import kh.com.kshrd.shortcourse.repositories.GenerationRepository;
+import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 @Repository
 public class GenerationRepositoryImpl implements GenerationRepository {
@@ -21,23 +23,36 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public List<Generation> findAll() throws SQLException {
+	public List<Generation> findAll(GenerationFilter filter, Pagination pagination) throws SQLException {
+		pagination.setTotalCount(count(filter));
+		System.out.println("COUNT ==============>"+count(filter));
 		String sql = "SELECT A.id " 
 				   + "	   , A.name "
+				   + "	   , B.id AS course_id"
 				   + "	   , B.name AS course_type " 
 				   + "FROM generations A " 
 				   + "INNER JOIN course_types B ON B.id = A.course_type AND B.status ='1' " 
-				   + "WHERE A.status = '1' "
-				   + "ORDER BY B.id ";
-
-		return jdbcTemplate.query(sql, new RowMapper<Generation>() {
+				   + "WHERE A.status != '0' "
+				   + "AND LOWER(A.name) LIKE LOWER(?) "
+				   + "AND LOWER(A.course_type::TEXT) LIKE ? "
+				   + "ORDER BY A.id DESC "
+				   + "LIMIT ? "
+				   + "OFFSET ?";
+		return jdbcTemplate.query(sql,
+				new Object[]{
+					"%"+filter.getName()+"%",
+					"%"+filter.getCourseId()+"%",
+					pagination.getLimit(),
+					pagination.offset()
+				},
+				new RowMapper<Generation>() {
 			@Override
 			public Generation mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Generation generation = new Generation();
 				generation.setId(rs.getLong("id"));
 				generation.setName(rs.getString("name"));
-				
 				CourseType courseType = new CourseType();
+				courseType.setId(rs.getLong("course_id"));
 				courseType.setName(rs.getString("course_type"));
 				generation.setCourseType(courseType);
 				return generation;
@@ -45,6 +60,20 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 		});
 	}
 
+	public Long count(GenerationFilter filter){
+		String sql = "SELECT COUNT(A.id) " 
+				   + "FROM generations A " 
+				   + "INNER JOIN course_types B ON B.id = A.course_type AND B.status ='1' " 
+				   + "WHERE A.status != '0' "
+				   + "AND LOWER(A.name) LIKE LOWER(?) "
+				   + "AND LOWER(A.course_type::TEXT) LIKE ?";
+		return jdbcTemplate.queryForObject(sql,
+				new Object[]{
+					"%"+filter.getName()+"%",
+					"%"+filter.getCourseId()+"%",
+				},
+				Long.class);
+	}
 	@Override
 	public List<Generation> findAllByCourseTypeId(Long courseTypeId) throws SQLException {
 		String sql = "SELECT id " 
@@ -74,8 +103,10 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 		String sql = "SELECT G.id, "
 					+ "		 G.name AS g_name, "
 					+ "		 G.status, "
-					+ "		 G.created_date, "
+					+ "		 G.created_date,"
+					+ "		 G.is_default, "
 					+ "		 U.email, "
+					+ "		 CT.id AS ct_id, "
 					+ "		 CT.name AS ct_name "
 					+ "FROM generations G "
 					+ "LEFT JOIN users U "
@@ -96,7 +127,9 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 						generation.setId(rs.getLong("id"));
 						user.setEmail(rs.getString("email"));
 						generation.setCreatedBy(user);
+						generation.setIsDefault(rs.getString("is_default"));
 						courseType.setName(rs.getString("ct_name"));
+						courseType.setId(rs.getLong("ct_id"));
 						generation.setCourseType(courseType);
 						generation.setName(rs.getString("g_name"));
 						generation.setCreatedDate(rs.getString("created_date"));

@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
+import kh.com.kshrd.shortcourse.filtering.GenerationFilter;
 import kh.com.kshrd.shortcourse.models.Generation;
 import kh.com.kshrd.shortcourse.repositories.GenerationRepository;
 import kh.com.kshrd.shortcourse.services.GenerationService;
+import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 @Service
 public class GenerationServiceImpl implements GenerationService{
@@ -18,9 +20,9 @@ public class GenerationServiceImpl implements GenerationService{
 	private GenerationRepository generationRepository;
 
 	@Override
-	public List<Generation> findAllGenerations() throws BusinessException {
+	public List<Generation> findAllGenerations(GenerationFilter filter, Pagination pagination) throws BusinessException {
 		try {
-			return generationRepository.findAll();
+			return generationRepository.findAll(filter, pagination);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new BusinessException();
