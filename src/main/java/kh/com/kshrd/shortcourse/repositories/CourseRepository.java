@@ -5,6 +5,7 @@ import java.util.List;
 
 import kh.com.kshrd.shortcourse.filtering.CourseFilter;
 import kh.com.kshrd.shortcourse.models.Course;
+import kh.com.kshrd.shortcourse.models.CourseDetails;
 import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
@@ -14,6 +15,6 @@ public interface CourseRepository {
 	public List<Course> findAllByGenerationId(Long generationId) throws SQLException;
 	public Long count(CourseFilter filter) throws SQLException;
 	public Long save(Course course) throws SQLException;
-	public int[] save(List<Shift> shifts, Long courseId) throws SQLException;
+	public int[] save(List<CourseDetails> courseDetails, Long courseId) throws SQLException;
 	
 }

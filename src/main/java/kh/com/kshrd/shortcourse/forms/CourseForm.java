@@ -20,8 +20,10 @@ public class CourseForm {
 	private Long generation;
 	@JsonProperty("STATUS")
 	private String status;
-	@JsonProperty("SHIFTS")
-	private List<Long> shifts;
+	@JsonProperty("COURSE_DETAILS")
+	private List<CourseDetailsForm> courseDetails;
+	@JsonProperty("TOTAL_HOUR")
+	public Integer totalHour;
 	
 	public String getCourseName() {
 		return courseName;
@@ -59,27 +61,49 @@ public class CourseForm {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public List<Long> getShifts() {
-		return shifts;
-	}
-	public void setShifts(List<Long> shifts) {
-		this.shifts = shifts;
-	}
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	@Override
-	public String toString() {
-		return "CourseForm [courseName=" + courseName + ", description=" + description + ", costPrice=" + costPrice
-				+ ", discount=" + discount + ", courseType=" + courseType + ", generation=" + generation + ", status="
-				+ status + ", shifts=" + shifts + "]";
+	public Integer getTotalHour() {
+		return totalHour;
 	}
+	public void setTotalHour(Integer totalHour) {
+		this.totalHour = totalHour;
+	}
+
+	public List<CourseDetailsForm> getCourseDetails() {
+		return courseDetails;
+	}
+	public void setCourseDetails(List<CourseDetailsForm> courseDetails) {
+		this.courseDetails = courseDetails;
+	}
+
 
 	public static class RegisterCourseForm extends CourseForm{
 		
+		
+	}
+	
+	public static class CourseDetailsForm {
+		@JsonProperty("SHIFT")
+		private Long shift;
+		@JsonProperty("START_DATE")
+		private String startDate;
+		public Long getShift() {
+			return shift;
+		}
+		public void setShift(Long shift) {
+			this.shift = shift;
+		}
+		public String getStartDate() {
+			return startDate;
+		}
+		public void setStartDate(String startDate) {
+			this.startDate = startDate;
+		}
 		
 	}
 		

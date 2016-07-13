@@ -362,6 +362,19 @@
 											</select>
 										</div>
 									</div><!--.form-group-->
+									
+									<div class="form-group">
+										<label class="control-label col-md-3">Total Hour</label>
+										<div class="col-md-9">
+											<div class="input-group">
+												<div class="inputer">
+													<div class="input-wrapper">
+														<input type="number" class="form-control" id="txtTotalHour" required>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div><!--.form-group-->
 	
 									<div class="form-group">
 										<label class="control-label col-md-3">Status</label>
@@ -388,6 +401,22 @@
 										</div>
 										
 										<div class="col-md-3">
+											<div class="control-group">
+												<div class="controls">
+													<div class="input-group">
+														<label>Start Date</label>
+														<span class="input-group-addon"><i class="ion-android-calendar"></i></span>
+														<div class="inputer">
+															<div class="input-wrapper">
+																<input type="text" style="width: 200px" name="birthday" class="form-control bootstrap-daterangepicker-basic valid active" value="03/18/2013" id="txtStartDate">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-md-3">
 											<div class="form-group">
 												<input type="button" class=" btn btn-indigo btn-ripple" value="Add Shift" id="btnAddMoreShift"/>
 											</div><!--.form-group-->
@@ -399,6 +428,7 @@
 												<tr>
 													<th>No</th>
 													<th>Shift</th>
+													<th>Start Date</th>
 													<th>Action</th>
 											  	</tr>
 											</thead>
@@ -422,6 +452,16 @@
 	</div>
 	<!-- END REGISTER NEW COURSE MODAL -->
 	<th:block layout:fragment="backoffice/javascript">
+		<!-- BEGIN PLUGINS AREA -->
+		<script th:src="@{/static/assets/globals/plugins/pnikolov-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js}"></script>
+		<script th:src="@{/static/assets/globals/plugins/minicolors/jquery.minicolors.min.js}"></script>
+		<script th:src="@{/static/assets/globals/plugins/bootstrap-daterangepicker/daterangepicker.js}"></script>
+		<script th:src="@{/static/assets/globals/plugins/clockface/js/clockface.js}"></script>
+		<!-- END PLUGINS AREA -->
+	
+		<!-- PLUGINS INITIALIZATION AND SETTINGS -->
+		<script th:src="@{/static/assets/globals/scripts/forms-pickers.js}"></script>
+		<!-- END PLUGINS INITIALIZATION AND SETTINGS -->
 		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/course-type.js}"></script>
 		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/generation.js}"></script>
 		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/shift.js}"></script>

@@ -50,6 +50,9 @@ public class Course implements Serializable{
 	@JsonProperty("STATUS")
 	private String status;
 	
+	@JsonProperty("TOTAL_HOUR")
+	private Integer totalHour;
+	
 	@JsonIgnore
 	private List<CourseDetails> courseDetails = new ArrayList<CourseDetails>();
 	
@@ -152,12 +155,18 @@ public class Course implements Serializable{
 	public void setPaidAmount(double paidAmount) {
 		this.paidAmount = paidAmount;
 	}
+	public Integer getTotalHour() {
+		return totalHour;
+	}
+	public void setTotalHour(Integer totalHour) {
+		this.totalHour = totalHour;
+	}
 	@Override
 	public String toString() {
 		return "Course [id=" + id + ", course=" + course + ", description=" + description + ", generation=" + generation
 				+ ", createdDate=" + createdDate + ", createdBy=" + createdBy + ", updatedDate=" + updatedDate
 				+ ", updatedBy=" + updatedBy + ", cost=" + cost + ", discount=" + discount + ", paidAmount="
-				+ paidAmount + ", status=" + status + ", courseDetails=" + courseDetails + ", shifts=" + shifts
-				+ ", shift=" + shift + "]";
+				+ paidAmount + ", status=" + status + ", totalHour=" + totalHour + ", courseDetails=" + courseDetails
+				+ ", shifts=" + shifts + ", shift=" + shift + "]";
 	}
 }

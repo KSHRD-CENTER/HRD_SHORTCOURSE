@@ -188,9 +188,10 @@ $(function() {
 	var index = 0;
 	$("#btnAddMoreShift").click(function(){
 		if($("#SELECT_REGISTER_SHIFT").val()!=""){
-			var shiftRow = "<tr data-id='"+$("#SELECT_REGISTER_SHIFT").val()+"'>" +
+			var shiftRow = "<tr data-id='"+$("#SELECT_REGISTER_SHIFT").val()+"' data-start_date='"+ $("#txtStartDate").val() +"'>" +
 							"	<td>" + ++index + "</td>" +
 							"	<td>" + $("#SELECT_REGISTER_SHIFT option:selected").text()+"</td>" +
+							"	<td>" + $("#txtStartDate").val()+"</td>" +
 							"	<td><input type='button' class='btn btn-red btn-ripple' value='REMOVE'/></td>" +
 							"</tr>";
 			$("#TABLE_SHIFT tbody").append(shiftRow);
@@ -236,7 +237,10 @@ $(function() {
 	$("#btnSaveChange").click(function(){
 		var shifts = [];
 		$("#TABLE_SHIFT tbody tr").each(function(key, value){
-			shifts.push($(this).data("id"));
+			shifts.push({
+				"SHIFT":$(this).data("id"),
+				"START_DATE" : $(this).data("start_date")
+			});
 		});
 		var input = {
 			"COURSE_NAME" : $("#txtCourseName").val(),
@@ -246,7 +250,8 @@ $(function() {
 			"COURSE_TYPE" : $("#SELECT_REGISTER_COURSETYPE").val(),
 			"GENERATION" : $("#SELECT_REGISTER_GENERATION").val(),
 			"STATUS" : $('input[name=radioStatus]:checked').val(),
-			"SHIFTS" : shifts
+			"TOTAL_HOUR" : $("#txtTotalHour").val(),
+			"COURSE_DETAILS" : shifts
 		}
 		course.addNewCourse(input, function(response){
 			console.log(response);

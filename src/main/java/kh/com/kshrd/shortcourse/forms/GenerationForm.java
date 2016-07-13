@@ -1,6 +1,5 @@
 package kh.com.kshrd.shortcourse.forms;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GenerationForm {

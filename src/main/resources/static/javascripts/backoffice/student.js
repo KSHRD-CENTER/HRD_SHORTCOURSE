@@ -44,6 +44,8 @@ $(function() {
 		    			$("#STUDENT").html("<tr style='text-align:center;'><td colspan='12'>NO CONTENT</td></tr>");
 		    			$("#PAGINATION").html("");
 		    		}
+					$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+					$("#ALERT").trigger("click");
 		    	}
 		    },
 		    error:function(data,status,err) { 
@@ -351,6 +353,14 @@ $(function() {
 				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
 				$("#ALERT").trigger("click");
 				checkPagination = true;
+				student.findAllPaymentHistories(id, function(response){
+					$.each(response.DATA, function(key,value){
+						response.DATA[key]["NO"] = (key+1);
+					});
+					$("#TABLE_PAYMENT_HISTORY tbody").html('');
+					$("#PAYMENT_HISTORY_TEMPLATE").tmpl(response.DATA).appendTo("#TABLE_PAYMENT_HISTORY tbody");
+					$("#modalPaymentHistories").show();
+				});
 				student.findAll();
 			}else{
 				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);

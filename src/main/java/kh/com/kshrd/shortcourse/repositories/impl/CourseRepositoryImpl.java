@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import kh.com.kshrd.shortcourse.filtering.CourseFilter;
 import kh.com.kshrd.shortcourse.models.Course;
+import kh.com.kshrd.shortcourse.models.CourseDetails;
 import kh.com.kshrd.shortcourse.models.Generation;
-import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.repositories.CourseRepository;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
@@ -159,8 +159,9 @@ public class CourseRepositoryImpl implements CourseRepository{
 					   + "		, status "
 					   + "		, created_by "
 					   + "		, cost "
-					   + "		, discount)"
-					   + "VALUES(?, ?, ?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), '1', ?, ?, ?) ";
+					   + "		, discount"
+					   + "		, total_hours)"
+					   + "VALUES(?, ?, ?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), '1', ?, ?, ?, ?) ";
 			
 			int result = jdbcTemplate.update(
 					sql,
@@ -171,7 +172,8 @@ public class CourseRepositoryImpl implements CourseRepository{
 						course.getGeneration().getId(),
 						course.getCreatedBy().getId(),
 						course.getCost(),
-						course.getDiscount()
+						course.getDiscount(),
+						course.getTotalHour()
 					});
 			if(result>0){
 				System.out.println(id);
@@ -184,26 +186,28 @@ public class CourseRepositoryImpl implements CourseRepository{
 	}
 
 	@Override
-	public int[] save(List<Shift> shifts, Long courseId) throws SQLException {
+	public int[] save(List<CourseDetails> courseDetails, Long courseId) throws SQLException {
 		try{
 			String sql = "INSERT INTO course_details("
 												  + "course_id, "
 												  + "shift, "
 												  + "created_date, "
 												  + "status, "
-												  + "created_by) "
-						 + "VALUES(?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MMSS'), '1', ?);";
+												  + "created_by, "
+												  + "start_date) "
+						 + "VALUES(?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MMSS'), '1', ?, ?);";
 			int results[]= jdbcTemplate.batchUpdate(sql,new BatchPreparedStatementSetter() {
 				    @Override
 				    public void setValues(PreparedStatement ps, int i) throws SQLException {
 				    	ps.setLong(1, courseId);
-				    	ps.setLong(2, shifts.get(i).getId());
-				    	ps.setLong(3, shifts.get(i).getCreatedBy().getId());
+				    	ps.setLong(2, courseDetails.get(i).getShift().getId());
+				    	ps.setLong(3, courseDetails.get(i).getCreatedBy().getId());
+				    	ps.setString(4,  courseDetails.get(i).getStartDate());
 				    }
 				    
 				    @Override
 				    public int getBatchSize() {
-				        return shifts.size();
+				        return courseDetails.size();
 				    }
 			  });
 			return results;
