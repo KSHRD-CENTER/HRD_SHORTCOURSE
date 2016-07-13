@@ -271,6 +271,9 @@ $(function() {
 	$("#btnRegisterNewCourse").click(function(){
 		$("#TABLE_SHIFT tbody").html("");
 		
+		$("#TITLE").html("REGISTER NEW COURSE");
+		$("#btnSaveChange").data("id","");
+		
 		//TODO: LOADING THE SHIFT TO COMBO BOX
 		shift.findAll(function(response){
 			$("#SELECT_REGISTER_SHIFT").html("<option value=''>Choose Shifts</option>")
@@ -291,6 +294,7 @@ $(function() {
 			$(".selectpicker").selectpicker('refresh');
 		});
 		
+		$("#modalAddNewCourse").modal("show");
 	});
 	
 	$("#SELECT_REGISTER_COURSETYPE").change(function(){
@@ -323,7 +327,7 @@ $(function() {
 		}
 		
 		//TODO: TO UPDATE THE COURSE
-		if($(this).data("id")!=null || $(this).data("id")!=""){
+		if($(this).data("id")!=""){
 			course.updateCourse($(this).data("id"), input, function(response){
 				if(response.CODE=="0000"){
 					$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
@@ -332,7 +336,6 @@ $(function() {
 					$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
 					$("#ALERT").trigger("click");
 				}
-				console.log("RESPONSE DATA==>",response);
 			});
 			
 		//TODO: TO DELETE THE COURSE
@@ -388,10 +391,11 @@ $(function() {
 		});
 	});
 	
-	$("#btnRegisterNewCourse").click(function(){
+	/*$("#btnRegisterNewCourse").click(function(){
 		$("#TITLE").html("REGISTER NEW COURSE");
+		$("#btnSaveChange").removeAttr("data-id");
 		$("#modalAddNewCourse").modal("show");
-	});
+	});*/
 	
 	$(document).on('click', "#btnRemoveShift", function(){
 		$(this).parents("tr").remove();

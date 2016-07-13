@@ -53,18 +53,26 @@ public class StudentRepositoryImpl implements StudentRepository{
 						 "	 	 FROM payment_histories " +
 						 "		 WHERE student_details_id = B.student_details_id " +
 						 "	 	 AND status='1') AS paid_amount, " +
-						 "	 	 B.student_details_id, "
-						 + "	 B.status " + 
+						 "	 	 B.student_details_id, " +
+						 "	 B.status " + 
 						 "FROM students A " +
 						 "LEFT JOIN student_details B ON A.id = B.student_id AND B.status = '1' " + 
 						 "LEFT JOIN shifts C ON B.shift = C.id AND C.status = '1' " +
 						 "LEFT JOIN courses D ON B.course_id = D.id AND D.status = '1' " +
 						 "LEFT JOIN generations E ON D.generation = E.id AND E.status = '1' " +
+						 "WHERE LOWER(A.name) LIKE LOWER(?) " +
+						 "AND E.id::TEXT LIKE ? " +
+						 "AND C.id::TEXT LIKE ? " +
+						 "AND D.id::TEXT LIKE ? " +
 						 "LIMIT ?" +
 						 "OFFSET ?"; 
 			return jdbcTemplate.query(
 					sql,
 					new Object[]{
+						"%" + filter.getStudentName() + "%",
+						"%" + filter.getGenerationId() + "%",
+						"%" + filter.getShiftId() + "%",
+						"%" + filter.getCourseId() + "%",
 						pagination.getLimit(),
 						pagination.offset()
 					},
@@ -118,10 +126,22 @@ public class StudentRepositoryImpl implements StudentRepository{
 	public Long count(StudentFilter filter) throws SQLException {
 		System.out.println("COUNTING===>"+filter);
 		String sql = "SELECT COUNT(A.id) " +
-				 	 "FROM students A";
+					 "FROM students A " +
+					 "LEFT JOIN student_details B ON A.id = B.student_id AND B.status = '1' " + 
+					 "LEFT JOIN shifts C ON B.shift = C.id AND C.status = '1' " +
+					 "LEFT JOIN courses D ON B.course_id = D.id AND D.status = '1' " +
+					 "LEFT JOIN generations E ON D.generation = E.id AND E.status = '1' " +
+					 "WHERE LOWER(A.name) LIKE LOWER(?) " +
+					 "AND E.id::TEXT LIKE ? " +
+					 "AND C.id::TEXT LIKE ? " +
+					 "AND D.id::TEXT LIKE ? ";
 		return jdbcTemplate.queryForObject(
 				sql,
 				new Object[]{
+					"%" + filter.getStudentName() + "%",
+					"%" + filter.getGenerationId() + "%",
+					"%" + filter.getShiftId() + "%",
+					"%" + filter.getCourseId() + "%"
 				},
 				Long.class);
 	}

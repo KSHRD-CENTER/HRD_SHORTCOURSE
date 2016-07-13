@@ -118,6 +118,46 @@ public class RestCourseController {
 		}
 		return response;
 	}
+	
+	//TODO: TO UPDATE THE COURSE BY ID
+	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
+		public ResponseRecord<Course> updateCourse(@PathVariable("id") Long id, @RequestBody CourseForm.UpdateCourseForm form) throws BusinessException{
+			ResponseRecord<Course> response = new ResponseRecord<Course>();
+			Course course = new Course();
+			course.setId(id);
+			course.setCourse(form.getCourseName());
+			course.setDescription(form.getDescription());
+			course.setCost(form.getCostPrice());
+			course.setDiscount(form.getDiscount());
+			course.setStatus(form.getStatus());
+			course.setTotalHour(form.getTotalHour());
+			User user = new User();
+			user.setId(1L);
+			Generation generation = new Generation();
+			generation.setId(form.getGeneration());
+			course.setUpdatedBy(user);
+			for(CourseDetailsForm courseDetailsForm : form.getCourseDetails()){
+				Shift shift = new Shift();
+				shift.setId(courseDetailsForm.getShift());
+				shift.setCreatedBy(user);
+				course.getShifts().add(shift);
+				CourseDetails courseDetails = new CourseDetails();
+				courseDetails.setShift(shift);
+				courseDetails.setCreatedBy(user);
+				courseDetails.setStartDate(courseDetailsForm.getStartDate());
+				course.getCourseDetails().add(courseDetails);
+			}
+			course.setGeneration(generation);
+			
+			course = courseService.updateCourse(course);
+			if(course!=null){
+				response.setCode(StatusCode.SUCCESS);
+				response.setData(course);
+			}else{
+				response.setCode(StatusCode.NOT_SUCCESS);
+			}
+			return response;
+		}
 
 	//TODO: TO DELETE THE COURSE BY ID
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
