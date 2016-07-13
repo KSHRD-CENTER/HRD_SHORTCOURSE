@@ -391,12 +391,6 @@ $(function() {
 		});
 	});
 	
-	/*$("#btnRegisterNewCourse").click(function(){
-		$("#TITLE").html("REGISTER NEW COURSE");
-		$("#btnSaveChange").removeAttr("data-id");
-		$("#modalAddNewCourse").modal("show");
-	});*/
-	
 	$(document).on('click', "#btnRemoveShift", function(){
 		$(this).parents("tr").remove();
 	});
