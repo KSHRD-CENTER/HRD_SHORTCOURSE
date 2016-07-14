@@ -28,6 +28,7 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 		System.out.println("COUNT ==============>"+count(filter));
 		String sql = "SELECT A.id " 
 				   + "	   , A.name "
+				   + "	   , A.status "
 				   + "	   , B.id AS course_id"
 				   + "	   , B.name AS course_type " 
 				   + "FROM generations A " 
@@ -51,6 +52,7 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 				Generation generation = new Generation();
 				generation.setId(rs.getLong("id"));
 				generation.setName(rs.getString("name"));
+				generation.setStatus(rs.getString("status"));
 				CourseType courseType = new CourseType();
 				courseType.setId(rs.getLong("course_id"));
 				courseType.setName(rs.getString("course_type"));
