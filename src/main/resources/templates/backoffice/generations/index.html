@@ -120,6 +120,7 @@
 											<tr>
 												<th style="text-align:center;">No</th>
 												<th>Generation</th>
+												<th>Status</th>
 												<th>Course Type</th>
 												<th>Action</th>
 										  	</tr>
@@ -194,6 +195,12 @@
 			<tr data-id="{{= ID}}">
 				<td>{{= NO}}</td>
 				<td><strong>{{= NAME}}</strong></td>
+				<td>
+					{{if STATUS=='1'}}
+						<span class="label label-success label-as-badge">ACTIVE</span>
+					{{else}}
+						<span class="label label-success label-as-badge">INACTIVE</span>
+					{{/if}}
 				<td>{{= COURSE_TYPE.NAME}}</td>
 				<td>
 					<input type="button" class="btn btn-success btn-ripple" id="btnEdit" value="Edit"/>

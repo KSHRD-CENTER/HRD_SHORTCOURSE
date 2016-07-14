@@ -16,6 +16,16 @@ public interface CourseService {
 	//TODO: TO FIND ALL COURSES BY GENERATION ID
 	public List<Course> findAllCoursesByGenerationId(Long generationId) throws BusinessException ;
 	
+	//TODO: TO ADD NEW COURSE
 	public Long addNewCourse(Course course) throws BusinessException;
+	
+	//TODO: TO FIND COURSE BY ID
+	public Course findCourseById(Long id) throws BusinessException;
+	
+	//TODO: TO UPDATE COURSE BY ID
+	public Course updateCourse(Course course) throws BusinessException;
+	
+	//TODO: TO DELETE THE COURSE BY ID
+	public boolean deleteCourse(Long id) throws BusinessException;
 
 }

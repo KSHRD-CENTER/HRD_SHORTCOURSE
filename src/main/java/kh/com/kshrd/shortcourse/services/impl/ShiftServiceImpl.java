@@ -36,6 +36,54 @@ public class ShiftServiceImpl implements ShiftService {
 			throw new BusinessException();
 		}
 	}
-	
-	
+
+	@Override
+	public Shift findShiftById(int id) throws BusinessException{
+		try{
+			return shiftRepository.findOne(id);
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
+	@Override
+	public Long addShift(Shift shift) throws BusinessException{
+		try{
+			Long shiftId = shiftRepository.save(shift);
+			if(shiftId != null)
+				return shiftId;
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+		return null;
+	}
+
+	@Override
+	public Long updateShift(Shift shift) throws BusinessException{
+		try{
+			Long shiftId = shiftRepository.update(shift);
+			if(shiftId != null){
+				return shiftId;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean deleteShift(int id) throws BusinessException{
+		try{
+			if(shiftRepository.delete(id))
+				return true;
+			else
+				return false;
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
 }

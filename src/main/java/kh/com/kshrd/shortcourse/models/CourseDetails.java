@@ -2,6 +2,7 @@ package kh.com.kshrd.shortcourse.models;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CourseDetails implements Serializable{
@@ -11,25 +12,34 @@ public class CourseDetails implements Serializable{
 	 */
 	private static final long serialVersionUID = 5120363671697847408L;
 	
-	@JsonProperty("COURSE")
+	@JsonProperty("ID")
+	private Long id;
+
+	//@JsonProperty("COURSE")
+	@JsonIgnore
 	private Course course;
 	
 	@JsonProperty("SHIFT")
 	private Shift shift;
 	
-	@JsonProperty("CREATED_DATE")
+	//@JsonProperty("CREATED_DATE")
+	@JsonIgnore
 	private String createdDate;
 	
-	@JsonProperty("CREATED_BY")
+	//@JsonProperty("CREATED_BY")
+	@JsonIgnore
 	private User createdBy;
 	
-	@JsonProperty("UPDATED_DATE")
+	//@JsonProperty("UPDATED_DATE")
+	@JsonIgnore
 	private String updatedDate;
 	
-	@JsonProperty("UPDATED_BY")
+	//@JsonProperty("UPDATED_BY")
+	@JsonIgnore
 	private User updatedBy;
 	
-	@JsonProperty("STATUS")
+	//@JsonProperty("STATUS")
+	@JsonIgnore
 	private String status;
 	
 	@JsonProperty("START_DATE")
@@ -83,11 +93,16 @@ public class CourseDetails implements Serializable{
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	@Override
 	public String toString() {
-		return "CourseDetails [course=" + course + ", shift=" + shift + ", createdDate=" + createdDate + ", createdBy="
-				+ createdBy + ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy + ", status=" + status
-				+ ", startDate=" + startDate + "]";
+		return "CourseDetails [id=" + id + ", course=" + course + ", shift=" + shift + ", createdDate=" + createdDate
+				+ ", createdBy=" + createdBy + ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy + ", status="
+				+ status + ", startDate=" + startDate + "]";
 	}
-	
 }

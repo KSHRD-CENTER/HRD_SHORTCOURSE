@@ -25,5 +25,7 @@ public class RestShiftController {
 		response.setData(shiftService.findAllShifts());
 		return response;
 	}
+	
+	
 
 }

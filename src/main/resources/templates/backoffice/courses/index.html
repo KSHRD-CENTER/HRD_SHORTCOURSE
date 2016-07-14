@@ -77,7 +77,7 @@
 						<div class="panel indigo">
 							<div class="panel-heading">
 								<div class="panel-title"><h4>ALL COURSES</h4>
-									<input type="button" class="btn btn-red btn-ripple pull-right" value="REGISTER NEW COURSE" data-target="#modalAddNewCourse" data-toggle="modal" id="btnRegisterNewCourse"/>
+									<input type="button" class="btn btn-red btn-ripple pull-right" value="REGISTER NEW COURSE" id="btnRegisterNewCourse"/>
 								</div>
 							</div><!--.panel-heading-->
 							<div class="panel-body" style="margin-bottom:50px;">
@@ -262,17 +262,17 @@
 		</div><!--.layer-container-->
 		
 		<script id="COURSE_TEMPLATE" type="text/x-jquery-tmpl">
-	        <tr>
+	        <tr data-id="{{= ID}}">
 				<td>{{= NO}}</td>
 				<td><strong>{{= NAME}}</strong></td>
 				<td><span class="badge badge-primary">$ {{= COST}}</span></td>
 				<td><span class="badge badge-danger">{{= DISCOUNT}} %</span></td>
 				<td><span class="badge badge-danger">$ {{= PAID_AMOUNT}} </span></td>
 				<td><span class="badge badge-success">{{= GENERATION.NAME}}</span></td>
-				<td>{{= SHIFT}}</td>
+				<td>{{html SHIFT}}</td>
 				<td>
-					<input type="button" class="btn btn-success btn-ripple" value="VIEW"/>
-					<input type="button" class="btn btn-success btn-ripple" value="EDIT"/>
+					<input type="button" class="btn btn-success btn-ripple" value="VIEW/EDIT" id="btnEdit"/>
+					<input type="button" class="btn btn-danger btn-ripple" value="DELETE" id="btnDelete"/>
 				</td>
 			</tr>
     	</script>
@@ -286,7 +286,7 @@
 			<div class="modal-dialog modal-lg" style="width:100%;">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title">REGISTER NEW COURSE</h4>
+						<h4 class="modal-title" id="TITLE">REGISTER NEW COURSE</h4>
 					</div>
 					<div class="modal-body">
 						<div class="panel-body">
@@ -448,15 +448,16 @@
 				</div><!--.modal-content-->
 			</div><!--.modal-dialog-->
 		</div>
+		<!-- END REGISTER NEW COURSE MODAL -->
 		<button id="ALERT" data-toastr-type="success" class="btn btn-default toastr-notify" data-toastr-position="toast-top-full-width" data-toastr-title="MESSAGE" data-toastr-notification="YOU HAVE BEEN FIND SUCCESSFULLY..." style="display:none;"></button>
 	</div>
-	<!-- END REGISTER NEW COURSE MODAL -->
 	<th:block layout:fragment="backoffice/javascript">
 		<!-- BEGIN PLUGINS AREA -->
 		<script th:src="@{/static/assets/globals/plugins/pnikolov-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js}"></script>
 		<script th:src="@{/static/assets/globals/plugins/minicolors/jquery.minicolors.min.js}"></script>
 		<script th:src="@{/static/assets/globals/plugins/bootstrap-daterangepicker/daterangepicker.js}"></script>
 		<script th:src="@{/static/assets/globals/plugins/clockface/js/clockface.js}"></script>
+		<script src="/static/assets/globals/plugins/clockface/js/clockface.js"></script>
 		<!-- END PLUGINS AREA -->
 	
 		<!-- PLUGINS INITIALIZATION AND SETTINGS -->

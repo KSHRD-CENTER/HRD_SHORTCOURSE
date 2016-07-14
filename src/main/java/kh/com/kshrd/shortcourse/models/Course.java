@@ -53,7 +53,7 @@ public class Course implements Serializable{
 	@JsonProperty("TOTAL_HOUR")
 	private Integer totalHour;
 	
-	@JsonIgnore
+	@JsonProperty("COURSE_DETAILS")
 	private List<CourseDetails> courseDetails = new ArrayList<CourseDetails>();
 	
 	@JsonIgnore

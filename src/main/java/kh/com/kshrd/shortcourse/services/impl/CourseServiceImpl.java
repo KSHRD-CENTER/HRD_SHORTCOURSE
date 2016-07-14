@@ -57,8 +57,34 @@ public class CourseServiceImpl implements CourseService {
 			throw new BusinessException();
 		}
 	}
-	
-	
-	
 
+	@Override
+	public Course findCourseById(Long id) throws BusinessException {
+		try{
+			return courseRepository.findOne(id);
+		} catch (SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
+	@Override
+	public Course updateCourse(Course course) throws BusinessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deleteCourse(Long id) throws BusinessException  {
+		try{
+			if(courseRepository.delete(id) != null){
+				return true;
+			}
+		} catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+		return false;
+	}
+	
 }
