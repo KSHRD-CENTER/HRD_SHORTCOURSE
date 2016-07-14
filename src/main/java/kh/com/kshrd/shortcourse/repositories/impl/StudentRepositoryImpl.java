@@ -54,9 +54,9 @@ public class StudentRepositoryImpl implements StudentRepository{
 						 "		 WHERE student_details_id = B.student_details_id " +
 						 "	 	 AND status='1') AS paid_amount, " +
 						 "	 	 B.student_details_id, " +
-						 "	 B.status " + 
+						 "	 	 B.status " + 
 						 "FROM students A " +
-						 "LEFT JOIN student_details B ON A.id = B.student_id AND B.status = '1' " + 
+						 "LEFT JOIN student_details B ON A.id = B.student_id " + 
 						 "LEFT JOIN shifts C ON B.shift = C.id AND C.status = '1' " +
 						 "LEFT JOIN courses D ON B.course_id = D.id AND D.status = '1' " +
 						 "LEFT JOIN generations E ON D.generation = E.id AND E.status = '1' " +
@@ -64,7 +64,8 @@ public class StudentRepositoryImpl implements StudentRepository{
 						 "AND E.id::TEXT LIKE ? " +
 						 "AND C.id::TEXT LIKE ? " +
 						 "AND D.id::TEXT LIKE ? " +
-						 "LIMIT ?" +
+						 "ORDER BY 9 DESC " +
+						 "LIMIT ? " +
 						 "OFFSET ?"; 
 			return jdbcTemplate.query(
 					sql,

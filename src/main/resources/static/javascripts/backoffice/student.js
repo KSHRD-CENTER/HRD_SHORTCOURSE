@@ -325,6 +325,7 @@ $(function() {
 	
 	$(document).on('click', "#btnPayment", function(){
 		var id = $(this).parents("tr").data("id");
+		$("#txtPaymentAmount").val("0")
 		$("#btnSaveNewPayment").data("id", id);
 		student.findAllPaymentHistories(id, function(response){
 			$.each(response.DATA, function(key,value){
@@ -376,7 +377,7 @@ $(function() {
 		});
 	});
 	
-	//TODO: TO SEARCHING 
+	//TODO: TO SEARCH WHEN CLICK ON THE BUTTON SEARCH 
 	$("#btnSearch").click(function(){
 		checkPagination = true;
 		currentPage = 1;

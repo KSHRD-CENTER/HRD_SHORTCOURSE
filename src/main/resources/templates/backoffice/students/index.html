@@ -118,11 +118,11 @@
 											<option value="1">Mon-Fri (06:00PM-08:00PM)</option>
 											<option value="2">Sat-Sun (08:00AM-11:00AM)</option>
 										</select>
-										<select class="selectpicker" style="display: none;" id="SELECT_PAYMENT">
+										<!-- <select class="selectpicker" style="display: none;" id="SELECT_PAYMENT">
 											<option value=''>All</option>
 											<option value="1">Paid</option>
 											<option value="2">Not Paid All</option>
-										</select>
+										</select> -->
 									</div>
 									<div class="col-md-4">
 										<div class="inputer col-md-8">
@@ -150,6 +150,7 @@
 												<th>Price</th>
 												<th>Paid</th>
 												<th>Registered Date</th>
+												<th>Status</th>
 												<th>Action</th>
 										  	</tr>
 										</thead>
@@ -227,6 +228,17 @@
 				<td><span class="badge badge-success">$ {{= PAID_AMOUNT}}</span></td>
 				<td>{{= REGISTERED_DATE}}</td>
 				<td>
+					{{if STATUS=='1'}}
+						<span class="label label-success label-as-badge">ACTIVE</span>
+					{{else STATUS=='2'}}
+						<span class="label label-warning label-as-badge">INACTIVE</span>
+					{{else STATUS=='3'}}
+						<span class="label label-info label-as-badge">REGISTERED</span>
+					{{else STATUS=='0'}}
+						<span class="label label-danger label-as-badge">DELETED</span>
+					{{/if}}
+				</td>
+				<td>
 					<input type="button" class="btn btn-success btn-ripple" id="btnPayment" value="PAYMENT"/>
 				</td>
 			</tr>
@@ -292,8 +304,8 @@
 										<div class="col-md-9">
 											<select class="selectpicker" style="display: none;" id="SELECT_GENDER">
 												<option>Choose Gender</option>
-												<option value="1">Male</option>
-												<option value="2">Female</option>
+												<option value="M">Male</option>
+												<option value="F">Female</option>
 											</select>
 										</div>
 									</div><!--.form-group-->
@@ -426,7 +438,7 @@
 													<span class="input-group-addon">$</span>
 													<div class="inputer">
 														<div class="input-wrapper">
-															<input type="number" class="form-control" placeholder="Paid" id="txtPaid">
+															<input type="number" class="form-control" placeholder="Paid" id="txtPaid" value='0'>
 														</div>
 													</div>
 												</div>
