@@ -88,7 +88,7 @@
 						<div class="panel indigo">
 							<div class="panel-heading">
 								<div class="panel-title"><h4>ALL SHIFTS</h4>
-									<input type="button" class="btn btn-red btn-ripple pull-right" value="REGISTER NEW SHIFT" data-target="#modalAddNewGeneration" data-toggle="modal"/>
+									<input type="button" class="btn btn-red btn-ripple pull-right" id="btnRegister" value="REGISTER NEW SHIFT" data-target="#modalAddNewShift" data-toggle="modal"/>
 								</div>
 							</div><!--.panel-heading-->
 							<div class="panel-body">
@@ -125,6 +125,7 @@
 											<tr>
 												<th style="text-align:center;">No</th>
 												<th>Shift</th>
+												<th>Status</th>
 												<th>Action</th>
 										  	</tr>
 										</thead>
@@ -202,7 +203,15 @@
 				<td>{{= NO}}</td>
 				<td><strong>{{= NAME}}</strong></td>
 				<td>
+					{{if STATUS=='1'}}
+						<span class="label label-success label-as-badge">ACTIVE</span>
+					{{else}}
+						<span class="label label-success label-as-badge">INACTIVE</span>
+					{{/if}}
+				</td>
+				<td>
 					<input type="button" class="btn btn-success btn-ripple" id="btnEdit" value="Edit"/>
+					<input type="button" class="btn btn-danger btn-ripple" id="btnDelete" value="Delete"/>
 				</td>
 			</tr>
 		</script>
@@ -210,6 +219,75 @@
 		<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
 			<option value="{{= ID}}">{{= NAME}}</option>
 		</script>
+		<!-- BEGIN ADD NEW SHIFT MODAL -->
+		<div class="modal fade full-height in" id="modalAddNewShift" tabindex="-2" role="dialog" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog modal-lg" style="width:100%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">REGISTER NEW GENERATION</h4>
+					</div>
+					<div class="modal-body">
+						<div class="panel-body">
+							<form action="#" class="form-horizontal">
+								<div class="form-content">
+									<div class="form-group">
+										<label class="control-label col-md-7" style="color:red">Format of shift: Sat-Sun (08:00AM-11:00AM) / Mon-Fri (02:00PM-4:00PM)</label>
+									</div><!--.form-group-->
+									<div class="form-group">
+										<label class="control-label col-md-3">Name</label>
+										<div class="col-md-9">
+											<div class="inputer">
+												<div class="input-wrapper">
+													<input type="text" name="" class="form-control" id="txtName">
+												</div>
+											</div>
+										</div>
+									</div><!--.form-group-->
+									
+									<div class="form-group">
+										<label class="control-label col-md-3">Status</label>
+										<div class="col-md-9">
+											<div class="radioer">
+												<input type="radio" name="radioStatus" id="radioColorActive" value="1" checked="checked">
+												<label for="radioColor1a">Active</label>
+											</div>
+											<div class="radioer">
+												<input type="radio" name="radioStatus" id="radioColorInactive" value="0">
+												<label for="radioColor1b">Inactive</label>
+											</div>
+										</div>
+									</div><!--.form-group-->
+								</div><!--.form-content-->
+							</form>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-indigo btn-ripple" id="btnSave">Save changes</button>
+						<button type="button" class="btn btn-indigo btn-ripple" id="btnSaveUpdate">Save changes</button>
+					</div>
+				</div><!--.modal-content-->
+			</div><!--.modal-dialog-->
+		</div>
+		<!-- END ADD NEW SHIFT MODAL -->
+		<!-- BEGIN ALERT MODAL -->
+		<div class="modal fade in" id="modalMessage" tabindex="-2" role="dialog" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog modal-md">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="TITLE">MESSAGE</h4>
+					</div>
+					<div class="modal-body">
+						<h6 id="MESSAGE"><strong>ARE YOU SURE TO DELETE THIS RECORD?</strong></h6>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">NO</button>
+						<button type="button" class="btn btn-indigo btn-ripple" id="btnOk">OK</button>
+					</div>
+				</div><!--.modal-content-->
+			</div><!--.modal-dialog-->
+		</div>
+		<!-- END ALERT MODAL -->
 	</div>
 	<!-- END REGISTER NEW COURSE MODAL -->
 	<th:block layout:fragment="backoffice/javascript">

@@ -50,9 +50,29 @@ shift.addShift = function(shift, callback){
 	});
 };
 
+shift.getShift = function(id, callback){
+	$.ajax({ 
+	    url: "/v1/api/admin/shifts/"+id,
+	    type: 'GET',
+	    dataType: 'JSON', 
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+    		if(callback){
+    			callback(response);
+    		}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});
+}
+
 shift.deleteShift = function(id, callback){
 	$.ajax({ 
-	    url: "/v1/api/admin/shifts", 
+	    url: "/v1/api/admin/shifts/"+id, 
 	    type: 'DELETE', 
 	    dataType: 'JSON', 
 	    beforeSend: function(xhr) {

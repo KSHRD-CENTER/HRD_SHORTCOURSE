@@ -92,7 +92,6 @@ generation.deleteGeneration = function(id, callback){
 }
 
 generation.getGeneration = function(id, callback){
-	console.log(id);
 	$.ajax({ 
 	    url: "/v1/api/admin/generations/"+id,
 	    type: 'GET',

@@ -30,7 +30,7 @@ public class RestShiftController {
 	public ResponseList<Shift> findAllCourses() throws BusinessException{
 		ResponseList<Shift> response = new ResponseList<Shift>();
 		response.setCode(StatusCode.SUCCESS);
-		response.setData(shiftService.findAllShifts());
+		response.setData(shiftService.findAllShiftItems());
 		return response;
 	}
 	

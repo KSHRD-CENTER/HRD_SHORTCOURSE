@@ -6,7 +6,8 @@ import java.util.List;
 import kh.com.kshrd.shortcourse.models.Shift;
 
 public interface ShiftRepository {
-	public List<Shift> findAll() throws SQLException;
+	public List<Shift> findAllItems() throws SQLException;
+	public List<Shift> findAll(int courseId, int generationId) throws SQLException;
 	public List<Shift> findAllByCourseId(Long courseId) throws SQLException;
 	public Shift findOne(int id) throws SQLException;
 	public Long save(Shift shift) throws SQLException;

@@ -150,8 +150,6 @@ $(function() {
 	$("#btnOk").click(function(){
 		generation.deleteGeneration(id, function(response){
 			if(response.CODE=="0000"){
-				$("#txtName").val("");
-				$("#txtDefault").val("");
 				$("#modalAddNewGeneration").attr("data-toastr-notification", response.MESSAGE);
 				$("#modalAddNewGeneration").trigger("click");
 				checkPagination = true;

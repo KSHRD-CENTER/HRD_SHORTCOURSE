@@ -18,9 +18,9 @@ public class ShiftServiceImpl implements ShiftService {
 	private ShiftRepository shiftRepository;
 	
 	@Override
-	public List<Shift> findAllShifts() throws BusinessException {
+	public List<Shift> findAllShiftItems() throws BusinessException {
 		try {
-			return shiftRepository.findAll();
+			return shiftRepository.findAllItems();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new BusinessException();
@@ -85,5 +85,11 @@ public class ShiftServiceImpl implements ShiftService {
 			e.printStackTrace();
 			throw new BusinessException();
 		}
+	}
+
+	@Override
+	public List<Shift> findAllShifts(int courseId, int generationId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

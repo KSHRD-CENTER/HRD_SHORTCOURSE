@@ -19,9 +19,9 @@ public class ShiftRepositoryImpl implements ShiftRepository{
 	private JdbcTemplate jdbcTemplate;
 	
 	@Override
-	public List<Shift> findAll() throws SQLException {
+	public List<Shift> findAllItems() throws SQLException {
 		String sql = "SELECT id " 
-				   + "	   , name " 
+				   + "	   , name "
 				   + "FROM shifts " 
 				   + "WHERE status = '1'";
 		return jdbcTemplate.query(sql, new RowMapper<Shift>() {
@@ -161,5 +161,11 @@ public class ShiftRepositoryImpl implements ShiftRepository{
 					return shift;
 				}
 			});
+	}
+
+	@Override
+	public List<Shift> findAll(int courseId, int generationId) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
