@@ -28,3 +28,65 @@ shift.findAll = function(callback){
 	    }
 	});			
 };
+
+shift.addShift = function(shift, callback){
+	$.ajax({ 
+	    url: "/v1/api/admin/shifts", 
+	    type: 'POST', 
+	    dataType: 'JSON', 
+	    data : JSON.stringify(shift),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+    		if(callback){
+    			callback(response);
+    		}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});
+};
+
+shift.deleteShift = function(id, callback){
+	$.ajax({ 
+	    url: "/v1/api/admin/shifts", 
+	    type: 'DELETE', 
+	    dataType: 'JSON', 
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+    		if(callback){
+    			callback(response);
+    		}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});
+};
+
+shift.updateShift = function(shift, callback){
+	$.ajax({ 
+	    url: "/v1/api/admin/shifts", 
+	    type: 'PUT', 
+	    dataType: 'JSON', 
+	    data : JSON.stringify(shift),
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+    		if(callback){
+    			callback(response);
+    		}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});
+};

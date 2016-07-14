@@ -67,7 +67,7 @@ public class ShiftRepositoryImpl implements ShiftRepository{
 						+ "						  name, "
 						+ "						  created_date, "
 						+ "						  status, "
-						+ "						  created_by, "
+						+ "						  created_by) "
 						+ "VALUES(? ,? ,TO_CHAR(NOW(),'YYYYMMDDHH24MISS') ,?, ?) ";
 			int result = jdbcTemplate.update(
 					sql,
@@ -132,11 +132,11 @@ public class ShiftRepositoryImpl implements ShiftRepository{
 	@Override
 	public Shift findOne(int id) {
 		String sql = "SELECT S.id, "
-				+ "		 S.name AS g_name, "
+				+ "		 S.name AS s_name, "
 				+ "		 S.status, "
 				+ "		 S.created_date,"
 				+ "		 U.id AS u_id, "
-				+ "		 U.name AS u_name "
+				+ "		 U.email AS u_email "
 				+ "FROM shifts S "
 				+ "LEFT JOIN users U "
 				+ "ON S.created_by = U.id "
@@ -152,8 +152,9 @@ public class ShiftRepositoryImpl implements ShiftRepository{
 					Shift shift = new Shift();
 					User user = new User();
 					shift.setId(rs.getLong("id"));
-					shift.setName(rs.getString("name"));
-					user.setId(rs.getLong("U_id"));
+					shift.setName(rs.getString("s_name"));
+					user.setId(rs.getLong("u_id"));
+					user.setEmail(rs.getString("u_email"));
 					shift.setCreatedBy(user);
 					shift.setStatus(rs.getString("status"));
 					shift.setCreatedDate(rs.getString("created_date"));
