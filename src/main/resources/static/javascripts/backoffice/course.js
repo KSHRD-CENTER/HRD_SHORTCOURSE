@@ -38,6 +38,7 @@ $(function() {
 		    		if(response.DATA.length > 0){
 		    			$.each(response.DATA, function(key,value){
 		    				response.DATA[key]["NO"] = (key+1)+((response.PAGINATION.PAGE-1) * response.PAGINATION.LIMIT);
+		    				response.DATA[key]["SHIFT"] = response.DATA[key]["SHIFT"].replace(",", "<br />");;
 						});
 		    			$("#COURSE_TEMPLATE").tmpl(response.DATA).appendTo("tbody#COURSE");
 		    			if(checkPagination){
@@ -54,6 +55,27 @@ $(function() {
 		        console.log("error: "+data+" status: "+status+" err:"+err);
 		    }
 		});			
+	};
+	
+	//TODO: TO FIND COURSE BY ID
+	course.findCourseById = function(id, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/courses/"+id, 
+		    type: 'GET', 
+		    dataType: 'JSON',
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});
 	};
 	
 	//TODO: TO REGISTER A NEW COURSE
@@ -171,7 +193,7 @@ $(function() {
 	});
 	
 	//TODO: LOADING THE DATA
-	course.findAll();ge
+	course.findAll();
 	
 	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
 	$("#SELECT_PER_PAGE").change(function(){
@@ -263,6 +285,31 @@ $(function() {
 				//$("#btnClose").trigger('click');
 			}
 		});
+	});
+	
+	//TODO: EVENT WHEN EDIT
+	$(document).on('click', '#btnEdit', function(){
+		$("#TITLE").html("UPDATE EXISTING COURSE");
+		var id = $(this).parents("tr").data("id");
+		course.findCourseById(id, function(response){
+			console.log(response);
+			if(response.CODE=="0000"){
+				$("#txtCourseName").val(response.DATA.NAME);
+				$("#txtDescription").val(response.DATA.DESCRIPTION);
+				$("#txtCostPrice").val(response.DATA.COST);
+				$("#txtDiscount").val(response.DATA.DISCOUNT);
+				$("#SELECT_REGISTER_COURSETYPE").val(response.DATA.GENERATION.COURSE_TYPE.ID);
+				$("#txtTotalHour").val(response.DATA.TOTAL_HOUR);
+				$("#SELECT_REGISTER_GENERATION").val(response.DATA.GENERATION.ID);
+				$(".selectpicker").selectpicker('refresh');
+				$("#modalAddNewCourse").modal("show");
+			}
+		});
+	});
+	
+	$("#btnRegisterNewCourse").click(function(){
+		$("#TITLE").html("REGISTER NEW COURSE");
+		$("#modalAddNewCourse").modal("show");
 	});
 	
 });

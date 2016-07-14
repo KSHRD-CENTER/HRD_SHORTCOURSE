@@ -20,6 +20,7 @@ import kh.com.kshrd.shortcourse.models.CourseDetails;
 import kh.com.kshrd.shortcourse.models.Generation;
 import kh.com.kshrd.shortcourse.models.Response;
 import kh.com.kshrd.shortcourse.models.ResponseList;
+import kh.com.kshrd.shortcourse.models.ResponseRecord;
 import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.models.StatusCode;
 import kh.com.kshrd.shortcourse.models.User;
@@ -37,6 +38,7 @@ public class RestCourseController {
 	@Autowired
 	private ShiftService shiftService;
 	
+	//TODO: TO ADD THE IMPLICIT PARAM IN THE SWAGGER
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "course", dataType = "string", paramType = "query", defaultValue="",
 	            value = "Course Title"),
@@ -45,6 +47,7 @@ public class RestCourseController {
 	    @ApiImplicitParam(name = "limit", dataType = "integer", paramType = "query", defaultValue="15",
 	            value = "Number of records per page."),
 	})
+	//TODO: TO FIND ALL COURSES WITH FILTERING AND PAGINATION
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseList<Course> findAllCourses(@ApiIgnore CourseFilter filter, @ApiIgnore Pagination pagination) throws BusinessException{
 		System.out.println("FILTERING ==> " + filter);
@@ -55,6 +58,7 @@ public class RestCourseController {
 		return response;
 	}
 	
+	//TODO: TO REGISTER A NEW COURSE
 	@RequestMapping(method = RequestMethod.POST)
 	public Response addNewCourse(@RequestBody CourseForm.RegisterCourseForm form) throws BusinessException{
 		
@@ -92,11 +96,38 @@ public class RestCourseController {
 		return response;
 	}
 	
+	//TODO: TO FIND ALL SHIFTS BY COURSE ID
 	@RequestMapping(value="/{id}/shifts", method = RequestMethod.GET)
 	public ResponseList<Shift> findAllCourses(@PathVariable("id") Long courseId) throws BusinessException{
 		ResponseList<Shift> response = new ResponseList<Shift>();
 		response.setCode(StatusCode.SUCCESS);
 		response.setData(shiftService.findAllShiftsByCourseId(courseId));
+		return response;
+	}
+	
+	//TODO: TO FIND COURSE BY ID
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	public ResponseRecord<Course> findCourseById(@PathVariable("id") Long id) throws BusinessException{
+		ResponseRecord<Course> response = new ResponseRecord<Course>();
+		Course course = courseService.findCourseById(id);
+		if(course!=null){
+			response.setCode(StatusCode.SUCCESS);
+			response.setData(course);
+		}else{
+			response.setCode(StatusCode.NOT_SUCCESS);
+		}
+		return response;
+	}
+
+	//TODO: TO DELETE THE COURSE BY ID
+	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	public Response deleteCourse(@PathVariable("id") Long id) throws BusinessException{
+		Response response = new Response();
+		if(courseService.deleteCourse(id)){
+			response.setCode(StatusCode.SUCCESS);			
+		}else{
+			response.setCode(StatusCode.NOT_SUCCESS);
+		}
 		return response;
 	}
 

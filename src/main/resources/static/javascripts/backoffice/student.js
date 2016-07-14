@@ -325,7 +325,7 @@ $(function() {
 			});
 			$("#TABLE_PAYMENT_HISTORY tbody").html('');
 			$("#PAYMENT_HISTORY_TEMPLATE").tmpl(response.DATA).appendTo("#TABLE_PAYMENT_HISTORY tbody");
-			$("#modalPaymentHistories").show();
+			$("#modalPaymentHistories").modal("show");
 		});
 	});
 	
@@ -337,7 +337,7 @@ $(function() {
 	});
 	
 	$(document).on('click', "#btnClosePaymentHistories", function(){
-		$("#modalPaymentHistories").hide();
+		$("#modalPaymentHistories").modal("hide");
 	});
 	
 	$("#btnSaveNewPayment").click(function(){

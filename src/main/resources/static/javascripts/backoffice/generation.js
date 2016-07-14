@@ -9,6 +9,27 @@ $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
 });
 
 //TODO: TO FIND ALL GENERATION
+generation.findAll = function(fnCallback){
+	$.ajax({ 
+	    url: "/v1/api/admin/generations", 
+	    type: 'GET', 
+	    dataType: 'JSON', 
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+	    	if(fnCallback){
+	    		fnCallback(response);
+	    	}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});			
+};
+
+//TODO: TO FIND ALL GENERATION
 generation.findAllCoursesByGenerationId = function(id, callback){
 	$.ajax({ 
 	    url: "/v1/api/admin/generations/"+ id + "/courses", 

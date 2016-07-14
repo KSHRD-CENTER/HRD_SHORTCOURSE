@@ -14,7 +14,9 @@ import org.springframework.stereotype.Repository;
 import kh.com.kshrd.shortcourse.filtering.CourseFilter;
 import kh.com.kshrd.shortcourse.models.Course;
 import kh.com.kshrd.shortcourse.models.CourseDetails;
+import kh.com.kshrd.shortcourse.models.CourseType;
 import kh.com.kshrd.shortcourse.models.Generation;
+import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.repositories.CourseRepository;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
@@ -28,7 +30,7 @@ public class CourseRepositoryImpl implements CourseRepository{
 	public List<Course> findAll(CourseFilter filter, Pagination pagination) throws SQLException {
 		pagination.setTotalCount(this.count(filter));
 		String sql = "SELECT DISTINCT A.id " 
-				   + " 	   , (SELECT STRING_AGG(BB.name,',') "   
+				   + " 	   , (SELECT STRING_AGG(CONCAT('(START DATE: ',AA.start_date, ') SHIFT: ' ,BB.name),',') "   
 				   + "		FROM course_details AA " 
 				   + "		INNER JOIN shifts BB ON AA.shift = BB.id " 
 				   + "		WHERE AA.course_id = A.id "  
@@ -60,7 +62,7 @@ public class CourseRepositoryImpl implements CourseRepository{
 				   + "OFFSET ? ";
 		
 		System.out.println(sql);
-		return jdbcTemplate.query(
+		List<Course> courses = jdbcTemplate.query(
 				sql,
 				new Object[]{
 						"%" + filter.getCourse() + "%",
@@ -93,6 +95,11 @@ public class CourseRepositoryImpl implements CourseRepository{
 				return course;
 			}
 		});
+		
+		for(Course course : courses){
+			course.setCourseDetails(this.findAllCourseDetailsByCourseId(course.getId()));
+		}
+		return courses;
 	}
 	
 	@Override
@@ -233,6 +240,130 @@ public class CourseRepositoryImpl implements CourseRepository{
 			ex.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public Long update(Course course) throws SQLException {
+		return null;
+	}
+
+	@Override
+	public Long delete(Long id) throws SQLException {
+		String sql = "UPDATE courses "
+				   + "SET status = '0' "
+				   + "WHERE id = ? ";
+		
+		int result = jdbcTemplate.update(
+				sql,
+				new Object[]{
+					id, 
+				});
+		if(result>0){
+			System.out.println(id);
+			return id;
+		}
+		return null;
+	}
+
+	@Override
+	public Course findOne(Long id) throws SQLException {
+		String sql = "SELECT DISTINCT A.id " 
+				   + " 	   , (SELECT STRING_AGG(CONCAT('(START DATE: ',AA.start_date, ') SHIFT: ' ,BB.name),',') "   
+				   + "		FROM course_details AA " 
+				   + "		INNER JOIN shifts BB ON AA.shift = BB.id " 
+				   + "		WHERE AA.course_id = A.id "  
+				   + "		GROUP BY AA.course_id "
+				   + "	) AS shift "
+				   + "	   , A.course "
+				   + "	   , A.description "
+				   + "	   , B.id AS generation_id "
+				   + "	   , B.name "
+				   + "	   , C.id AS course_type_id "
+				   + "	   , A.created_date "
+				   + "	   , A.status "
+				   + "     , A.cost "
+				   + "     , A.discount "
+				   + "	   , A.total_hours "
+				   + "	   , (A.cost - (A.cost * A.discount / 100)) AS paid_amount "
+				   + "FROM courses A "
+				   + "LEFT JOIN generations B ON A.generation = B.id AND B.status = '1' "
+				   + "LEFT JOIN course_types C ON C.id = B.course_type AND C.status = '1' "
+				   + "LEFT JOIN users D ON A.created_by = D.id AND D.status = '1' "
+				   + "LEFT JOIN course_details E ON A.id = E.course_id AND E.status = '1' "
+				   + "LEFT JOIN shifts F ON F.id = E.shift AND F.status = '1' "
+				   + "WHERE A.id = ? "
+				   + "AND A.status = '1' ";
+		
+		System.out.println(sql);
+		Course course = jdbcTemplate.queryForObject(
+				sql,
+				new Object[]{
+					id
+				},
+				new RowMapper<Course>(){
+			@Override
+			public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Course course = new Course();
+				course.setId(rs.getLong("id"));
+				course.setCourse(rs.getString("course"));
+				course.setDescription(rs.getString("description"));
+				course.setCreatedDate(rs.getString("created_date"));
+				course.setStatus(rs.getString("status"));
+				course.setDiscount(rs.getDouble("discount"));
+				course.setCost(rs.getDouble("cost"));
+				course.setShift(rs.getString("shift"));
+				course.setPaidAmount(rs.getDouble("paid_amount"));
+				course.setTotalHour(rs.getInt("total_hours"));
+				
+				Generation generation = new Generation();
+				generation.setId(rs.getLong("generation_id"));
+				generation.setName(rs.getString("name"));
+				
+				CourseType courseType = new CourseType();
+				courseType.setId(rs.getLong("course_type_id"));
+				generation.setCourseType(courseType);
+				
+				course.setGeneration(generation);
+				return course;
+			}
+		});
+		course.setCourseDetails(this.findAllCourseDetailsByCourseId(id));
+		return course;
+	}
+
+	@Override
+	public List<CourseDetails> findAllCourseDetailsByCourseId(Long id) throws SQLException {
+		String sql = "SELECT A.course_details_id "
+				   + "     , A.course_id "
+				   + "     , A.shift "
+				   + "	   , B.name "
+				   + "     , A.start_date "
+				   + "FROM course_details A "
+				   + "LEFT JOIN shifts B ON A.shift = B.id AND B.status = '1' "
+				   + "WHERE A.course_id = ? " 
+				   + "AND A.status = '1' ";
+		
+		System.out.
+		println(sql);
+		return jdbcTemplate.query(
+				sql,
+				new Object[]{
+					id
+				},
+				new RowMapper<CourseDetails>(){
+			@Override
+			public CourseDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
+				CourseDetails courseDetails = new CourseDetails();
+				courseDetails.setId(rs.getLong("course_details_id"));
+				courseDetails.setStartDate(rs.getString("start_date"));
+				
+				Shift shift = new Shift();
+				shift.setId(rs.getLong("shift"));
+				shift.setName(rs.getString("name"));
+				courseDetails.setShift(shift);
+				return courseDetails;
+			}
+		});
 	}
 	
 }
