@@ -122,6 +122,8 @@ public class StudentRepositoryImpl implements StudentRepository{
 			throw new SQLException();
 		}
 	}
+	
+	
 
 	@Override
 	public Long count(StudentFilter filter) throws SQLException {
@@ -228,6 +230,87 @@ public class StudentRepositoryImpl implements StudentRepository{
 			ex.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public StudentDetails findOne(Long id) throws SQLException {
+		try{
+			String sql = "SELECT A.id, " +
+						 "		 A.name, " +  
+						 "		 A.gender, " + 
+						 "		 A.email, " + 
+						 "		 A.university, " +
+						 "		 A.address, " +
+						 "		 A.telephone, " +
+						 "		 E.name AS generation, " +
+						 "		 TO_CHAR(TO_TIMESTAMP(B.registered_date,'YYYYMMDDHH24MI'),'DD-Mon-YYYY HH24:MI') AS registered_date, " +
+						 "		 B.registered_by, " + 
+						 "		 (  SELECT STRING_AGG(BB.name,', ') " + 
+						 "		 	FROM student_details AA " +
+						 "		 	INNER JOIN shifts BB ON AA.shift = BB.id " + 
+						 "	 	 	WHERE AA.student_details_id = B.student_details_id" + 
+						 "	     	GROUP BY AA.student_id " + 
+						 "		 ) AS shift, " +
+						 "		 D.course, " +
+						 "		 B.cost, " +
+						 " 		 (SELECT SUM(paid_amount) " +
+						 "	 	 FROM payment_histories " +
+						 "		 WHERE student_details_id = B.student_details_id " +
+						 "	 	 AND status='1') AS paid_amount, " +
+						 "	 	 B.student_details_id, " +
+						 "	 	 B.status " + 
+						 "FROM students A " +
+						 "LEFT JOIN student_details B ON A.id = B.student_id " +
+						 "WHERE A.id = ?" ;
+			return jdbcTemplate.queryForObject(
+					sql,
+					new Object[]{
+						id
+					},
+					new RowMapper<StudentDetails>(){
+				@Override
+				public StudentDetails mapRow(ResultSet rs, int rowNum) throws SQLException {
+					StudentDetails studentDetails = new StudentDetails();
+					studentDetails.setId(rs.getLong("student_details_id"));
+					studentDetails.setCost(rs.getDouble("cost"));
+					studentDetails.setPaidAmount(rs.getDouble("paid_amount"));
+					studentDetails.setRegisteredDate(rs.getString("registered_date"));
+					
+					User user = new User();
+					user.setId(rs.getLong("registered_by"));
+					studentDetails.setRegisteredBy(user);
+					
+					Shift shift = new Shift();
+					shift.setName(rs.getString("shift"));
+					studentDetails.setShift(shift);
+					
+					Student student = new Student();
+					student.setId(rs.getLong("id"));
+					student.setName(rs.getString("name"));
+					student.setEmail(rs.getString("email"));
+					student.setGender(rs.getString("gender"));
+					student.setUniversity(rs.getLong("university"));
+					student.setTelephone(rs.getString("telephone"));
+					student.setAddress(rs.getString("address"));
+					
+					Course course = new Course();
+					course.setCourse(rs.getString("course"));
+					
+					Generation generation = new Generation();
+					generation.setName(rs.getString("generation"));
+					course.setGeneration(generation);
+					
+					studentDetails.setStudent(student);
+					studentDetails.setCourse(course);
+					studentDetails.setShift(shift);
+					studentDetails.setStatus(rs.getString("status"));
+					return studentDetails;
+				}
+			});
+		}catch(Exception ex){
+			ex.printStackTrace();
+			throw new SQLException();
+		}
 	}
 	
 }

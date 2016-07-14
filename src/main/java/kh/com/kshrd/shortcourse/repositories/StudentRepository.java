@@ -12,6 +12,8 @@ public interface StudentRepository {
 
 	public List<StudentDetails> findAll(StudentFilter filter, Pagination pagination) throws SQLException;
 	
+	public StudentDetails findOne(Long id) throws SQLException;
+	
 	public Long count(StudentFilter filter) throws SQLException;
 	
 	public Long save(Student student) throws SQLException;
