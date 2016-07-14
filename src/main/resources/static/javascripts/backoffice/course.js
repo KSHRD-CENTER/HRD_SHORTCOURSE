@@ -42,8 +42,8 @@ $(function() {
 						});
 		    			$("#COURSE_TEMPLATE").tmpl(response.DATA).appendTo("tbody#COURSE");
 		    			if(checkPagination){
-		    				course.setPagination(response.PAGINATION.TOTAL_PAGES);
 		    				checkPagination=false;
+		    				course.setPagination(response.PAGINATION.TOTAL_PAGES);
 		    			}
 		    		}else{
 		    			$("#COURSE").html("<tr style='text-align:center;'><td colspan='7'>NO CONTENT</td></tr>");
@@ -138,12 +138,14 @@ $(function() {
 	        prevClass: 'prev',
 	        lastClass: 'last',
 	        firstClass: 'first'
-	    }).on("page", function(event, page){
-	    	checkPagination = false;
-	    	currentPage = page;
-	    	course.findAll();
-	    }); 
+	    });
 	};
+	
+	$('#PAGINATION').bootpag().on("page", function(event, page){
+    	checkPagination = false;
+    	currentPage = page;
+    	course.findAll();
+    });
 	
 	//TODO: LOADING THE COURSE TYPE TO COMBO BOX
 	courseType.findAll(function(response){
@@ -197,6 +199,7 @@ $(function() {
 	
 	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
 	$("#SELECT_PER_PAGE").change(function(){
+		currentPage = 1;
 		checkPagination = true;
 		course.findAll();
 	});

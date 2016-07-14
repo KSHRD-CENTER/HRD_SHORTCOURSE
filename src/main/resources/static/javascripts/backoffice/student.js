@@ -157,12 +157,14 @@ $(function() {
 	        prevClass: 'prev',
 	        lastClass: 'last',
 	        firstClass: 'first'
-	    }).on("page", function(event, page){
-	    	checkPagination = false;
-	    	currentPage = page;
-	    	student.findAll();
 	    }); 
 	};
+	
+	$('#PAGINATION').bootpag().on("page", function(event, page){
+		checkPagination = false;
+		currentPage = page;
+		student.findAll();
+	});
 	
 	//TODO: LOADING THE COURSE TYPE TO COMBO BOX
 	courseType.findAll(function(response){
