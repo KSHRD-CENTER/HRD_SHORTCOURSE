@@ -21,8 +21,13 @@ $(function() {
 		    type: 'GET', 
 		    dataType: 'JSON', 
 		    data : {
-		    	"limit" : $("#SELECT_PER_PAGE").val(),
-		    	"page" : currentPage,
+		    	"limit" 		: $("#SELECT_PER_PAGE").val(),
+		    	"page" 			: currentPage,
+		    	"studentName" 	: $("#txtSearch").val(),
+		    	"courseTypeId" 	: $("#SELECT_COURSETYPE").val(),
+		    	"generationId" 	: $("#SELECT_GENERATION").val(),
+		    	"courseId" 		: $("#SELECT_COURSE").val(),
+		    	"shiftId" 		: $("#SELECT_SHIFT").val()
 		    },
 		    beforeSend: function(xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -369,5 +374,12 @@ $(function() {
 				$("#ALERT").trigger("click");
 			}
 		});
+	});
+	
+	//TODO: TO SEARCHING 
+	$("#btnSearch").click(function(){
+		checkPagination = true;
+		currentPage = 1;
+		student.findAll();
 	});
 });
