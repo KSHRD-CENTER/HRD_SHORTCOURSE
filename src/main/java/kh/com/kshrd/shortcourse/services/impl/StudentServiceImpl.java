@@ -46,4 +46,16 @@ public class StudentServiceImpl implements StudentService{
 		}
 	}
 
+	@Override
+	public StudentDetails findStudent(Long id) throws BusinessException {
+		try {
+			return studentRepository.findOne(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+	
+	
+
 }

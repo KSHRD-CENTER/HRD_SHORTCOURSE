@@ -18,6 +18,7 @@ import kh.com.kshrd.shortcourse.models.Course;
 import kh.com.kshrd.shortcourse.models.PaymentHistory;
 import kh.com.kshrd.shortcourse.models.Response;
 import kh.com.kshrd.shortcourse.models.ResponseList;
+import kh.com.kshrd.shortcourse.models.ResponseRecord;
 import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.models.StatusCode;
 import kh.com.kshrd.shortcourse.models.Student;
@@ -50,6 +51,23 @@ public class RestStudentController {
 			response.setCode("0000");
 			response.setData(studentService.findAllStudents(filter, pagination));
 			response.setPagination(pagination);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	public ResponseRecord<StudentDetails> findOneStudent(@PathVariable("id") Long id){
+		ResponseRecord<StudentDetails> response = new ResponseRecord<StudentDetails>();
+		try {
+			StudentDetails studentDetails = studentService.findStudent(id);
+			if(studentDetails!=null){
+				response.setCode("0000");
+				response.setData(studentService.findStudent(id));
+			}else{
+				response.setCode("9999");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
