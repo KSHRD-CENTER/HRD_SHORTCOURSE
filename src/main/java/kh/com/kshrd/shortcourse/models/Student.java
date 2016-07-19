@@ -53,6 +53,10 @@ public class Student {
 	@JsonProperty("STATUS")
 	private String status;
 	
+	public Student(){
+		this.status = "1";
+	}
+	
 	@JsonIgnore
 	private List<StudentDetails> studentDetails = new ArrayList<StudentDetails>();
 	

@@ -154,7 +154,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 		try{
 			Long id = jdbcTemplate.queryForObject("SELECT nextval('courses_id_seq')",Long.class);
 			String sql =  "INSERT INTO students(id, name, telephone, email, gender, university, year, address, created_date, created_by, status) "
-						+ "VALUES(?, ?, ?, ?, ?, ?, ?, ? , TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), ?, '1')";
+						+ "VALUES(?, ?, ?, ?, ?, ?, ?, ? , TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), ?, ?)";
 			
 			int result = jdbcTemplate.update(
 					sql,
@@ -167,7 +167,9 @@ public class StudentRepositoryImpl implements StudentRepository{
 						student.getUniversity(),
 						student.getYear(),
 						student.getAddress(),
-						student.getCreatedBy().getId()
+						student.getCreatedBy().getId(),
+						student.getStatus()
+						
 					});
 			if(result > 0){
 				return id;
