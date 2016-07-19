@@ -9,15 +9,27 @@
 <!-- ADMIN 1 -->
 <script th:src="@{/static/assets/admin1/js/layout.js}"></script>
 
+<script th:src="@{/static/assets/globals/plugins/pnikolov-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js}"></script>
+<script th:src="@{/static/assets/globals/plugins/minicolors/jquery.minicolors.min.js}"></script>
+<script th:src="@{/static/assets/globals/plugins/bootstrap-daterangepicker/daterangepicker.js}"></script>
+<script th:src="@{/static/assets/globals/plugins/clockface/js/clockface.js}"></script>
+
 <script th:src="@{/static/javascripts/libraries/jquery.tmpl.min.js}"></script>
 <script th:src="@{/static/javascripts/libraries/jquery.bootpag.min.js}"></script>
 <script th:src="@{/static/javascripts/libraries/jquery.bpopup.min.js}"></script>
 
 <!-- BEGIN INITIALIZATION-->
 <script>
+
 $(document).ready(function () {
+	var dataTimePicker = {};
+	dataTimePicker.dateRangePickerBootstrap = function () {
+		$('.bootstrap-daterangepicker-dropdown span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+		$('.bootstrap-daterangepicker-dropdown').daterangepicker();
+	};
 	Pleasure.init();
 	Layout.init();
+	dataTimePicker.dateRangePickerBootstrap();
 });
 </script>
 <!-- END INITIALIZATION-->
