@@ -1,3 +1,4 @@
+//TODO: FOR REGISTRATION PAGE
 $(function(){
 	var registration = {};
 	var course = {};
@@ -53,12 +54,14 @@ $(function(){
 		});			
 	};
 	
+	//TODO: TO FIND ALL COURSES BY GENERATION ID
 	generation.findAllCoursesByGenerationId(2, function(response){
 		$("#SELECT_COURSE").html("<option value=''>All Courses</option>");
 		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSE");
 		$(".selectpicker").selectpicker('refresh');
 	});
 
+	//TODO: EVENT WHEN COURSE CHANGE
 	$("#SELECT_COURSE").change(function(){
 		course.findAllShiftsByCourseId($(this).val(), function(response){
 			$("#SELECT_SHIFT").html("<option value=''>All Shifts</option>");
@@ -67,6 +70,7 @@ $(function(){
 		});
 	});
 	
+	//TODO: EVENT WHEN CLICK ON THE REGISTER
 	$("#btnRegister").click(function(){
 		var courses = [];
 		courses.push({
