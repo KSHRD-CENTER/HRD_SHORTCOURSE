@@ -31,7 +31,7 @@ courseType.findAll = function(callback){
 	});			
 };
 
-//TODO: TO FIND ALL GENERATIONS BY COURSE TYPE ID
+//TODO: TO FIND ALL COURSE TYPE BY COURSE TYPE ID
 courseType.findAllGenerations = function(id, callback){
 	$.ajax({ 
 	    url: "/v1/api/admin/course-types/"+ id +"/generations", 
