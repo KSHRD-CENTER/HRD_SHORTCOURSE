@@ -1,9 +1,10 @@
 $(function() {
-	var startDate = "20160701";
-	var endDate = "20160731";
+	
+	var startDate = moment().format("YYYYMM") + "01";
+	var endDate = moment().endOf('month').format("YYYYMMDD");
 	$('.bootstrap-daterangepicker-dropdown').daterangepicker({ 
-	    "startDate": "07/01/2016",
-	    "endDate": "07/31/2016"
+	    "startDate": moment().date(1).format("MM/DD/YYYY"),
+	    "endDate": moment().endOf('month').format("MM/DD/YYYY")
 	});
 	$('.bootstrap-daterangepicker-dropdown span').html(moment("07/01/2016").format('MMMM D, YYYY') + ' - ' + moment("07/31/2016").format('MMMM D, YYYY'));
 	$('.bootstrap-daterangepicker-dropdown').on('apply.daterangepicker', function(ev, picker) {
