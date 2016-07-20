@@ -11,6 +11,7 @@ import kh.com.kshrd.shortcourse.exceptions.BusinessException;
 import kh.com.kshrd.shortcourse.models.PaymentHistory;
 import kh.com.kshrd.shortcourse.repositories.PaymentHistoryRepository;
 import kh.com.kshrd.shortcourse.services.PaymentHistoryService;
+import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 @Service
 @Transactional
@@ -34,6 +35,16 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
 		try {
 			return paymentHistoryRepository.save(paymentHistory);
 		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
+	@Override
+	public List<PaymentHistory> getAllPaymentHistory(String startDate, String endDate, Pagination pagination) throws BusinessException {
+		try{
+			return paymentHistoryRepository.findAll(startDate, endDate, pagination);
+		}catch(SQLException e){
 			e.printStackTrace();
 			throw new BusinessException();
 		}

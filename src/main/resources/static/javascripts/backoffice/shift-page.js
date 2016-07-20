@@ -89,7 +89,6 @@ $(function() {
 				$("#modalAddNewGeneration").trigger("click");
 				checkPagination = true;
 				shift.findAll(function(response){
-					console.log(response);
 					$.each(response.DATA, function(key,value){
 						response.DATA[key]["NO"] = (key+1);
 					});
@@ -113,6 +112,32 @@ $(function() {
 			$(".selectpicker").selectpicker('refresh');
 			$("#radioer").val(response.DATA.STATUS);
 			$("#modalAddNewShift").modal("show");
+		});
+	});
+	$("#btnSaveUpdate").click(function(){
+		var data = {
+				"NAME": $("#txtName").val(),
+				"STATUS" 	: $('input[name=radioStatus]:checked').val(),
+				"ID"		: id
+		};
+		shift.updateShift(data, function(response){
+			if(response.CODE=="0000"){
+				$("#txtName").val("");
+				$("#modalAddNewShift").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewShift").trigger("click");
+				checkPagination = true;
+				shift.findAll(function(response){
+					console.log(response);
+					$.each(response.DATA, function(key,value){
+						response.DATA[key]["NO"] = (key+1);
+					});
+					$("#SHIFT").html("");
+					$("#SHIFT_TEMPLATE").tmpl(response.DATA).appendTo("tbody#SHIFT");
+				});
+			}else{
+				$("#modalAddNewShift").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewShift").trigger("click");
+			}
 		});
 	});
 });

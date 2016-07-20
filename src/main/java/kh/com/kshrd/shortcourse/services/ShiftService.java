@@ -3,11 +3,12 @@ package kh.com.kshrd.shortcourse.services;
 import java.util.List;
 
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
+import kh.com.kshrd.shortcourse.filtering.ShiftFilter;
 import kh.com.kshrd.shortcourse.models.Shift;
 
 public interface ShiftService {
 	public List<Shift> findAllShiftItems() throws BusinessException;
-	public List<Shift> findAllShifts(int courseId, int generationId) throws BusinessException;
+	public List<Shift> findAllShifts(ShiftFilter filter) throws BusinessException;
 	public List<Shift> findAllShiftsByCourseId(Long courseId) throws BusinessException;
 	public Shift findShiftById(int id) throws BusinessException;
 	public Long addShift(Shift shift) throws BusinessException;

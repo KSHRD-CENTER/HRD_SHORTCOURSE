@@ -3,7 +3,6 @@ package kh.com.kshrd.shortcourse.models;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 public class PaymentHistory implements Serializable{
 	/**
@@ -40,6 +39,12 @@ public class PaymentHistory implements Serializable{
 	
 	@JsonProperty("STATUS")
 	private String status;
+	
+	@JsonProperty("LEFT_COST")
+	private double leftCost;
+	
+	@JsonProperty("TOTAL PAID")
+	private double totalPaid;
 	
 	public Long getId() {
 		return id;
@@ -101,11 +106,36 @@ public class PaymentHistory implements Serializable{
 	public void setPaidBy(User paidBy) {
 		this.paidBy = paidBy;
 	}
+	
+	public double getLeftCost() {
+		return leftCost;
+	}
+
+	public void setLeftCost(double leftCost) {
+		this.leftCost = leftCost;
+	}
+	
+	
+	/**
+	 * @return the totalPaid
+	 */
+	public double getTotalPaid() {
+		return totalPaid;
+	}
+	/**
+	 * @param totalPaid the totalPaid to set
+	 */
+	public void setTotalPaid(double totalPaid) {
+		this.totalPaid = totalPaid;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "PaymentHistory [id=" + id + ", studentDetails=" + studentDetails + ", paidAmount=" + paidAmount
 				+ ", paidDate=" + paidDate + ", createdDate=" + createdDate + ", createdBy=" + createdBy
 				+ ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy + ", paidBy=" + paidBy + ", status="
-				+ status + "]";
+				+ status + ", leftCost=" + leftCost + ", totalPaid=" + totalPaid + "]";
 	}
 }

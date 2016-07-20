@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import kh.com.kshrd.shortcourse.filtering.ShiftFilter;
 import kh.com.kshrd.shortcourse.models.Shift;
 import kh.com.kshrd.shortcourse.models.User;
 import kh.com.kshrd.shortcourse.repositories.ShiftRepository;
@@ -164,8 +166,18 @@ public class ShiftRepositoryImpl implements ShiftRepository{
 	}
 
 	@Override
-	public List<Shift> findAll(int courseId, int generationId) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Shift> findAll(ShiftFilter filter) throws SQLException {
+		String sql = "SELECT "
+					+ "FROM shifts";
+		return jdbcTemplate.query(sql, new RowMapper<Shift>() {
+			@Override
+			public Shift mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Shift shift = new Shift();
+				shift.setId(rs.getLong("id"));
+				shift.setName(rs.getString("name"));
+				shift.setStatus(rs.getString("status"));
+				return shift;
+			}
+		});
 	}
 }

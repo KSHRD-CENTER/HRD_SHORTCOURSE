@@ -76,6 +76,7 @@ public class RestShiftController {
 	public Response updateShift(@Valid @RequestBody ShiftForm.UpdateShiftForm updateShiftForm){
 		Response response = new Response();
 		try{
+			System.out.println("==============>"+updateShiftForm);
 			Shift shift = new Shift();
 			User user = new User();
 			shift.setId(updateShiftForm.getId());
