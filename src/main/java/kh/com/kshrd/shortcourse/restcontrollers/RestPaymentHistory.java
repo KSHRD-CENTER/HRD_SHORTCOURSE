@@ -21,9 +21,9 @@ public class RestPaymentHistory {
 	private PaymentHistoryService paymentHistoryService;
 	
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "startdate", dataType = "string", paramType = "query",
+		@ApiImplicitParam(name = "startDate", dataType = "string", paramType = "query",
 	            value = "START DATE"),
-		@ApiImplicitParam(name = "enddate", dataType = "string", paramType = "query",
+		@ApiImplicitParam(name = "endDate", dataType = "string", paramType = "query",
         	value = "END DATE"),
 		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", defaultValue="1",
     		value = "Results page you want to retrieve (1..N)"),

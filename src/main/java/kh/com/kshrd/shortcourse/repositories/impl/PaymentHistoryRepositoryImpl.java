@@ -29,7 +29,7 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 		String sql = "SELECT id "
 				   + "	   , student_details_id "
 				   + "	   , paid_amount "
-				   + "	   , TO_CHAR(TO_TIMESTAMP(paid_date,'YYYYMMDDHH24MI'),'DD-Mon-YYYY HH24:MI') AS paid_date "
+				   + "	   , TO_CHAR(TO_TIMESTAMP(paid_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MISS') AS paid_date "
 				   + "	   , paid_by "
 				   + "	   , created_date "
 				   + "	   , created_by "
@@ -75,16 +75,18 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 	
 	@Override
 	public List<PaymentHistory> findAll(String startDate, String endDate, Pagination pagination) throws SQLException {
-		Calendar now = Calendar.getInstance();
+/*		Calendar now = Calendar.getInstance();
 		int year = now.get(Calendar.YEAR);
 		int month = now.get(Calendar.MONTH) + 1; // Note: zero based!
 		startDate = year+""+((month <10)? "0"+month: month)+""+"01";
-		endDate = year+""+((month <10)? "0"+month: month)+"31";
+		endDate = year+""+((month <10)? "0"+month: month)+"31";*/
+		System.err.println("START DATE==>" + startDate);
+		System.err.println("END DATE==>" + endDate);
 		pagination.setTotalCount(count(startDate, endDate));
 		String sql = "SELECT S.name AS s_name, "
 					+ "		 C.course AS c_name, "
 					+ "		 PH.paid_amount AS ph_paid_amount, "
-					+ "		 TO_CHAR(TO_TIMESTAMP(PH.paid_date,'YYYYMMDDHH24MI'),'DD-Mon-YYYY HH24:MI') AS ph_paid_date, "
+					+ "		 TO_CHAR(TO_TIMESTAMP(PH.paid_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MISS') AS ph_paid_date, "
 					+ "		 (C.COST - ((C.COST *(C.discount / 100.0))) - (C.cost * SD.discount/100.0)) AS total_paid, "
 					+ "		 ((C.COST - ((C.COST *(C.discount / 100.0))) - (C.cost * SD.discount/100.0)) - (SELECT SUM(paid_amount) "
 					+ "					FROM payment_histories "

@@ -1,18 +1,19 @@
 $(function() {
-	
-	//var dataTimePicker = {};
-	//dataTimePicker.dateRangePickerBootstrap = function () {
-		$('.bootstrap-daterangepicker-dropdown').daterangepicker({ 
-		    "startDate": "07/01/2016",
-		    "endDate": "07/31/2016"
-		});
-		$('.bootstrap-daterangepicker-dropdown span').html(moment("07/01/2016").format('MMMM D, YYYY') + ' - ' + moment("07/31/2016").format('MMMM D, YYYY'));
-		$('.bootstrap-daterangepicker-dropdown').on('apply.daterangepicker', function(ev, picker) {
-			$('.bootstrap-daterangepicker-dropdown span').html(picker.startDate.format('MMMM D, YYYY') + ' - ' + picker.endDate.format('MMMM D, YYYY'));
-		});
-	//};
-	//dataTimePicker.dateRangePickerBootstrap();
-	
+	var startDate = "20160701";
+	var endDate = "20160731";
+	$('.bootstrap-daterangepicker-dropdown').daterangepicker({ 
+	    "startDate": "07/01/2016",
+	    "endDate": "07/31/2016"
+	});
+	$('.bootstrap-daterangepicker-dropdown span').html(moment("07/01/2016").format('MMMM D, YYYY') + ' - ' + moment("07/31/2016").format('MMMM D, YYYY'));
+	$('.bootstrap-daterangepicker-dropdown').on('apply.daterangepicker', function(ev, picker) {
+		$('.bootstrap-daterangepicker-dropdown span').html(picker.startDate.format('MMMM D, YYYY') + ' - ' + picker.endDate.format('MMMM D, YYYY'));
+		startDate = picker.startDate.format('YYYYMMDD');
+		endDate = picker.endDate.format('YYYYMMDD');
+		
+		checkPagination = true;
+		transactions.findAll();
+	});
 	var transactions = {};
 	var checkPagination = true;
 	var currentPage = 1;
@@ -34,9 +35,9 @@ $(function() {
 		    dataType: 'JSON', 
 		    data:{
 		    	"limit" : $("#SELECT_PER_PAGE").val(),
-		    	"page" : currentPage
-		    	//"startdate" : $("#START_DATE").val(),
-		    	//"endate" : $("#END_DATE").val()
+		    	"page" : currentPage,
+		    	"startDate" : startDate,
+		    	"endDate" : endDate
 		    },
 		    beforeSend: function(xhr) {
 	            xhr.setRequestHeader("Accept", "application/json");
