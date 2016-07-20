@@ -22,8 +22,11 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		super.addViewControllers(registry);
+		
+		//TODO: SWAGGER ROUTING
 		registry.addViewController("/swagger").setViewName("swagger/index");
+		
+		//TODO: BACKEND OFFICE ROUTING
 		registry.addViewController("/administrator/courses").setViewName("backoffice/courses/index");
 		registry.addViewController("/administrator/students").setViewName("backoffice/students/index");
 		registry.addViewController("/administrator/generations").setViewName("backoffice/generations/index");
@@ -31,8 +34,11 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 		registry.addViewController("/administrator/authentication").setViewName("backoffice/users/user-login");
 		registry.addViewController("/administrator/transaction").setViewName("backoffice/payments/index");
 		
-		//TODO: FRONT OFFICE ROUTING
+		//TODO: FRONTEND OFFICE ROUTING
 		registry.addViewController("/").setViewName("frontoffice/index");
+		
+		//TODO: FROM LOGIN ROUTING
+		registry.addViewController("/administrator/login").setViewName("backoffice/users/user-login");
 	}
 
 	@Override

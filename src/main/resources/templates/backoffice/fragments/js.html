@@ -22,14 +22,8 @@
 <script>
 
 $(document).ready(function () {
-	var dataTimePicker = {};
-	dataTimePicker.dateRangePickerBootstrap = function () {
-		$('.bootstrap-daterangepicker-dropdown span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-		$('.bootstrap-daterangepicker-dropdown').daterangepicker();
-	};
 	Pleasure.init();
 	Layout.init();
-	dataTimePicker.dateRangePickerBootstrap();
 });
 </script>
 <!-- END INITIALIZATION-->
