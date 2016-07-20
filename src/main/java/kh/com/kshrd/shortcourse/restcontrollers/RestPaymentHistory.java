@@ -15,7 +15,7 @@ import kh.com.kshrd.shortcourse.services.PaymentHistoryService;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 @RestController
-@RequestMapping("/v1/api/admin/paymenthistories")
+@RequestMapping("/v1/api/admin/transactions")
 public class RestPaymentHistory {
 	@Autowired
 	private PaymentHistoryService paymentHistoryService;

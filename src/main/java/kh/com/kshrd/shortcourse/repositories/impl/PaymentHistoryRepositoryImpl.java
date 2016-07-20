@@ -84,7 +84,7 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 		String sql = "SELECT S.name AS s_name, "
 					+ "		 C.course AS c_name, "
 					+ "		 PH.paid_amount AS ph_paid_amount, "
-					+ "		 PH.paid_date AS ph_paid_date, "
+					+ "		 TO_CHAR(TO_TIMESTAMP(PH.paid_date,'YYYYMMDDHH24MI'),'DD-Mon-YYYY HH24:MI') AS ph_paid_date, "
 					+ "		 (C.COST - ((C.COST *(C.discount / 100.0))) - (C.cost * SD.discount/100.0)) AS total_paid, "
 					+ "		 ((C.COST - ((C.COST *(C.discount / 100.0))) - (C.cost * SD.discount/100.0)) - (SELECT SUM(paid_amount) "
 					+ "					FROM payment_histories "

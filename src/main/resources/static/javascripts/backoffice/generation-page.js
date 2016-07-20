@@ -71,12 +71,14 @@ $(function() {
 	        prevClass: 'prev',
 	        lastClass: 'last',
 	        firstClass: 'first'
-	    }).on("page", function(event, page){
-	    	checkPagination = false;
-	    	currentPage = page;
-	    	generationPage.findAll();
-	    }); 
+	    });
 	};
+	
+	$("#PAGINATION").on("page", function(event, page){
+    	checkPagination = false;
+    	currentPage = page;
+    	generationPage.findAll();
+    }); 
 	
 	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
 	$("#SELECT_PER_PAGE").change(function(){

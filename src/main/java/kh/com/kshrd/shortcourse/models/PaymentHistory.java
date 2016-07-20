@@ -43,7 +43,7 @@ public class PaymentHistory implements Serializable{
 	@JsonProperty("LEFT_COST")
 	private double leftCost;
 	
-	@JsonProperty("TOTAL PAID")
+	@JsonProperty("TOTAL_PAID")
 	private double totalPaid;
 	
 	public Long getId() {
