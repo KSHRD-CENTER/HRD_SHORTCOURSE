@@ -2,7 +2,6 @@ package kh.com.kshrd.shortcourse.repositories.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,13 +74,6 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 	
 	@Override
 	public List<PaymentHistory> findAll(String startDate, String endDate, Pagination pagination) throws SQLException {
-/*		Calendar now = Calendar.getInstance();
-		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH) + 1; // Note: zero based!
-		startDate = year+""+((month <10)? "0"+month: month)+""+"01";
-		endDate = year+""+((month <10)? "0"+month: month)+"31";*/
-		System.err.println("START DATE==>" + startDate);
-		System.err.println("END DATE==>" + endDate);
 		pagination.setTotalCount(count(startDate, endDate));
 		String sql = "SELECT S.name AS s_name, "
 					+ "		 C.course AS c_name, "
@@ -169,14 +161,4 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 		}
 		return null;
 	}
-	
-	public static void main(String[] args) {
-		Calendar now = Calendar.getInstance();
-		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH) + 1; // Note: zero based!
-		int day = now.get(Calendar.DAY_OF_MONTH);
-		System.out.println("START DATE: "+year+""+((month <10)? "0"+month: month)+""+day);
-		System.out.println("END DATE: "+year+""+((month <10)? "0"+month: month)+""+"31");
-	}
-	
 }

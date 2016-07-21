@@ -1,0 +1,157 @@
+package kh.com.kshrd.shortcourse.repositories.impl;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+import kh.com.kshrd.shortcourse.filtering.DashboardFilter;
+import kh.com.kshrd.shortcourse.models.Balance;
+import kh.com.kshrd.shortcourse.models.Course;
+import kh.com.kshrd.shortcourse.models.PaymentHistory;
+import kh.com.kshrd.shortcourse.models.Student;
+import kh.com.kshrd.shortcourse.models.StudentDetails;
+import kh.com.kshrd.shortcourse.repositories.DashboardRepository;
+import kh.com.kshrd.shortcourse.utilities.Pagination;
+
+@Repository
+public class DashboardRepositoryImpl implements DashboardRepository{
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
+	@Override
+	public Balance count(DashboardFilter filter) {
+		String sql = "SELECT SUM(SD.cost) AS TOTAL_BALANCE, "
+					+"		 SUM((SELECT SUM(paid_amount) " 
+					+"			FROM payment_histories " 						
+					+"			INNER JOIN students S ON student_id = S.ID "
+					+"			INNER JOIN courses C ON SD.course_id = C . ID "
+					+"			INNER JOIN generations G ON C.generation = G.id "
+					+"			WHERE G.id::TEXT LIKE ? "
+					+"			AND course_type::TEXT LIKE ? "
+					+"			AND C.id::TEXT LIKE ? "
+					+ "			AND C.course LIKE ? "
+					+"			AND student_details_id = SD.student_details_id)) AS PAID_BALANCE, "
+					+"		 SUM(SD.cost - (SELECT SUM(paid_amount) " 
+					+"			FROM payment_histories "		
+					+"			INNER JOIN students S ON student_id = S.ID "
+					+"			INNER JOIN courses C ON SD.course_id = C . ID "
+					+"			INNER JOIN generations G ON C.generation = G.id "
+					+"			WHERE G.id::TEXT LIKE ? "
+					+"			AND course_type::TEXT LIKE ? "
+					+"			AND C.id::TEXT LIKE ? "
+					+ "			AND C.course LIKE ? "
+					+"			AND student_details_id = SD.student_details_id)) AS REMAINING_BALANCE "
+					+"FROM student_details SD";
+		System.out.println("FILTER REPO ============>" + filter);
+		return jdbcTemplate.queryForObject(sql,
+				new Object[]{
+					"%"+filter.getGenerationId()+"%",
+					"%"+filter.getCourseTypeId()+"%",
+					"%"+filter.getCourseId()+"%",
+					"%"+filter.getCourseName()+"%",
+					"%"+filter.getGenerationId()+"%",
+					"%"+filter.getCourseTypeId()+"%",
+					"%"+filter.getCourseId()+"%",
+					"%"+filter.getCourseName()+"%"
+				},
+				new RowMapper<Balance>() {
+					@Override
+					public Balance mapRow(ResultSet rs, int rowNum) throws SQLException {
+						Balance balance = new Balance();
+						balance.setActualBalance(rs.getDouble("PAID_BALANCE"));
+						balance.setEstimateBalance(rs.getDouble("TOTAL_BALANCE"));
+						balance.setRemainingBalance(rs.getDouble("REMAINING_BALANCE"));
+						System.out.println("DATABASE ==========> " + rs.getDouble("PAID_BALANCE") +" "+rs.getDouble("TOTAL_BALANCE")+" "+rs.getDouble("REMAINING_BALANCE"));
+						return balance;
+					}
+				});
+	}
+
+	@Override
+	public List<PaymentHistory> findAll(DashboardFilter filter, Pagination pagination) throws SQLException{
+		pagination.setTotalCount(countRecord(filter));
+		String sql = "SELECT S.NAME AS s_name, "
+					+ "		 G.name AS g_name, "
+					+ "		 CT.name AS ct_name, "
+					+ "		 C.course, "
+					+ "		 PH.paid_amount, "
+					+ "		 TO_CHAR(TO_TIMESTAMP(paid_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MI:SS') AS paid_date , "
+					+ "		 SD.discount,"
+					+ "		 ((C . COST - ((C . COST *(C .discount / 100.0))) - "
+					+ "		 (C.cost * SD.discount/100.0) ) - (SELECT SUM (paid_amount) "
+					+ "											FROM payment_histories "
+					+ "											WHERE student_details_id = PH.student_details_id "
+					+ "											AND paid_date <= PH.paid_date)) AS left_amount "
+					+ "FROM payment_histories PH "
+					+ "INNER JOIN student_details SD ON PH.student_details_id = SD.student_details_id "
+					+ "INNER JOIN students S ON SD.student_id = S. ID "
+					+ "INNER JOIN courses C ON SD.course_id = C . ID "
+					+ "INNER JOIN generations G ON C.generation = G.id " 
+					+ "INNER JOIN course_types CT ON G.course_type = CT.id "
+					+ "WHERE G.id::TEXT LIKE ? "
+					+ "AND CT.id::TEXT LIKE ? "
+					+ "AND C.id::TEXT LIKE ? "
+					+ "AND C.course LIKE ? "
+					+ "ORDER BY 1, 4 DESC "
+					+ "LIMIT ? "
+					+ "OFFSET ?";
+		return jdbcTemplate.query(
+				sql,
+				new Object[]{
+					"%"+ filter.getGenerationId() +"%",
+					"%"+ filter.getCourseTypeId() +"%",
+					"%"+ filter.getCourseId() +"%",
+					"%"+ filter.getCourseName() +"%",
+					pagination.getLimit(),
+					pagination.getOffset()
+				},
+				new RowMapper<PaymentHistory>() {
+			@Override
+			public PaymentHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
+				PaymentHistory paymentHistory = new PaymentHistory();
+				paymentHistory.setPaidDate(rs.getString("paid_date"));
+				paymentHistory.setPaidAmount(rs.getDouble("paid_amount"));
+				paymentHistory.setLeftCost(rs.getDouble("left_amount"));				
+				paymentHistory.setGenerationName(rs.getString("g_name"));
+				paymentHistory.setCourseTypeName(rs.getString("ct_name"));
+				StudentDetails studentDetail = new StudentDetails();
+				Course course = new Course();
+				Student student = new Student();
+				student.setName(rs.getString("s_name"));
+				course.setCourse(rs.getString("course"));
+				studentDetail.setCourse(course);
+				studentDetail.setStudent(student);
+				paymentHistory.setStudentDetails(studentDetail);
+				return paymentHistory;
+			}
+		});
+	}
+	
+	private Long countRecord(DashboardFilter filter){
+		String sql = "SELECT COUNT(PH.id) "
+				+ "FROM payment_histories PH "
+				+ "INNER JOIN student_details SD ON PH.student_details_id = SD.student_details_id "
+				+ "INNER JOIN students S ON SD.student_id = S. ID "
+				+ "INNER JOIN courses C ON SD.course_id = C . ID "
+				+ "INNER JOIN generations G ON C.generation = G.id " 
+				+ "INNER JOIN course_types CT ON G.course_type = CT.id "
+				+ "WHERE G.id::TEXT LIKE ? "
+				+ "AND CT.id::TEXT LIKE ? "
+				+ "AND C.id::TEXT LIKE ? "
+				+ "AND C.course LIKE ? ";
+	return jdbcTemplate.queryForObject(
+			sql,
+			new Object[]{
+				"%"+ filter.getGenerationId() +"%",
+				"%"+ filter.getCourseTypeId() +"%",
+				"%"+ filter.getCourseId() +"%",
+				"%"+ filter.getCourseName() +"%"
+			},
+			Long.class);
+	}
+}

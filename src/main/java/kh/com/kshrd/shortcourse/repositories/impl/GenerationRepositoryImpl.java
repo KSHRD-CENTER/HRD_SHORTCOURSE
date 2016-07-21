@@ -62,7 +62,7 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 		});
 	}
 
-	public Long count(GenerationFilter filter){
+	private Long count(GenerationFilter filter){
 		String sql = "SELECT COUNT(A.id) " 
 				   + "FROM generations A " 
 				   + "INNER JOIN course_types B ON B.id = A.course_type AND B.status ='1' " 

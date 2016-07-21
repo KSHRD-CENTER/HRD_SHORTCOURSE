@@ -33,6 +33,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 		registry.addViewController("/administrator/shifts").setViewName("backoffice/shifts/index");
 		registry.addViewController("/administrator/authentication").setViewName("backoffice/users/user-login");
 		registry.addViewController("/administrator/transaction").setViewName("backoffice/payments/index");
+		registry.addViewController("/administrator/dashboard").setViewName("backoffice/dashboard/index");
 		
 		//TODO: FRONTEND OFFICE ROUTING
 		registry.addViewController("/").setViewName("frontoffice/index");

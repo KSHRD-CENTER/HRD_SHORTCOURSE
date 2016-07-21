@@ -46,6 +46,13 @@ public class PaymentHistory implements Serializable{
 	@JsonProperty("TOTAL_PAID")
 	private double totalPaid;
 	
+	@JsonProperty("GENERATION_NAME")
+	private String generationName;
+	
+	@JsonProperty("COURSE_TYPE_NAME")
+	private String courseTypeName;
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -128,6 +135,37 @@ public class PaymentHistory implements Serializable{
 	public void setTotalPaid(double totalPaid) {
 		this.totalPaid = totalPaid;
 	}
+	
+	/**
+	 * @return the generationName
+	 */
+	public String getGenerationName() {
+		return generationName;
+	}
+	/**
+	 * @param generationName the generationName to set
+	 */
+	public void setGenerationName(String generationName) {
+		this.generationName = generationName;
+	}
+	/**
+	 * @return the courseTypeName
+	 */
+	public String getCourseTypeName() {
+		return courseTypeName;
+	}
+	/**
+	 * @param courseTypeName the courseTypeName to set
+	 */
+	public void setCourseTypeName(String courseTypeName) {
+		this.courseTypeName = courseTypeName;
+	}
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -136,6 +174,7 @@ public class PaymentHistory implements Serializable{
 		return "PaymentHistory [id=" + id + ", studentDetails=" + studentDetails + ", paidAmount=" + paidAmount
 				+ ", paidDate=" + paidDate + ", createdDate=" + createdDate + ", createdBy=" + createdBy
 				+ ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy + ", paidBy=" + paidBy + ", status="
-				+ status + ", leftCost=" + leftCost + ", totalPaid=" + totalPaid + "]";
+				+ status + ", leftCost=" + leftCost + ", totalPaid=" + totalPaid + ", generationName=" + generationName
+				+ ", courseTypeName=" + courseTypeName + "]";
 	}
 }
