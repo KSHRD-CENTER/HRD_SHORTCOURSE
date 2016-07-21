@@ -101,7 +101,7 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 	}
 
 	@Override
-	public Generation findOne(int id) {
+	public Generation findOne(int id) throws SQLException{
 		String sql = "SELECT G.id, "
 					+ "		 G.name AS g_name, "
 					+ "		 G.status, "
@@ -142,7 +142,7 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 	}
 
 	@Override
-	public Long save(Generation generation) {
+	public Long save(Generation generation) throws SQLException{
 		try{
 			Long id = jdbcTemplate.queryForObject("SELECT nextval('generations_id_seq')",Long.class);
 			String sql = "INSERT INTO generations(id, "
@@ -172,7 +172,7 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 	}
 
 	@Override
-	public Long update(Generation generation) {
+	public Long update(Generation generation) throws SQLException{
 		try{
 			String sql = "UPDATE generations "
 						+ "SET name = ?, "
@@ -199,7 +199,7 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(int id) throws SQLException{
 		try{
 			String sql = "UPDATE generations "
 						+ "SET status = 0 "
@@ -216,4 +216,18 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 		}
 		return false;
 	}
+
+	@Override
+	public Long findTheCurrentGenerationId(Long courseTypeId) throws SQLException {
+		String sql = "SELECT id " + 
+					 "FROM generations " +  
+					 "WHERE course_type= ? " +
+					 "AND is_default = '1' ";
+		return jdbcTemplate.queryForObject(sql,
+				new Object[]{
+					courseTypeId
+				},
+				Long.class);
+	}
+	
 }

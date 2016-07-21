@@ -55,7 +55,7 @@ $(function(){
 	};
 	
 	//TODO: TO FIND ALL COURSES BY GENERATION ID
-	generation.findAllCoursesByGenerationId(2, function(response){
+	courseType.findAllCourses(1, function(response){
 		$("#SELECT_COURSE").html("<option value=''>All Courses</option>");
 		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSE");
 		$(".selectpicker").selectpicker('refresh');

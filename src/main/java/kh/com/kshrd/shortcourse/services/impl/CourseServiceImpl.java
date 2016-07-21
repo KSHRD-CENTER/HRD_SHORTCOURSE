@@ -102,5 +102,14 @@ public class CourseServiceImpl implements CourseService {
 		}
 		return false;
 	}
-	
+
+	@Override
+	public List<Course> findAllCoursesByCurrentCourseTypeIdAndDefaultGeneration(Long courseTypeId) throws BusinessException {
+		try {
+			return courseRepository.findAllCourseInCurrentCourseTypeAndDefaultGeneration(courseTypeId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
 }

@@ -52,3 +52,25 @@ courseType.findAllGenerations = function(id, callback){
 	    }
 	});			
 };
+
+//TODO: TO FIND ALL COURSE BY COURSE TYPE ID
+courseType.findAllCourses = function(id, funCallback){
+	$.ajax({ 
+	    url: "/v1/api/admin/course-types/"+ id +"/courses", 
+	    type: 'GET', 
+	    dataType: 'JSON', 
+	    beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+	    success: function(response) { 
+	    	console.log(response);
+	    	if(funCallback){
+	    		funCallback(response);
+	    	}
+	    },
+	    error:function(data,status,err) { 
+	        console.log("error: "+data+" status: "+status+" err:"+err);
+	    }
+	});			
+};

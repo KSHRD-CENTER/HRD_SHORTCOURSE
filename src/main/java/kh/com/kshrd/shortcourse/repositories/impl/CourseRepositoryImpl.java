@@ -411,5 +411,30 @@ public class CourseRepositoryImpl implements CourseRepository{
 		}
 		return false;
 	}
+
+	@Override
+	public List<Course> findAllCourseInCurrentCourseTypeAndDefaultGeneration(Long courseTypeId) throws SQLException {
+		String sql = "SELECT A.id " 
+				   + "	   , A.course " 
+				   + "	   , A.cost "
+				   + "FROM courses A "
+				   + "WHERE A.generation IN (SELECT getDefaultGenerationByCourseTypeId(?)) "
+				   + "AND A.status = '1' ";
+		return jdbcTemplate.query(
+				sql,
+				new Object[]{
+					courseTypeId
+				},
+				new RowMapper<Course>(){
+			@Override
+			public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Course course = new Course();
+				course.setId(rs.getLong("id"));
+				course.setCourse(rs.getString("course"));
+				course.setCost(rs.getDouble("cost"));
+				return course;
+			}
+		});
+	}
 	
 }

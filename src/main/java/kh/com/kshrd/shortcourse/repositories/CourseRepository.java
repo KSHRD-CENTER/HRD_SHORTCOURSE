@@ -40,4 +40,6 @@ public interface CourseRepository {
 	//TODO: TO DELETE THE COURSE DETAILS BY COURSE ID
 	public boolean deleteCourseDetails(Long courseId) throws SQLException;
 	
+	public List<Course> findAllCourseInCurrentCourseTypeAndDefaultGeneration(Long courseTypeId) throws SQLException;
+	
 }

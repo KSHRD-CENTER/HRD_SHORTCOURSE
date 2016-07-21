@@ -27,5 +27,8 @@ public interface CourseService {
 	
 	//TODO: TO DELETE THE COURSE BY ID
 	public boolean deleteCourse(Long id) throws BusinessException;
+	
+	//TODO: TO FIND THE ALL COURSE IN THE CURRENT GENERATION
+	public List<Course> findAllCoursesByCurrentCourseTypeIdAndDefaultGeneration(Long courseTypeId) throws BusinessException;
 
 }

@@ -15,4 +15,5 @@ public interface GenerationRepository {
 	public Long save(Generation generation) throws SQLException;
 	public Long update(Generation generation) throws SQLException;
 	public boolean delete(int id) throws SQLException;
+	public Long findTheCurrentGenerationId(Long courseTypeId) throws SQLException;
 }
