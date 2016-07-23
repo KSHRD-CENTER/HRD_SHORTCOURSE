@@ -1,8 +1,13 @@
 package kh.com.kshrd.shortcourse.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Balance {
+	@JsonProperty("ACUTAL_BALANCE")
 	private double actualBalance;
+	@JsonProperty("ESTIMATE_BALANCE")
 	private double estimateBalance;
+	@JsonProperty("REMAINING_BALANCE")
 	private double remainingBalance;
 	/**
 	 * @return the actualBalance

@@ -44,6 +44,26 @@ public class RestDashboardController {
 		response.setData(dashboardService.countTotalMoney(filter));
 		return response;
 	}
+	
+	//TODO: TO ADD THE IMPLICIT PARAM IN THE SWAGGER
+		@ApiImplicitParams({
+			@ApiImplicitParam(name = "generationId", dataType = "string", paramType = "query", defaultValue="",
+		            value = "Generation Id"),
+		    @ApiImplicitParam(name = "courseTypeId", dataType = "string", paramType = "query", defaultValue="",
+		            value = "Course Type Id"),
+		    @ApiImplicitParam(name = "courseId", dataType = "string", paramType = "query", defaultValue="",
+		            value = "Course Id"),
+		    @ApiImplicitParam(name = "courseName", dataType = "string", paramType = "query", defaultValue="",
+		    	value = "Course Name"),
+		})
+		@RequestMapping(value ="/count-money", method = RequestMethod.GET)
+		public ResponseRecord<Balance> countMoney(@ApiIgnore DashboardFilter filter) throws BusinessException{
+			ResponseRecord<Balance> response = new ResponseRecord<>();
+			response.setCode(StatusCode.SUCCESS);
+			response.setData(dashboardService.countMoney(filter));
+			return response;
+		}
+	
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "generationId", dataType = "string", paramType = "query", defaultValue="",
 	            value = "Generation Id"),

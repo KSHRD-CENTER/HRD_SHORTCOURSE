@@ -19,17 +19,19 @@ $(function() {
 		    type: 'GET', 
 		    dataType: 'JSON', 
 		    data:{
-		    	"generationId": $("#selectGeneration").val(),
-		    	"courseTypeId": $("#selectCourseType").val(),
-		    	"courseId": $("#selectCourse").val(),
-		    	"limit" : $("#SELECT_PER_PAGE").val(),
-		    	"page" : currentPage
+		    	"generationId"	: 	$("#selectGeneration").val(),
+		    	"courseTypeId"	: 	$("#selectCourseType").val(),
+		    	"courseId"		: 	$("#selectCourse").val(),
+		    	"courseName"	:	$("#txtSearch").val(),
+		    	"limit" 		: 	$("#SELECT_PER_PAGE").val(),
+		    	"page" 			: 	currentPage
 		    },
 		    beforeSend: function(xhr) {
 	            xhr.setRequestHeader("Accept", "application/json");
 	            xhr.setRequestHeader("Content-Type", "application/json");
 	        },
 		    success: function(response) { 
+		    	console.log(response);
 		    	if(response.CODE=="0000"){
 		    		$("#DASHBOARD").html("");
 		    		if(response.DATA.length > 0){
@@ -50,7 +52,69 @@ $(function() {
 		    			$("#PAGINATION").html("");
 		    		}
 		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});			
+	};
+	
+	dashboards.getTotalMoney = function(){
+		$.ajax({ 
+		    url: "/v1/api/admin/dashboards/count", 
+		    type: 'GET', 
+		    data:{
+		    	"generationId": $("#selectGeneration").val(),
+		    	"courseTypeId": $("#selectCourseType").val(),
+		    	"courseId": $("#selectCourse").val(),
+		    	"courseName":$("#txtSearch").val()
+		    },
+		    dataType: 'JSON', 
+		    beforeSend: function(xhr) {
+	            xhr.setRequestHeader("Accept", "application/json");
+	            xhr.setRequestHeader("Content-Type", "application/json");
+	        },
+		    success: function(response) { 
+		    	if(response.CODE=="0000"){
+		    		if(response.DATA != null){
+		    			console.log(response);
+		    			response.DATA.ACUTAL_BALANCE = formatDollar(response.DATA.ACUTAL_BALANCE);
+		    			response.DATA.REMAINING_BALANCE = formatDollar(response.DATA.REMAINING_BALANCE);
+		    			$("#btnActualMoney").val("ACTUAL BALANCE: "+response.DATA.ACUTAL_BALANCE);
+		    			$("#btnRemainingMoney").val("REMAINING BALANCE: "+response.DATA.REMAINING_BALANCE);
+		    		}
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});			
+	};
+	
+	dashboards.getMoney = function(){
+		$.ajax({ 
+		    url: "/v1/api/admin/dashboards/count-money", 
+		    type: 'GET', 
+		    data:{
+		    	"generationId": $("#selectGeneration").val(),
+		    	"courseTypeId": $("#selectCourseType").val(),
+		    	"courseId": $("#selectCourse").val(),
+		    	"courseName":$("#txtSearch").val()
+		    },
+		    dataType: 'JSON', 
+		    beforeSend: function(xhr) {
+	            xhr.setRequestHeader("Accept", "application/json");
+	            xhr.setRequestHeader("Content-Type", "application/json");
+	        },
+		    success: function(response) { 
 		    	console.log(response);
+		    	if(response.CODE=="0000"){
+		    		if(response.DATA != null){
+		    			console.log(response);
+		    			response.DATA.ESTIMATE_BALANCE = formatDollar(response.DATA.ESTIMATE_BALANCE);
+		    			$("#btnEstimateMoney").val("ESTIMATE BALANCE: "+response.DATA.ESTIMATE_BALANCE);
+		    		}
+		    	}
 		    },
 		    error:function(data,status,err) { 
 		        console.log("error: "+data+" status: "+status+" err:"+err);
@@ -64,6 +128,8 @@ $(function() {
 	    }, "") + "." + p[1];
 	}
 	dashboards.findAll();
+	dashboards.getTotalMoney();
+	dashboards.getMoney();
 	//TODO: TO SET THE PAGINATION FOR THE TRANSACTION
 	dashboards.setPagination = function(totalPage){
     	$('#PAGINATION').bootpag({
@@ -90,10 +156,35 @@ $(function() {
     	dashboards.findAll();
     });
 	
-	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
-	$("#SELECT_PER_PAGE").change(function(){
-		$("#limitPage").html($("#SELECT_PER_PAGE").val());
-		checkPagination = true;
-		dashboards.findAll();
+	//TODO: LOADING THE COURSE TYPE TO COMBO BOX
+	courseType.findAll(function(response){
+		$("#selectCourseType").html("<option value=''>SELECT COURSE TYPES</option>");
+		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#selectCourseType");
+		$(".selectpicker").selectpicker('refresh');
 	});
+	
+	$("#selectCourseType").change(function(){
+		courseType.findAllGenerations($(this).val(), function(response){
+			$("#selectGeneration").html("<option value=''>SELECT GENERATIONS</option>");
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#selectGeneration");
+			$(".selectpicker").selectpicker('refresh');
+		});
+	});
+	
+	$("#selectGeneration").change(function(){
+		generation.findAllCoursesByGenerationId($(this).val(), function(response){
+			$("#selectCourse").html("<option value=''>SELECT COURSES</option>");
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#selectCourse");
+			$(".selectpicker").selectpicker('refresh');
+		});
+	});
+	
+	$("#btnSearch").click(function(){
+		checkPagination = true;
+		currentPage = 1;
+		dashboards.findAll();
+		dashboards.getTotalMoney();
+		dashboards.getMoney();
+	});
+	
 });

@@ -10,5 +10,6 @@ import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 public interface DashboardService {
 	public Balance countTotalMoney(DashboardFilter filter) throws BusinessException;
+	public Balance countMoney(DashboardFilter filter) throws BusinessException;
 	public List<PaymentHistory> getAllPaymentHistories(DashboardFilter filter, Pagination pagination) throws BusinessException;
 }

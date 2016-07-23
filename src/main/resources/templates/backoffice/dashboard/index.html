@@ -86,28 +86,23 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel indigo">
-							<!-- <div class="panel-heading">
-								<div class="panel-title"><h4>PAYMENT TRANSACTION</h4>
-									<input type="button" class="btn btn-red btn-ripple pull-right" id="btnRegister" value="REGISTER NEW GENERATION" data-target="#modalAddNewGeneration" data-toggle="modal"/>
-								</div>
-							</div>.panel-heading -->
 							<div class="panel-body">
 								<div class="row" id="ACTION">
 									<div class="col-md-8">
-										<select class="selectpicker" style="display: none;" id="selectGeneration">
-											<option value=''>ALL GENERATIONS</option>
-										</select>
 										<select class="selectpicker" style="display: none;" id="selectCourseType">
-											<option value=''>ALL COURSE TYPES</option>
+											<option value=''>SELECT COURSE TYPES</option>
+										</select>
+										<select class="selectpicker" style="display: none;" id="selectGeneration">
+											<option value=''>SELECT GENERATIONS</option>
 										</select>
 										<select class="selectpicker" style="display: none;" id="selectCourse">
-											<option value=''>ALL COURSES</option>
+											<option value=''>SELECT COURSES</option>
 										</select>
 									</div>
 									<div class="col-md-4">
 										<div class="inputer col-md-8">
 											<div class="input-wrapper">
-												<input type="text" class="form-control" id="txtSearch" placeholder="Searching">
+												<input type="text" class="form-control" id="txtSearch" placeholder="Course Searching">
 											</div>
 										</div>
 										<div class="col-md-4">
@@ -124,7 +119,6 @@
 												<th>Generation</th>
 												<th>Course Type</th>
 												<th>Course</th>
-												<th>Paid Date</th>
 												<th>Paid Amount</th>
 												<th>Remaining Amount</th>
 												<th>Total Payment</th>
@@ -142,6 +136,22 @@
 										</tbody>
 									</table>
 								</div><!--.flip-scroll-->
+								<div class="row" id="ACTION">
+									<div class="col-md-4">
+										
+									</div>
+									<div class="col-md-8">
+										<div>
+											<input type="button" class="btn pull-right" id="btnEstimateMoney" value="ESTIMATE BALANCE: "  style="font-weight: bold;" />
+										</div>
+										<div>
+											<input type="button" class="btn pull-right" id="btnRemainingMoney" value="ACUTAL BALANCE: " style="margin-right: 10px;font-weight: bold;" />
+										</div>
+										<div>
+											<input type="button" class="btn pull-right" id="btnActualMoney" value="REMAINING BALANCE: " style="margin-right: 10px; font-weight: bold;" />
+										</div>
+									</div>
+								</div>
  								<div class="row">
 									<div class="col-md-6">
 										<div id="INFORMATION">Showing 1 to <span id="limitPage">10</span> of <span id="TotalRecords"></span> entries</div>
@@ -195,7 +205,9 @@
 			<!-- END OF MENU LAYER -->
 			
 		</div><!--.layer-container-->
-		
+		<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
+			<option value="{{= ID}}" data-cost="{{= COST}}">{{= NAME}}</option>
+		</script>
 		<script id="DASHBOARD_TEMPLATE" type="text/x-jquery-tmpl">
 			<tr data-id="{{= ID}}">
 				<td>{{= NO}}</td>
@@ -203,10 +215,9 @@
 				<td>{{= GENERATION_NAME}}</td>
 				<td>{{= COURSE_TYPE_NAME}}</td>
 				<td>{{= STUDENT_DETAILS.COURSE.NAME}}</td>
-				<td>{{= PAID_DATE}}</td>
-				<td>{{= PAID_AMOUNT}}</td>
-				<td>{{= LEFT_COST}}</td>
-				<td>{{= TOTAL_PAID}}</td>
+				<td><span class="badge badge-success">{{= PAID_AMOUNT}}</span></td>
+				<td><span class="badge badge-danger">{{= LEFT_COST}}</span></td>
+				<td><span class="badge badge-warning">{{= TOTAL_PAID}}</span></td>
 			</tr>
 		</script>
 		
@@ -217,7 +228,11 @@
 	</div>
 	<!-- END REGISTER NEW COURSE MODAL -->
 	<th:block layout:fragment="backoffice/javascript">
+    	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/course-type.js}"></script>
+    	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/generation.js}"></script>
+    	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/shift.js}"></script>
     	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/dashboard.js}"></script>
+    	
     </th:block>
 </body>
 </html>

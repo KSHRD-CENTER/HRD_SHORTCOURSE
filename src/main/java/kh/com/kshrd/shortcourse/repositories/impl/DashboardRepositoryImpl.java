@@ -25,8 +25,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 	
 	@Override
 	public Balance count(DashboardFilter filter) {
-		String sql = "SELECT SUM(SD.cost) AS TOTAL_BALANCE, "
-					+"		 SUM((SELECT SUM(paid_amount) " 
+		String sql = "SELECT SUM((SELECT SUM(paid_amount) " 
 					+"			FROM payment_histories " 						
 					+"			INNER JOIN students S ON student_id = S.ID "
 					+"			INNER JOIN courses C ON SD.course_id = C . ID "
@@ -34,7 +33,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 					+"			WHERE G.id::TEXT LIKE ? "
 					+"			AND course_type::TEXT LIKE ? "
 					+"			AND C.id::TEXT LIKE ? "
-					+ "			AND C.course LIKE ? "
+					+ "			AND LOWER(C.course) LIKE LOWER(?) "
 					+"			AND student_details_id = SD.student_details_id)) AS PAID_BALANCE, "
 					+"		 SUM(SD.cost - (SELECT SUM(paid_amount) " 
 					+"			FROM payment_histories "		
@@ -44,7 +43,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 					+"			WHERE G.id::TEXT LIKE ? "
 					+"			AND course_type::TEXT LIKE ? "
 					+"			AND C.id::TEXT LIKE ? "
-					+ "			AND C.course LIKE ? "
+					+ "			AND LOWER(C.course) LIKE LOWER(?) "
 					+"			AND student_details_id = SD.student_details_id)) AS REMAINING_BALANCE "
 					+"FROM student_details SD";
 		System.out.println("FILTER REPO ============>" + filter);
@@ -64,9 +63,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 					public Balance mapRow(ResultSet rs, int rowNum) throws SQLException {
 						Balance balance = new Balance();
 						balance.setActualBalance(rs.getDouble("PAID_BALANCE"));
-						balance.setEstimateBalance(rs.getDouble("TOTAL_BALANCE"));
 						balance.setRemainingBalance(rs.getDouble("REMAINING_BALANCE"));
-						System.out.println("DATABASE ==========> " + rs.getDouble("PAID_BALANCE") +" "+rs.getDouble("TOTAL_BALANCE")+" "+rs.getDouble("REMAINING_BALANCE"));
 						return balance;
 					}
 				});
@@ -75,31 +72,41 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 	@Override
 	public List<PaymentHistory> findAll(DashboardFilter filter, Pagination pagination) throws SQLException{
 		pagination.setTotalCount(countRecord(filter));
-		String sql = "SELECT S.NAME AS s_name, "
-					+ "		 G.name AS g_name, "
-					+ "		 CT.name AS ct_name, "
-					+ "		 C.course, "
-					+ "		 PH.paid_amount, "
-					+ "		 TO_CHAR(TO_TIMESTAMP(paid_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MI:SS') AS paid_date , "
-					+ "		 SD.discount,"
-					+ "		 ((C . COST - ((C . COST *(C .discount / 100.0))) - "
-					+ "		 (C.cost * SD.discount/100.0) ) - (SELECT SUM (paid_amount) "
-					+ "											FROM payment_histories "
-					+ "											WHERE student_details_id = PH.student_details_id "
-					+ "											AND paid_date <= PH.paid_date)) AS left_amount "
-					+ "FROM payment_histories PH "
+		String sql = "SELECT A.s_name, "
+					+ "		 A.g_name, "
+					+ "		 A.ct_name, "
+					+ "		 A.course, "
+					+ "		 A.total_paid, "
+					+ "		 SUM(paid_amount) AS PAID_AMOUNT, "
+					+ "		 (A.total_paid - SUM(paid_amount)) AS LEFT_AMOUNT "
+					+ "FROM(SELECT S.NAME AS s_name, "
+					+ "			   G.name AS g_name, "
+					+ "			   CT.name AS ct_name, "
+					+ "			   C.course, "
+					+ "			   PH.paid_amount, "
+					+ "			   TO_CHAR(TO_TIMESTAMP(paid_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MI:SS') AS paid_date, "
+					+ "			   SD.discount, "
+					+ "			   (C.COST - ((C.COST *(C.discount / 100.0))) - (C.cost * SD.discount/100.0)) AS total_paid, "
+					+ "			   ((C . COST - ((C . COST *(C .discount / 100.0))) - (C.cost * SD.discount/100.0) ) - (SELECT SUM (paid_amount) "
+					+ "																									FROM payment_histories "
+					+ "																									WHERE student_details_id = PH.student_details_id "
+					+ "																									AND paid_date <= PH.paid_date)) AS left_amount "
+					+ "		FROM payment_histories PH "
 					+ "INNER JOIN student_details SD ON PH.student_details_id = SD.student_details_id "
 					+ "INNER JOIN students S ON SD.student_id = S. ID "
 					+ "INNER JOIN courses C ON SD.course_id = C . ID "
-					+ "INNER JOIN generations G ON C.generation = G.id " 
+					+ "INNER JOIN generations G ON C.generation = G.id "
 					+ "INNER JOIN course_types CT ON G.course_type = CT.id "
 					+ "WHERE G.id::TEXT LIKE ? "
 					+ "AND CT.id::TEXT LIKE ? "
 					+ "AND C.id::TEXT LIKE ? "
-					+ "AND C.course LIKE ? "
+					+ "AND LOWER(C.course) LIKE LOWER(?) "
 					+ "ORDER BY 1, 4 DESC "
 					+ "LIMIT ? "
-					+ "OFFSET ?";
+					+ "OFFSET ? "
+					+ ") A "
+					+ "GROUP BY 1,2,3,4,5 "
+					+ "ORDER BY 1";
 		return jdbcTemplate.query(
 				sql,
 				new Object[]{
@@ -114,9 +121,9 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 			@Override
 			public PaymentHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
 				PaymentHistory paymentHistory = new PaymentHistory();
-				paymentHistory.setPaidDate(rs.getString("paid_date"));
 				paymentHistory.setPaidAmount(rs.getDouble("paid_amount"));
-				paymentHistory.setLeftCost(rs.getDouble("left_amount"));				
+				paymentHistory.setLeftCost(rs.getDouble("left_amount"));
+				paymentHistory.setTotalPaid(rs.getDouble("total_paid"));
 				paymentHistory.setGenerationName(rs.getString("g_name"));
 				paymentHistory.setCourseTypeName(rs.getString("ct_name"));
 				StudentDetails studentDetail = new StudentDetails();
@@ -153,5 +160,33 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 				"%"+ filter.getCourseName() +"%"
 			},
 			Long.class);
+	}
+
+	@Override
+	public Balance countTotalPayment(DashboardFilter filter) throws SQLException {
+		String sql = "SELECT SUM (SD.cost*(100-SD.discount)/100) AS TOTAL_PAID FROM student_details SD "
+					+ "INNER JOIN students S ON SD.student_id = S.ID "
+					+ "INNER JOIN courses C ON SD.course_id = C . ID "
+					+ "INNER JOIN generations G ON C.generation = G.id "
+					+ "WHERE course_type::TEXT LIKE ? "
+					+ "AND student_details_id = SD.student_details_id "
+					+ "AND G.id::TEXT LIKE ? "
+					+ "AND C.id::TEXT LIKE ? "
+					+ "AND LOWER(C.course) LIKE LOWER(?)";
+	return jdbcTemplate.queryForObject(
+			sql,
+			new Object[]{
+				"%"+ filter.getCourseTypeId() +"%",
+				"%"+ filter.getGenerationId() +"%",
+				"%"+ filter.getCourseId() +"%",
+				"%"+ filter.getCourseName() +"%"
+			},new RowMapper<Balance>() {
+				@Override
+				public Balance mapRow(ResultSet rs, int rowNum) throws SQLException {
+					Balance balance = new Balance();
+					balance.setEstimateBalance(rs.getDouble("TOTAL_PAID"));
+					return balance;
+				}
+			});
 	}
 }

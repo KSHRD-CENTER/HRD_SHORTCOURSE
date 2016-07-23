@@ -46,6 +46,7 @@ $(function() {
 	        },
 		    success: function(response) { 
 		    	if(response.CODE=="0000"){
+		    		console.log(response);
 		    		$("#TRANSACTION").html("");
 		    		if(response.DATA.length > 0){
 		    			$("#TotalRecords").html(response.PAGINATION.TOTAL_COUNT);

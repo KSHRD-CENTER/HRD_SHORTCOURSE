@@ -39,4 +39,14 @@ public class DashboardServiceImpl implements DashboardService{
 		}
 	}
 
+	@Override
+	public Balance countMoney(DashboardFilter filter) throws BusinessException {
+		try{
+			return dashboardRepository.countTotalPayment(filter);
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
 }
