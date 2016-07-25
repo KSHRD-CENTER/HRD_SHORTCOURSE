@@ -64,7 +64,7 @@ public class RestGenerationController {
 		response.setData(courseService.findAllCoursesByGenerationId(generationId));
 		return response;
 	}
-	
+		
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseRecord<Generation> findGeneration(@PathVariable("id") int id){
 		ResponseRecord<Generation> response = new ResponseRecord<>();
@@ -146,4 +146,5 @@ public class RestGenerationController {
 		}
 		return response;
 	}
+	
 }

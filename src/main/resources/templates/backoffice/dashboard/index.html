@@ -178,33 +178,6 @@
 	
 		</div><!--.content-->
 		
-		<div class="layer-container">
-	
-			<!-- BEGIN MENU LAYER -->
-			<div class="menu-layer">
-				<ul>
-					<li data-open-after="true">
-						<a href="index.html">DASHBOARD</a>
-					</li>
-					<li>
-						<a href="javascript:;">COURSES</a>
-						<ul class="child-menu">
-							<li><a th:href="@{/administrator/generations}">ALL GENERATIONS</a></li>
-							<li><a th:href="@{/administrator/shifts}">ALL SHIFTS</a></li>
-							<li><a th:href="@{/administrator/courses}">ALL COURSES</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="javascript:;">STUDENTS</a>
-						<ul class="child-menu">
-							<li><a th:href="@{/administrator/students}">ALL STUDENTS</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div><!--.menu-layer-->
-			<!-- END OF MENU LAYER -->
-			
-		</div><!--.layer-container-->
 		<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
 			<option value="{{= ID}}" data-cost="{{= COST}}">{{= NAME}}</option>
 		</script>

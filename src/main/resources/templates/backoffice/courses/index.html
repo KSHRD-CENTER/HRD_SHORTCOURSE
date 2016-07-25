@@ -233,36 +233,7 @@
 			
 		</div><!--.content-->
 	
-		<div class="layer-container">
-	
-			<!-- BEGIN MENU LAYER -->
-			<div class="menu-layer">
-				<ul>
-					<li data-open-after="true">
-						<a href="@{/administrator/dashboard}">DASHBOARD</a>
-					</li>
-					<li>
-						<a href="javascript:;">COURSES</a>
-						<ul class="child-menu">
-							<li><a th:href="@{/administrator/generations}">ALL GENERATIONS</a></li>
-							<li><a th:href="@{/administrator/shifts}">ALL SHIFTS</a></li>
-							<li><a th:href="@{/administrator/courses}">ALL COURSES</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="javascript:;">STUDENTS</a>
-						<ul class="child-menu">
-							<li><a th:href="@{/administrator/students}">ALL STUDENTS</a></li>
-						</ul>
-					</li>
-					<li data-open-after="true">
-						<a href="@{/administrator/transaction}">TRANSACTION</a>
-					</li>
-				</ul>
-			</div><!--.menu-layer-->
-			<!-- END OF MENU LAYER -->
-			
-		</div><!--.layer-container-->
+
 		
 		<script id="COURSE_TEMPLATE" type="text/x-jquery-tmpl">
 	        <tr data-id="{{= ID}}">
