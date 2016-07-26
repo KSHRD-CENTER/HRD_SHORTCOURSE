@@ -9,9 +9,9 @@ import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 public interface UserRepository {
 	public List<User> findAll(UserFilter filter, Pagination pagination) throws SQLException;
-	public User findOne(String status, int id) throws SQLException;
+	public User findOne(String status, Long id) throws SQLException;
 	public Long save(User user) throws SQLException;
 	public Long update(User user) throws SQLException;
 	public boolean delete(int id) throws SQLException;
-	public Long updatePassword(int id) throws SQLException;
+	public Long updatePassword(String newPassword, Long id) throws SQLException;
 }

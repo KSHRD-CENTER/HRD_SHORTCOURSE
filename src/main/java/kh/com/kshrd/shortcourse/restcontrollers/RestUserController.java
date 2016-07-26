@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wordnik.swagger.annotations.ApiImplicitParam;
 import com.wordnik.swagger.annotations.ApiImplicitParams;
-
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
 import kh.com.kshrd.shortcourse.filtering.UserFilter;
 import kh.com.kshrd.shortcourse.forms.UserForm;
@@ -31,7 +29,7 @@ public class RestUserController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 	
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "name", dataType = "string", paramType = "query",
@@ -52,7 +50,7 @@ public class RestUserController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseRecord<User> getUserById(@PathVariable("id") int id) throws BusinessException{
+	public ResponseRecord<User> getUserById(@PathVariable("id") Long id) throws BusinessException{
 		ResponseRecord<User> response = new ResponseRecord<>();
 		response.setCode(StatusCode.SUCCESS);
 		String status = "1";
@@ -68,7 +66,7 @@ public class RestUserController {
 			user.setEmail(userForm.getEmail());
 			user.setStatus("1");
 			user.setRole(userForm.getRole());
-			
+			user.setPassword(passwordEncoder.encode(userForm.getPassword()));
 			if(userService.addUser(user) > 0){
 				response.setCode(StatusCode.SUCCESS);
 			}else{
@@ -103,8 +101,25 @@ public class RestUserController {
 			user.setEmail(updateUserForm.getEmail());
 			user.setStatus(updateUserForm.getStatus());
 			user.setRole(updateUserForm.getRole());
-			
-			if(userService.addUser(user) > 0){
+			user.setId(updateUserForm.getId());
+			if(userService.updateUser(user) > 0){
+				response.setCode(StatusCode.SUCCESS);
+			}else{
+				response.setCode(StatusCode.NOT_SUCCESS);
+			}
+		}catch(BusinessException e){
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@RequestMapping(value = "/change-password", method = RequestMethod.PUT)
+	public Response changePassword(@Valid @RequestBody UserForm.ChangePasswordForm changePasswordForm){
+		Response response = new Response();
+		try{
+			if(userService.changePassword(changePasswordForm.getOldPassword(), 
+										  passwordEncoder.encode(changePasswordForm.getNewPassword()), 
+										  changePasswordForm.getId()) > 0){
 				response.setCode(StatusCode.SUCCESS);
 			}else{
 				response.setCode(StatusCode.NOT_SUCCESS);

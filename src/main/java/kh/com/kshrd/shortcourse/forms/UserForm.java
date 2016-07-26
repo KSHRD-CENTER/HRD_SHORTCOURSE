@@ -57,19 +57,19 @@ public class UserForm {
 	
 	public static class UpdateUserForm extends UserForm{
 		@JsonProperty("ID")
-		private int id;
+		private Long id;
 		@JsonProperty("STATUS")
 		private String status;
 		/**
 		 * @return the id
 		 */
-		public int getId() {
+		public Long getId() {
 			return id;
 		}
 		/**
 		 * @param id the id to set
 		 */
-		public void setId(int id) {
+		public void setId(Long id) {
 			this.id = id;
 		}
 		/**
@@ -90,6 +90,58 @@ public class UserForm {
 		@Override
 		public String toString() {
 			return "UpdateUserForm [id=" + id + ", status=" + status + "]";
+		}
+	}
+	public static class ChangePasswordForm{
+		@JsonProperty("NEW_PASSWORD")
+		private String newPassword;
+		@JsonProperty("OLD_PASSWORD")
+		private String oldPassword;
+		@JsonProperty("ID")
+		private Long id;
+		/**
+		 * @return the newPassword
+		 */
+		public String getNewPassword() {
+			return newPassword;
+		}
+		/**
+		 * @param newPassword the newPassword to set
+		 */
+		public void setNewPassword(String newPassword) {
+			this.newPassword = newPassword;
+		}
+		/**
+		 * @return the oldPassword
+		 */
+		public String getOldPassword() {
+			return oldPassword;
+		}
+		/**
+		 * @param oldPassword the oldPassword to set
+		 */
+		public void setOldPassword(String oldPassword) {
+			this.oldPassword = oldPassword;
+		}
+		/**
+		 * @return the id
+		 */
+		public Long getId() {
+			return id;
+		}
+		/**
+		 * @param id the id to set
+		 */
+		public void setId(Long id) {
+			this.id = id;
+		}
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return "ChangePasswordForm [newPassword=" + newPassword + ", oldPassword=" + oldPassword + ", id=" + id
+					+ "]";
 		}
 	}
 }

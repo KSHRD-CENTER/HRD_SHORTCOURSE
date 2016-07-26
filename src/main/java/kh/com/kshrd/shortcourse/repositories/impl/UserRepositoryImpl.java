@@ -67,7 +67,7 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 	
 	@Override
-	public User findOne(String status, int id) throws SQLException{
+	public User findOne(String status, Long id) throws SQLException{
 		String sql = "SELECT id, "
 				+ "		 email, "
 				+ "		 role, "
@@ -126,16 +126,18 @@ public class UserRepositoryImpl implements UserRepository{
 	@Override
 	public Long update(User user) throws SQLException{
 		try{
-			String sql = "UPDATE generations "
-						+ "SET name = ?, "
-						+ "		status = ?, "
-						+ "		is_default = ?, "
-						+ "		course_type = ? "
+			String sql = "UPDATE users "
+						+ "SET email = ?, "
+						+ "	   status = ?, "
+						+ "	   role = ? "
 						+ "WHERE id = ?";
 			int result = jdbcTemplate.update(
 					sql,
 					new Object[]{
-							
+						user.getEmail(),
+						user.getStatus(),
+						user.getRole(),
+						user.getId()
 					});
 			if(result > 0){
 				return user.getId();
@@ -164,9 +166,25 @@ public class UserRepositoryImpl implements UserRepository{
 		}
 		return false;
 	}
-
+	
 	@Override
-	public Long updatePassword(int id) throws SQLException{
+	public Long updatePassword(String newPassword, Long id) throws SQLException{
+		try{
+			String sql = "UPDATE users "
+						+ "SET password = ? "
+						+ "WHERE id = ?;";
+			int result = jdbcTemplate.update(
+					sql,
+					new Object[]{
+						newPassword,
+						id
+					});
+			if(result > 0){
+				return id;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return null;
 	}
 }

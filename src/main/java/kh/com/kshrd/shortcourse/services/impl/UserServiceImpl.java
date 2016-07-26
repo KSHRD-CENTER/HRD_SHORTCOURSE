@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kh.com.kshrd.shortcourse.exceptions.BusinessException;
@@ -17,6 +18,8 @@ import kh.com.kshrd.shortcourse.utilities.Pagination;
 public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public List<User> getAllUsers(UserFilter filter, Pagination pagination) throws BusinessException{
@@ -29,7 +32,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User getUserById(String status, int id) throws BusinessException {
+	public User getUserById(String status, Long id) throws BusinessException {
 		try{
 			return userRepository.findOne(status, id);
 		}catch(SQLException e){
@@ -67,14 +70,32 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Long updateUser(User user) throws BusinessException {
-		// TODO Auto-generated method stub
+		try{
+			Long userId = userRepository.update(user);
+			if(userId > 0){
+				return userId;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
 		return null;
 	}
 
 	@Override
-	public Long updatePassword(User user) throws BusinessException {
-		// TODO Auto-generated method stub
+	public Long changePassword(String oldPassword, String newPassword, Long id) throws BusinessException {
+		try{
+			User user = userRepository.findOne("1", id);
+			if(passwordEncoder.matches(oldPassword, user.getPassword())){
+				Long userId = userRepository.updatePassword(newPassword, id);
+				if(userId > 0){
+					return userId;
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
 		return null;
 	}
-
 }

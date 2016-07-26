@@ -9,9 +9,9 @@ import kh.com.kshrd.shortcourse.utilities.Pagination;
 
 public interface UserService {
 	public List<User> getAllUsers(UserFilter filter, Pagination pagination) throws BusinessException;
-	public User getUserById(String status, int id) throws BusinessException;
+	public User getUserById(String status, Long id) throws BusinessException;
 	public Long addUser(User user) throws BusinessException;
 	public boolean deleteUser(int id) throws BusinessException;
 	public Long updateUser(User user) throws BusinessException;
-	public Long updatePassword(User user) throws BusinessException;
+	public Long changePassword(String oldPassword, String newPassword, Long id) throws BusinessException;
 }
