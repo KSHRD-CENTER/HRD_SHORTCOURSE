@@ -2,7 +2,6 @@ package kh.com.kshrd.shortcourse.models;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User implements Serializable{
@@ -17,16 +16,16 @@ public class User implements Serializable{
 	@JsonProperty("EMAIL")
 	private String email;
 	
-	@JsonIgnore
+	@JsonProperty("PASSWORD")
 	private String password;
 	
-	@JsonIgnore
+	@JsonProperty("ROLE")
 	private String role;
 	
-	@JsonIgnore
+	@JsonProperty("CREATED_DATE")
 	private String createdDate;
 	
-	@JsonIgnore
+	@JsonProperty("STATUS")
 	private String status;
 	
 	public Long getId() {
