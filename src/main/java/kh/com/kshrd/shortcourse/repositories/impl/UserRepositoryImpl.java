@@ -24,7 +24,7 @@ public class UserRepositoryImpl implements UserRepository{
 		String sql = "SELECT id, "
 					+ "		 email, "
 					+ "		 role, "
-					+ "		 created_date, "
+					+ "		 TO_CHAR(TO_TIMESTAMP(created_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MI:SS') AS created_date, "
 					+ "		 status "
 					+ "FROM users "
 					+ "WHERE status = ? "
@@ -70,6 +70,7 @@ public class UserRepositoryImpl implements UserRepository{
 	public User findOne(String status, Long id) throws SQLException{
 		String sql = "SELECT id, "
 				+ "		 email, "
+				+ "		 password, "
 				+ "		 role, "
 				+ "		 created_date, "
 				+ "		 status "
@@ -90,6 +91,7 @@ public class UserRepositoryImpl implements UserRepository{
 					user.setRole(rs.getString("role"));
 					user.setCreatedDate(rs.getString("created_date"));
 					user.setStatus(rs.getString("status"));
+					user.setPassword(rs.getString("password"));
 					return user;
 				}
 			});

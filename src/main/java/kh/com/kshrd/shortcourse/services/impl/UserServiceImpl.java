@@ -91,6 +91,8 @@ public class UserServiceImpl implements UserService{
 				if(userId > 0){
 					return userId;
 				}
+			}else{
+				return 0L;
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
