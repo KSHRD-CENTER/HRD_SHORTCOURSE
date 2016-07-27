@@ -94,12 +94,11 @@ $(function(){
 		
 		registration.addNewRegistration(data, function(response){
 			if(response.CODE=="0000"){
-				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
-				$("#ALERT").trigger("click");
+				$("#MESSAGE").html(response.MESSAGE);
 			}else{
-				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
-				$("#ALERT").trigger("click");
+				$("#MESSAGE").html(response.MESSAGE);
 			}
+			$("#modalMessage").modal("show");
 		});
 	});
 });
