@@ -70,7 +70,7 @@ users.deleteUser = function(id, callback){
 	});
 }
 
-users.getUsers = function(id, callback){
+users.getUser = function(id, callback){
 	$.ajax({ 
 	    url: "/v1/api/admin/users/"+id,
 	    type: 'GET',
@@ -90,7 +90,7 @@ users.getUsers = function(id, callback){
 	});
 }
 
-users.updateUsers = function(user, callback){
+users.updateUser = function(user, callback){
 	$.ajax({ 
 	    url: "/v1/api/admin/users",
 	    type: 'PUT',

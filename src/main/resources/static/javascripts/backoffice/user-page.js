@@ -78,7 +78,7 @@ $(function() {
     	currentPage = page;
     	userPages.findAll();
     }); 
-	/*
+	
 	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
 	$("#SELECT_PER_PAGE").change(function(){
 		$("#limitPage").html($("#SELECT_PER_PAGE").val());
@@ -86,37 +86,24 @@ $(function() {
 		userPages.findAll();
 	});
 	
-	$("#SELECT_COURSETYPE").change(function(){
-		checkPagination = true;
-		userPages.findAll();
-	});
-	//TODO: LOADING THE COURSE TYPE TO COMBO BOX
-	courseType.findAll(function(response){
-		$("#selectCourseType").html("<option value=''>Choose Course Types</option>");
-		$("#SELECT_COURSETYPE").html("<option value=''>All Course Types</option>");
-		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSETYPE");
-		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#selectCourseType");
-		$(".selectpicker").selectpicker('refresh');
-	});
-	
 	$("#btnSave").click(function(){
 		var data = {
-				"NAME": $("#txtName").val(),
-				"COURSE_TYPE": $("#selectCourseType").val(),
-				"IS_DEFAULT": $("#txtDefault").val(),
-				"STATUS" 	: $('input[name=radioStatus]:checked').val()
+				"EMAIL": $("#txtEmail").val(),
+				"PASSWORD": $("#txtPassword").val(),
+				"ROLE": $("#selectRole").val(),
 		};
-		generation.addGeneration(data, function(response){
+		users.addUser(data, function(response){
 			if(response.CODE=="0000"){
-				$("#txtName").val("");
-				$("#txtDefault").val("");
-				$("#modalAddNewGeneration").attr("data-toastr-notification", response.MESSAGE);
-				$("#modalAddNewGeneration").trigger("click");
+				$("#txtEmail").val("");
+				$("#txtPassword").val("");
+				$("#txtConfirmPassword").val("");
+				$("#modalAddNewUser").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewUser").trigger("click");
 				checkPagination = true;
 				userPages.findAll();
 			}else{
-				$("#modalAddNewGeneration").attr("data-toastr-notification", response.MESSAGE);
-				$("#modalAddNewGeneration").trigger("click");
+				$("#modalAddNewUser").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewUser").trigger("click");
 			}
 		});
 	});
@@ -125,7 +112,6 @@ $(function() {
 		checkPagination = true;
 		currentPage = 1;
 		userPages.findAll();
-		console.log('s');
 	});
 	
 	var id = 0;
@@ -133,14 +119,48 @@ $(function() {
 		id = $(this).parents("tr").data("id");
 		$("#btnSave").hide();
 		$("#btnSaveUpdate").show();
-		generation.getGeneration(id, function(response){
-			$("#txtName").val(response.DATA.NAME);
-			$("#txtDefault").val(response.DATA.IS_DEFAULT);
-			$("#selectCourseType").val(response.DATA.COURSE_TYPE.ID);
+		$("#status").show();
+		$("#password").hide();
+		$("#cPassword").hide();
+		users.getUser(id, function(response){
+			$("#txtEmail").val(response.DATA.EMAIL);
+			$("#selectRole").val(response.DATA.ROLE);
 			$(".selectpicker").selectpicker('refresh');
 			$("#radioer").val(response.DATA.STATUS);
-			$("#modalAddNewGeneration").modal("show");
+			$("#modalAddNewUser").modal("show");
 		});
+	});
+	
+	
+	$(document).on('click', '#btnChangePassword', function(){
+		$("#modalChangePassword").modal("show");
+		id = $(this).parents("tr").data("id");
+	});
+	
+	$("#btnChange").click(function(){
+		var data = {
+				"OLD_PASSWORD": $("#txtOldPassword").val(),
+				"NEW_PASSWORD": $("#txtNewPassword").val(),
+				"ID": id
+		};
+		users.changePassword(data, function(response){
+			if(response.CODE=="0000"){
+				$("#modalAddNewUser").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewUser").trigger("click");
+				checkPagination = true;
+				userPages.findAll();
+				$("#modalChangePassword").modal("hide");
+			}else if(response.CODE=="9999"){
+				$("#modalAlert").modal("show");
+				return;
+			}else{
+				$("#modalAddNewUser").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewUser").trigger("click");
+			}
+		});
+		$("#txtOldPassword").val("");
+		$("#txtNewPassword").val("");
+		$("#txtConfirm-Password").val("");
 	});
 	
 	$(document).on('click', '#btnDelete', function(){
@@ -149,15 +169,15 @@ $(function() {
 	});
 	
 	$("#btnOk").click(function(){
-		generation.deleteGeneration(id, function(response){
+		users.deleteUser(id, function(response){
 			if(response.CODE=="0000"){
-				$("#modalAddNewGeneration").attr("data-toastr-notification", response.MESSAGE);
-				$("#modalAddNewGeneration").trigger("click");
+				$("#modalAddNewUser").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewUser").trigger("click");
 				checkPagination = true;
 				userPages.findAll();
 			}else{
-				$("#modalAddNewGeneration").attr("data-toastr-notification", response.MESSAGE);
-				$("#modalAddNewGeneration").trigger("click");
+				$("#modalAddNewUser").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewUser").trigger("click");
 			}
 		});
 		$("#modalMessage").modal("hide");
@@ -166,28 +186,30 @@ $(function() {
 	$("#btnRegister").click(function(){
 		$("#btnSaveUpdate").hide();
 		$("#btnSave").show();
+		$("#status").hide();
+		$("#password").show();
+		$("#cPassword").show();
 	});
 	
 	$("#btnSaveUpdate").click(function(){
 		var data = {
-				"NAME": $("#txtName").val(),
-				"COURSE_TYPE": $("#selectCourseType").val(),
-				"IS_DEFAULT": $("#txtDefault").val(),
+				"EMAIL": $("#txtEmail").val(),
+				"ROLE": $("#selectRole").val(),
 				"STATUS" 	: $('input[name=radioStatus]:checked').val(),
 				"ID"		: id
 		};
-		generation.updateGeneration(data, function(response){
+		users.updateUser(data, function(response){
 			if(response.CODE=="0000"){
-				$("#txtName").val("");
-				$("#txtDefault").val("");
-				$("#modalAddNewGeneration").attr("data-toastr-notification", response.MESSAGE);
-				$("#modalAddNewGeneration").trigger("click");
+				$("#txtEmail").val("");
+				$("#selectRole").val("DEFAULT");
+				$("#modalAddNewUser").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewUser").trigger("click");
 				checkPagination = true;
 				userPages.findAll();
 			}else{
-				$("#modalAddNewGeneration").attr("data-toastr-notification", response.MESSAGE);
-				$("#modalAddNewGeneration").trigger("click");
+				$("#modalAddNewUser").attr("data-toastr-notification", response.MESSAGE);
+				$("#modalAddNewUser").trigger("click");
 			}
 		});
-	});*/
+	});
 });

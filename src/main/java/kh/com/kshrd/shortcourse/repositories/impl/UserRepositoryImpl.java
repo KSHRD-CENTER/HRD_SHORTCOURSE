@@ -29,6 +29,7 @@ public class UserRepositoryImpl implements UserRepository{
 					+ "FROM users "
 					+ "WHERE status = ? "
 					+ "AND email LIKE ? "
+					+ "ORDER BY 1 DESC "
 					+ "LIMIT ? "
 					+ "OFFSET ?";
 		return jdbcTemplate.query(

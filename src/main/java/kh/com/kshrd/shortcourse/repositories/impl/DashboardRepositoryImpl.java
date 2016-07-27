@@ -102,11 +102,11 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 					+ "AND C.id::TEXT LIKE ? "
 					+ "AND LOWER(C.course) LIKE LOWER(?) "
 					+ "ORDER BY 1, 4 DESC "
-					+ "LIMIT ? "
-					+ "OFFSET ? "
 					+ ") A "
 					+ "GROUP BY 1,2,3,4,5 "
-					+ "ORDER BY 1";
+					+ "ORDER BY 1 "
+					+ "LIMIT ? "
+					+ "OFFSET ? ";
 		return jdbcTemplate.query(
 				sql,
 				new Object[]{
@@ -140,7 +140,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 	}
 	
 	private Long countRecord(DashboardFilter filter){
-		String sql = "SELECT COUNT(PH.id) "
+		String sql = "SELECT COUNT(DISTINCT PH.student_details_id) "
 				+ "FROM payment_histories PH "
 				+ "INNER JOIN student_details SD ON PH.student_details_id = SD.student_details_id "
 				+ "INNER JOIN students S ON SD.student_id = S. ID "
