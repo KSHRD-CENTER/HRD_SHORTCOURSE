@@ -119,11 +119,31 @@ public class RestUserController {
 	public Response changePassword(@Valid @RequestBody UserForm.ChangePasswordForm changePasswordForm){
 		Response response = new Response();
 		try{
-			System.out.println("============> "+changePasswordForm);
 			if(userService.changePassword(changePasswordForm.getOldPassword(), 
 										  passwordEncoder.encode(changePasswordForm.getNewPassword()), 
 										  changePasswordForm.getId()) > 0){
 				response.setCode(StatusCode.SUCCESS);
+			}else{
+				response.setCode(StatusCode.NOT_SUCCESS);
+			}
+		}catch(BusinessException e){
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ResponseRecord<User> updateUser(@Valid @RequestBody UserForm.LoginForm loginForm){
+		ResponseRecord<User> response = new ResponseRecord<User>();
+		try{
+			User user = new User();
+			user.setEmail(loginForm.getEmail());
+			user.setPassword(loginForm.getPassword());
+			user.setStatus("1");
+			User u = userService.login(user);
+			if(u != null){
+				response.setCode(StatusCode.SUCCESS);
+				response.setData(u);
 			}else{
 				response.setCode(StatusCode.NOT_SUCCESS);
 			}

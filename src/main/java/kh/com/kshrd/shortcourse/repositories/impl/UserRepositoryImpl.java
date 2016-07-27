@@ -20,38 +20,43 @@ public class UserRepositoryImpl implements UserRepository{
 	
 	@Override
 	public List<User> findAll(UserFilter filter, Pagination pagination)  throws SQLException{
-		pagination.setTotalCount(this.count(filter));
-		String sql = "SELECT id, "
-					+ "		 email, "
-					+ "		 role, "
-					+ "		 TO_CHAR(TO_TIMESTAMP(created_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MI:SS') AS created_date, "
-					+ "		 status "
-					+ "FROM users "
-					+ "WHERE status = ? "
-					+ "AND email LIKE ? "
-					+ "ORDER BY 1 DESC "
-					+ "LIMIT ? "
-					+ "OFFSET ?";
-		return jdbcTemplate.query(
-				sql,
-				new Object[]{
-						filter.getStatus(),
-						"%"+filter.getName()+"%",
-						pagination.getLimit(), 
-						pagination.offset()
-				},
-				new RowMapper<User>(){
-			@Override
-			public User mapRow(ResultSet rs, int rowNum) throws SQLException{
-				User user = new User();
-				user.setId(rs.getLong("id"));
-				user.setEmail(rs.getString("email"));
-				user.setRole(rs.getString("role"));
-				user.setCreatedDate(rs.getString("created_date"));
-				user.setStatus(rs.getString("status"));
-				return user;
-			}
-		});
+		try{
+			pagination.setTotalCount(this.count(filter));
+			String sql = "SELECT id, "
+						+ "		 email, "
+						+ "		 role, "
+						+ "		 TO_CHAR(TO_TIMESTAMP(created_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MI:SS') AS created_date, "
+						+ "		 status "
+						+ "FROM users "
+						+ "WHERE status = ? "
+						+ "AND email LIKE ? "
+						+ "ORDER BY 1 DESC "
+						+ "LIMIT ? "
+						+ "OFFSET ?";
+			return jdbcTemplate.query(
+					sql,
+					new Object[]{
+							filter.getStatus(),
+							"%"+filter.getName()+"%",
+							pagination.getLimit(), 
+							pagination.offset()
+					},
+					new RowMapper<User>(){
+				@Override
+				public User mapRow(ResultSet rs, int rowNum) throws SQLException{
+					User user = new User();
+					user.setId(rs.getLong("id"));
+					user.setEmail(rs.getString("email"));
+					user.setRole(rs.getString("role"));
+					user.setCreatedDate(rs.getString("created_date"));
+					user.setStatus(rs.getString("status"));
+					return user;
+				}
+			});
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private Long count(UserFilter filter){
@@ -69,33 +74,38 @@ public class UserRepositoryImpl implements UserRepository{
 	
 	@Override
 	public User findOne(String status, Long id) throws SQLException{
-		String sql = "SELECT id, "
-				+ "		 email, "
-				+ "		 password, "
-				+ "		 role, "
-				+ "		 created_date, "
-				+ "		 status "
-				+ "FROM users "
-				+ "WHERE status = ? "
-				+ "AND id = ?";
-	return jdbcTemplate.queryForObject(
-			sql, 
-			new Object[]{
-				status,
-				id
-			}, new RowMapper<User>(){
-				@Override
-				public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-					User user = new User();
-					user.setId(rs.getLong("id"));
-					user.setEmail(rs.getString("email"));
-					user.setRole(rs.getString("role"));
-					user.setCreatedDate(rs.getString("created_date"));
-					user.setStatus(rs.getString("status"));
-					user.setPassword(rs.getString("password"));
-					return user;
-				}
-			});
+		try{
+			String sql = "SELECT id, "
+					+ "		 email, "
+					+ "		 password, "
+					+ "		 role, "
+					+ "		 created_date, "
+					+ "		 status "
+					+ "FROM users "
+					+ "WHERE status = ? "
+					+ "AND id = ?";
+			return jdbcTemplate.queryForObject(
+				sql, 
+				new Object[]{
+					status,
+					id
+				}, new RowMapper<User>(){
+					@Override
+					public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+						User user = new User();
+						user.setId(rs.getLong("id"));
+						user.setEmail(rs.getString("email"));
+						user.setRole(rs.getString("role"));
+						user.setCreatedDate(rs.getString("created_date"));
+						user.setStatus(rs.getString("status"));
+						user.setPassword(rs.getString("password"));
+						return user;
+					}
+				});
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -189,5 +199,69 @@ public class UserRepositoryImpl implements UserRepository{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public User findByEmailAndPasswordAndStatus(User user) {
+		try{
+			String sql = "SELECT id, "
+						+ "		 email, "
+						+ "		 role, "
+						+ "		 status,"
+						+ "		 password "
+						+ "FROM users "
+						+ "WHERE status = ? "
+						+ "AND email = ? "
+						+ "AND password = ?";
+			return jdbcTemplate.queryForObject(
+				sql, 
+				new Object[]{
+					user.getStatus(),
+					user.getEmail(),
+					user.getPassword()
+				}, new RowMapper<User>(){
+					@Override
+					public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+						User user = new User();
+						user.setId(rs.getLong("id"));
+						user.setEmail(rs.getString("email"));
+						user.setRole(rs.getString("role"));
+						user.setStatus(rs.getString("status"));
+						user.setPassword(rs.getString("password"));
+						return user;
+					}
+				});
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public User findByEmail(String status, String email) throws SQLException{
+		try{
+			String sql = "SELECT email, "
+						+ "		 password "
+						+ "FROM users "
+						+ "WHERE status = ? "
+						+ "AND email = ? ";
+			return jdbcTemplate.queryForObject(
+				sql, 
+				new Object[]{
+					status,
+					email
+				}, new RowMapper<User>(){
+					@Override
+					public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+						User user = new User();
+						user.setEmail(rs.getString("email"));
+						user.setPassword(rs.getString("password"));
+						return user;
+					}
+				});
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

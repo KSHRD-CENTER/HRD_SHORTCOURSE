@@ -14,4 +14,6 @@ public interface UserService {
 	public boolean deleteUser(int id) throws BusinessException;
 	public Long updateUser(User user) throws BusinessException;
 	public Long changePassword(String oldPassword, String newPassword, Long id) throws BusinessException;
+	public User login(User user) throws BusinessException;
+	public User getUserByEmail(String status, String email) throws BusinessException;
 }

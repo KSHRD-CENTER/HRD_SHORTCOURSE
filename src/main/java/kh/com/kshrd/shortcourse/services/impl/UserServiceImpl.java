@@ -100,4 +100,34 @@ public class UserServiceImpl implements UserService{
 		}
 		return null;
 	}
+
+	@Override
+	public User login(User user) throws BusinessException{
+		try{
+			User u = userRepository.findByEmail("1", user.getEmail());
+			if(u != null){
+				if(passwordEncoder.matches(user.getPassword(), u.getPassword())){
+					user.setPassword(u.getPassword());
+					return userRepository.findByEmailAndPasswordAndStatus(user);
+				}else{
+					return null;
+				}
+			}else{
+				return null;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
+	@Override
+	public User getUserByEmail(String status, String email) throws BusinessException{
+		try{
+			return userRepository.findByEmail(status, email);
+		}catch(SQLException e){
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
 }
