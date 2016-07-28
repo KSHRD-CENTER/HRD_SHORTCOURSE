@@ -193,7 +193,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 												  + "status, "
 												  + "registered_by, "
 												  + "paid) "
-						 + "VALUES(?, ?, ?, ?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MMSS'), '1', ?, ?);";
+						 + "VALUES(?, ?, ?, ?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MMSS'), ?, ?, ?);";
 			int results[]= jdbcTemplate.batchUpdate(sql,new BatchPreparedStatementSetter() {
 				    @Override
 				    public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -202,8 +202,9 @@ public class StudentRepositoryImpl implements StudentRepository{
 				    	ps.setLong(3, studentDetails.get(i).getShift().getId());
 				    	ps.setDouble(4, studentDetails.get(i).getCost());
 				    	ps.setDouble(5, studentDetails.get(i).getDiscount());
-				    	ps.setLong(6, studentDetails.get(i).getRegisteredBy().getId());
-				    	ps.setDouble(7, studentDetails.get(i).getPaidAmount());
+				    	ps.setString(6, studentDetails.get(i).getStatus());
+				    	ps.setLong(7, studentDetails.get(i).getRegisteredBy().getId());
+				    	ps.setDouble(8, studentDetails.get(i).getPaidAmount());
 				    }
 				    
 				    @Override

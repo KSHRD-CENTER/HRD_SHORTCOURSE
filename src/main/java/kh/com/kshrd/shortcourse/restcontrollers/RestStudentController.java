@@ -97,6 +97,7 @@ public class RestStudentController {
 				studentDetails.setCost(courseDetails.getCostPrice());
 				studentDetails.setDiscount(courseDetails.getDiscount());
 				studentDetails.setPaidAmount(courseDetails.getPaid());
+				studentDetails.setStatus(form.getStatus());
 				
 				Course course = new Course();
 				course.setId(courseDetails.getCourse());
