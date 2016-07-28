@@ -37,6 +37,8 @@ $(function() {
 		    	if(response.CODE=="0000"){
 		    		if(response.DATA.length > 0){
 		    			$("#STUDENT").html("");
+		    			$("#totalRecords").html(response.PAGINATION.TOTAL_COUNT);
+		    			console.log(response);
 		    			$.each(response.DATA, function(key,value){
 		    				response.DATA[key]["NO"] = (key+1)+((response.PAGINATION.PAGE-1) * response.PAGINATION.LIMIT);
 						});
@@ -210,6 +212,7 @@ $(function() {
 	
 	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
 	$("#SELECT_PER_PAGE").change(function(){
+		$("#limitPage").html($("#SELECT_PER_PAGE").val());
 		checkPagination = true;
 		student.findAll();
 	});
