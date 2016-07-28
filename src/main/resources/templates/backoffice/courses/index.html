@@ -65,7 +65,14 @@
 					</div><!--.col-->
 					<div class="col-sm-6">
 						<ol class="breadcrumb">
-							<li><a href="#" class="active"><i class="ion-home"></i> Homepage</a></li>
+							<li>
+								<a href="#" class="active"><i class="glyphicon glyphicon-user"></i> 
+									WELCOME TO: <span th:if="${#httpServletRequest.remoteUser != null}">
+	                  								<strong><span class="hidden-xs" th:text="${#httpServletRequest.remoteUser}"></span></strong>
+												</span>
+								</a>
+							</li>
+							<li><span class="btn btn-danger"><a th:href="@{/administrator/logout}">Logout</a></span></li>
 						</ol>
 					</div><!--.col-->
 				</div><!--.row-->

@@ -3,6 +3,8 @@ package kh.com.kshrd.shortcourse.restcontrollers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -144,6 +146,9 @@ public class RestUserController {
 			if(u != null){
 				response.setCode(StatusCode.SUCCESS);
 				response.setData(u);
+				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(u, u.getPassword(), u.getAuthorities());
+				auth.setDetails(u);
+				SecurityContextHolder.getContext().setAuthentication(auth);
 			}else{
 				response.setCode(StatusCode.NOT_SUCCESS);
 			}

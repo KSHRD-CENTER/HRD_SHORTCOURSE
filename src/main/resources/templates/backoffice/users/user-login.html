@@ -48,27 +48,43 @@
 					<div class="form-group">
 						<div class="inputer">
 							<div class="input-wrapper">
-								<input type="email" class="form-control" placeholder="Enter your email address">
+								<input type="email" class="form-control" id="txtEmail" placeholder="Enter your email address">
 							</div>
 						</div>
 					</div><!--.form-group-->
 					<div class="form-group">
 						<div class="inputer">
 							<div class="input-wrapper">
-								<input type="password" class="form-control" placeholder="Enter your password">
+								<input type="password" id="txtPassword" class="form-control" placeholder="Enter your password">
 							</div>
 						</div>
 					</div><!--.form-group-->
 					<div class="form-buttons clearfix">
 						<label class="pull-left"><input type="checkbox" name="remember" value="1"> Remember me</label>
-						<button type="submit" class="btn btn-success pull-right">Login</button>
+						<button type="button" id="btnLogin" class="btn btn-success pull-right">Login</button>
 					</div><!--.form-buttons-->
 	
 				</div><!--#login.panel-body-->
 			</form>
 		</div><!--.blur-content-->
 	</div><!--.login-screen-->
-
+	<!-- BEGIN ALERT MODAL -->
+		<div class="modal fade in" id="modalMessage" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog modal-md">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="TITLE">MESSAGE</h4>
+					</div>
+					<div class="modal-body">
+						<h6 id="MESSAGE"><strong>USERNAME AND PASSWORD ARE NOT AVAILABLE</strong></h6>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">OK</button>
+					</div>
+				</div><!--.modal-content-->
+			</div><!--.modal-dialog-->
+		</div>
+		<!-- END ALERT MODAL -->
 	<div class="bg-blur dark">
 		<div class="overlay"></div><!--.overlay-->
 	</div><!--.bg-blur-->
@@ -94,5 +110,6 @@
 	<script src="/static/assets/globals/js/pleasure.js"></script>
 	<!-- ADMIN 1 Layout Functions -->
 	<script src="/static/assets/admin1/js/layout.js"></script>
+    <script type="text/javascript" th:src="@{/static/javascripts/backoffice/login.js}"></script>
 </body>
 </html>

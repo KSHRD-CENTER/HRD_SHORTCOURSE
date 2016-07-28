@@ -30,14 +30,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		//http.authorizeRequests().antMatchers("/administrator/**").hasAnyRole("ADMIN");
-		http.authorizeRequests().anyRequest().permitAll();
-		
+		http.authorizeRequests().antMatchers("/administrator/**").hasAnyRole("ADMIN");
 		http.csrf().disable();
-		
 		http.formLogin()
 			.loginPage("/administrator/login")
 			.permitAll();
+		
+		http.logout().logoutUrl("/administrator/logout");
 	}
 	
 	@Bean

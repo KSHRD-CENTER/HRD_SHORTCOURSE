@@ -1,10 +1,17 @@
 package kh.com.kshrd.shortcourse.models;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class User implements Serializable{
+public class User implements Serializable, UserDetails{
 	/**
 	 * 
 	 */
@@ -68,5 +75,32 @@ public class User implements Serializable{
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + ", role=" + role + ", createdDate="
 				+ createdDate + ", status=" + status + "]";
+	}
+	@Override
+	@JsonProperty("AUTHORITIES")
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+		return authorities;
+	}
+	@Override
+	public String getUsername() {
+		return email;
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+	@Override
+	public boolean isEnabled() {
+		return (status.equals("1")?true:false);
 	}
 }

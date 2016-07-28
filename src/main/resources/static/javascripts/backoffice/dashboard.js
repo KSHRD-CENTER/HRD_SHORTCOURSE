@@ -170,7 +170,12 @@ $(function() {
 			$(".selectpicker").selectpicker('refresh');
 		});
 	});
-	
+	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
+	$("#SELECT_PER_PAGE").change(function(){
+		$("#limitPage").html($("#SELECT_PER_PAGE").val());
+		checkPagination = true;
+    	dashboards.findAll();
+	});
 	$("#selectGeneration").change(function(){
 		generation.findAllCoursesByGenerationId($(this).val(), function(response){
 			$("#selectCourse").html("<option value=''>SELECT COURSES</option>");

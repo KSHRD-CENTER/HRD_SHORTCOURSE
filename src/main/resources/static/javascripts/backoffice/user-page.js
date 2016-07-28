@@ -21,7 +21,7 @@ $(function() {
 		    data:{
 		    	"limit" : $("#SELECT_PER_PAGE").val(),
 		    	"page" : currentPage,
-		    	"name" : $("#txtSearch").val(),
+		    	"name" : $("#txtSearch").val()
 		    },
 		    beforeSend: function(xhr) {
 	            xhr.setRequestHeader("Accept", "application/json");
@@ -81,6 +81,7 @@ $(function() {
 	
 	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
 	$("#SELECT_PER_PAGE").change(function(){
+		console.log(1);
 		$("#limitPage").html($("#SELECT_PER_PAGE").val());
 		checkPagination = true;
 		userPages.findAll();
