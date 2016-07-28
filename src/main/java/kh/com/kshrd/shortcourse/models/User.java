@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User implements Serializable, UserDetails{
@@ -32,7 +33,8 @@ public class User implements Serializable, UserDetails{
 	@JsonProperty("CREATED_DATE")
 	private String createdDate;
 	
-	@JsonProperty("STATUS")
+	//@JsonProperty("STATUS")
+	@JsonIgnore
 	private String status;
 	
 	public Long getId() {
@@ -100,7 +102,8 @@ public class User implements Serializable, UserDetails{
 		return true;
 	}
 	@Override
+	@JsonIgnore
 	public boolean isEnabled() {
-		return (status.equals("1")?true:false);
+		return (status.equals("1") ? true:false);
 	}
 }
