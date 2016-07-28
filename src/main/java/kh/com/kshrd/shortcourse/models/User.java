@@ -33,8 +33,7 @@ public class User implements Serializable, UserDetails{
 	@JsonProperty("CREATED_DATE")
 	private String createdDate;
 	
-	//@JsonProperty("STATUS")
-	@JsonIgnore
+	@JsonProperty("STATUS")
 	private String status;
 	
 	public Long getId() {
