@@ -24,7 +24,7 @@ public class Student {
 	private String gender;
 	
 	@JsonProperty("UNIVERSITY")
-	private Long university;
+	private String university;
 	
 	@JsonProperty("YEAR")
 	private String year;
@@ -90,10 +90,10 @@ public class Student {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public Long getUniversity() {
+	public String getUniversity() {
 		return university;
 	}
-	public void setUniversity(Long university) {
+	public void setUniversity(String university) {
 		this.university = university;
 	}
 	public String getYear() {

@@ -99,7 +99,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 					student.setName(rs.getString("name"));
 					student.setEmail(rs.getString("email"));
 					student.setGender(rs.getString("gender"));
-					student.setUniversity(rs.getLong("university"));
+					student.setUniversity(rs.getString("university"));
 					student.setTelephone(rs.getString("telephone"));
 					student.setAddress(rs.getString("address"));
 					
@@ -291,7 +291,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 					student.setName(rs.getString("name"));
 					student.setEmail(rs.getString("email"));
 					student.setGender(rs.getString("gender"));
-					student.setUniversity(rs.getLong("university"));
+					student.setUniversity(rs.getString("university"));
 					student.setTelephone(rs.getString("telephone"));
 					student.setAddress(rs.getString("address"));
 					

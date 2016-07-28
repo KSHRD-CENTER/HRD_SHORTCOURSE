@@ -16,7 +16,7 @@ public class StudentForm {
 		@JsonProperty("GENDER")
 		private String gender;
 		@JsonProperty("UNIVERSITY")
-		private Long university;
+		private String university;
 		@JsonProperty("YEAR")
 		private String year;
 		@JsonProperty("ADDRESS")
@@ -50,10 +50,10 @@ public class StudentForm {
 		public void setGender(String gender) {
 			this.gender = gender;
 		}
-		public Long getUniversity() {
+		public String getUniversity() {
 			return university;
 		}
-		public void setUniversity(Long university) {
+		public void setUniversity(String university) {
 			this.university = university;
 		}
 		public String getYear() {

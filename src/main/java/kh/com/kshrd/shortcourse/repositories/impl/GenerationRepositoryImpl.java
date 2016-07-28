@@ -36,7 +36,7 @@ public class GenerationRepositoryImpl implements GenerationRepository {
 				   + "WHERE A.status != '0' "
 				   + "AND LOWER(A.name) LIKE LOWER(?) "
 				   + "AND LOWER(A.course_type::TEXT) LIKE ? "
-				   + "ORDER BY A.id DESC "
+				   + "ORDER BY B.id, A.name DESC "
 				   + "LIMIT ? "
 				   + "OFFSET ?";
 		return jdbcTemplate.query(sql,
