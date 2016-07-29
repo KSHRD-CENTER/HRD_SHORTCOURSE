@@ -127,9 +127,11 @@ public class StudentRepositoryImpl implements StudentRepository{
 
 	@Override
 	public Long count(StudentFilter filter) throws SQLException {
+		
+		System.out.println("FILTERING... " + filter);
 		String sql = "SELECT COUNT(A.id) " +
 					 "FROM students A " +
-					 "LEFT JOIN student_details B ON A.id = B.student_id AND B.status = '1' " + 
+					 "LEFT JOIN student_details B ON A.id = B.student_id " + 
 					 "LEFT JOIN shifts C ON B.shift = C.id AND C.status = '1' " +
 					 "LEFT JOIN courses D ON B.course_id = D.id AND D.status = '1' " +
 					 "LEFT JOIN generations E ON D.generation = E.id AND E.status = '1' " +
