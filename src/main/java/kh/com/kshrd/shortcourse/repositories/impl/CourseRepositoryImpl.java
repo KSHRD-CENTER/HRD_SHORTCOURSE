@@ -416,7 +416,10 @@ public class CourseRepositoryImpl implements CourseRepository{
 				   + "	   , A.course " 
 				   + "	   , A.cost "
 				   + "FROM courses A "
-				   + "WHERE A.generation IN (SELECT getDefaultGenerationByCourseTypeId(?)) "
+				   + "WHERE A.generation IN (SELECT id "
+				   + "						 FROM generations " 
+		           + "						 WHERE course_type= ? "  
+	               + " 					     AND is_default = '1') "
 				   + "AND A.status = '1' ";
 		return jdbcTemplate.query(
 				sql,
