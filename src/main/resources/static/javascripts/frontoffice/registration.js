@@ -73,6 +73,54 @@ $(function(){
 	//TODO: EVENT WHEN CLICK ON THE REGISTER
 	$("#btnRegister").click(function(){
 		var courses = [];
+		if($("#SELECT_COURSE").val()==""){
+			$("#MESSAGE").html("PLEASE SELECT THE COURSE YOU WANT TO STUDY.");
+			$("#modalMessage").modal("show");
+			return;
+		}
+		
+		if($("#SELECT_SHIFT").val()==""){
+			$("#MESSAGE").html("PLEASE SELECT THE SHIFT YOU WANT TO STUDY.");
+			$("#modalMessage").modal("show");
+			return;
+		}
+		
+		if($("#txtStudentName").val()==""){
+			$("#MESSAGE").html("PLEASE ENTER THE STUDENT NAME.");
+			$("#modalMessage").modal("show");
+			return;
+		}
+		
+		if($("#SELECT_GENDER").val()==""){
+			$("#MESSAGE").html("PLEASE CHOOSE THE GENDER.");
+			$("#modalMessage").modal("show");
+			return;
+		}
+		if($("#txtTelephone").val()==""){
+			$("#MESSAGE").html("PLEASE ENTER YOUR PHONE NUMBER");
+			$("#modalMessage").modal("show");
+			return;
+		}
+		if($("#txtEmail").val()==""){
+			$("#MESSAGE").html("PLEASE ENTER YOUR EMAIL");
+			$("#modalMessage").modal("show");
+			return;
+		}
+		if($("#textAreaAddress").val()==""){
+			$("#MESSAGE").html("PLEASE ENTER YOUR ADDRESS");
+			$("#modalMessage").modal("show");
+			return;
+		}
+		if($("#SELECT_UNIVERSITY").val()==""){
+			$("#MESSAGE").html("PLEASE CHOOSE YOUR UNIVERSITY.");
+			$("#modalMessage").modal("show");
+			return;
+		}
+		if($("#SELECT_YEAR").val()==""){
+			$("#MESSAGE").html("PLEASE CHOOSE YEAR THAT YOU ARE STUDYING.");
+			$("#modalMessage").modal("show");
+			return;
+		}
 		courses.push({
 			"COURSE" 		: $("#SELECT_COURSE").val(),
 			"SHIFT" 		: $("#SELECT_SHIFT").val(),
