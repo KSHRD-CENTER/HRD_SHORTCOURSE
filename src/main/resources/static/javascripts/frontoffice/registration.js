@@ -14,7 +14,7 @@ $(function(){
 	//TODO: TO REGISTER NEW STUDENT 
 	registration.addNewRegistration = function(data, fnCallback){
 		$.ajax({ 
-		    url: "/v1/api/admin/students", 
+		    url: "/v1/api/admin/students/shortcourse", 
 		    type: 'POST', 
 		    dataType: 'JSON', 
 		    data : JSON.stringify(data),
@@ -95,6 +95,7 @@ $(function(){
 		registration.addNewRegistration(data, function(response){
 			if(response.CODE=="0000"){
 				$("#MESSAGE").html(response.MESSAGE);
+				location.href = "/student-list";
 			}else{
 				$("#MESSAGE").html(response.MESSAGE);
 			}

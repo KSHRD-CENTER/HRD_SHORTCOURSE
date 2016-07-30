@@ -64,7 +64,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 						 "AND E.id::TEXT LIKE ? " +
 						 "AND C.id::TEXT LIKE ? " +
 						 "AND D.id::TEXT LIKE ? " +
-						 "ORDER BY 9 DESC " +
+						 "ORDER BY 1 DESC " +
 						 "LIMIT ? " +
 						 "OFFSET ?"; 
 			return jdbcTemplate.query(

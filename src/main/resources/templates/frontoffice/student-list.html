@@ -52,7 +52,7 @@
 			<div class="animated-selector">
 				<ul class="navigation">
 					<li data-anchor="slide1" data-nav-link class="khmerfont"><a th:href="@{/}">ការចុះឈ្មោះសិក្សា</a></li>
-					<li data-anchor="slide2" data-nav-link class="khmerfont"><a th:href="@{/student-list}">បញ្ជីសិស្សចុះឈ្មោះរូច</a></li>
+					<li data-anchor="slide2" data-nav-link class="khmerfont"><a th:href="@{/student-list}">បញ្ជីសិស្សដែលបានចុះឈ្មោះរូច</a></li>
 					<!-- <li data-anchor="slide4" data-nav-link>ABOUT OUR INSTRUCTORS</li> -->
 				</ul>
 				<div class="selector"></div>
@@ -69,7 +69,7 @@
 			<div class="panel indigo" style="border: 1px solid black;">
 				<div class="panel-heading">
 					<div class="panel-title">
-						<h4 class="text-black text-center">ការចុះឈ្មោះសិក្សា</h4>
+						<h4 class="text-black text-center">បញ្ជីសិស្សដែលបានចុះឈ្មោះរូច</h4>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -80,20 +80,11 @@
 								</div>
 								<div class="row" id="ACTION">
 									<div class="col-md-8">
-										<select class="selectpicker" style="display: none;" id="SELECT_COURSETYPE">
-											<option value=''>Choose Course</option>
-											<option value="1">Pre-Course</option>
-											<option value="2">Short-Course</option>
-										</select>
 										<select class="selectpicker" style="display: none;" id="SELECT_COURSE">
 											<option value=''>All Courses</option>
-											<option value="1">iOS</option>
-											<option value="2">Android</option>
 										</select>
 										<select class="selectpicker" style="display: none;" id="SELECT_SHIFT">
 											<option value=''>All Shifts</option>
-											<option value="1">Mon-Fri (06:00PM-08:00PM)</option>
-											<option value="2">Sat-Sun (08:00AM-11:00AM)</option>
 										</select>
 									</div>
 									<div class="col-md-4">
@@ -115,10 +106,10 @@
 												<th>Student Name</th>
 												<th>Course</th>
 												<th>Shift</th>
-												<th>Status</th>
 										  	</tr>
 										</thead>
 										<tbody id="STUDENT">
+										
 										</tbody>
 									</table>
 								</div><!--.flip-scroll-->
@@ -160,25 +151,18 @@
 
 		</div><!--.container-->
 	</div><!--.footer-->
-	<script id="USER_TEMPLATE" type="text/x-jquery-tmpl">
+	<script id="STUDENT_TEMPLATE" type="text/x-jquery-tmpl">
 			<tr data-id="{{= ID}}">
-				<td></td>
-				<td><strong></strong></td>
-				<td></td>
-				<td>
-					{{if STATUS=='1'}}
-						<span class="label label-success label-as-badge">ACTIVE</span>
-					{{else}}
-						<span class="label label-danger label-as-badge">INACTIVE</span>
-					{{/if}}
-				</td>
-				<td>
-					<input type="button" class="btn btn-success btn-ripple" id="btnEdit" value="Edit"/>
-					<input type="button" class="btn btn-danger btn-ripple" id="btnDelete" value="Delete"/>
-					<input type="button" class="btn btn-primary btn-ripple" id="btnChangePassword" value="Change Password"/>
-				</td>
+				<td>{{= NO}}</td>
+				<td><strong>{{= STUDENT.NAME}}</strong></td>
+				<td>{{= COURSE.NAME}}</td>
+				<td>{{= SHIFT.NAME}}</td>
 			</tr>
-		</script>
+	</script>
+		
+   	<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
+		<option value="{{= ID}}">{{= NAME}}</option>
+	</script>
 	<!-- BEGIN ALERT MODAL -->
 	<div class="modal fade in" id="modalMessage" tabindex="-2" role="dialog" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog modal-md">
@@ -214,12 +198,11 @@
 
 	<!-- One page parallax functions and events -->
 	<script src="/static/assets/one-page-parallax/js/one-page-parallax.js"></script>
-	
-	<!-- <script type="text/javascript" th:src="@{/static/javascripts/backoffice/course-type.js}"></script>
-	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/shift.js}"></script>
-	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/generation.js}"></script>
+	<script th:src="@{/static/javascripts/libraries/jquery.bootpag.min.js}"></script>
+	<script th:src="@{/static/javascripts/libraries/jquery.bpopup.min.js}"></script>
 	<script th:src="@{/static/javascripts/libraries/jquery.tmpl.min.js}"></script>
-	<script type="text/javascript" th:src="@{/static/javascripts/frontoffice/registration.js}"></script> -->
+	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/course-type.js}"></script>
+	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/shift.js}"></script>
 	<script type="text/javascript" th:src="@{/static/javascripts/frontoffice/student-list.js}"></script>
 </body>
 </html>

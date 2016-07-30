@@ -2,7 +2,7 @@ $(function() {
 	var students = {};
 	var checkPagination = true;
 	var currentPage = 1;
-	
+	var course = {};
 	var _ctx = ($("meta[name='ctx']").attr("content")===undefined) ? "" : $("meta[name='ctx']").attr("content");
 
 	// Prepend context path to all jQuery AJAX requests
@@ -15,16 +15,17 @@ $(function() {
 	//TODO: TO FIND ALL GENERATION
 	students.findAll = function(){
 		$.ajax({ 
-		    url: "/v1/api/admin/students/", 
+		    url: "/v1/api/admin/students", 
 		    type: 'GET', 
 		    dataType: 'JSON', 
 		    data:{
 		    	"limit" : $("#SELECT_PER_PAGE").val(),
 		    	"page" : currentPage,
-		    	"name" : $("#txtSearch").val(),
-		    	"course" : $("#selectCourse").val(),
-		    	"shift" : $("#selectShift").val(),
-		    	"coursetype" : $("#selecetCourseType").val()
+		    	"courseTypeId" 	: 1,
+		    	"generationId" 	: 2,
+		    	"studentName" : $("#txtSearch").val(),
+		    	"courseId" : $("#SELECT_COURSE").val(),
+		    	"shiftId" : $("#SELECT_SHIFT").val()
 		    },
 		    beforeSend: function(xhr) {
 	            xhr.setRequestHeader("Accept", "application/json");
@@ -47,6 +48,7 @@ $(function() {
 		    			$("#STUDENT").html("<tr style='text-align:center;'><td colspan='6'>NO CONTENT</td></tr>");
 		    			$("#PAGINATION").html("");
 		    		}
+		    		console.log(response);
 		    	}
 		    },
 		    error:function(data,status,err) { 
@@ -54,7 +56,32 @@ $(function() {
 		    }
 		});			
 	};
+	
+	
+	//TODO: TO FIND ALL COURSES BY FILTERING AND PAGINATION
+	course.findAllShiftsByCourseId = function(id, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/courses/"+id+"/shifts", 
+		    type: 'GET', 
+		    dataType: 'JSON', 
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});			
+	};
+	
+	//TODO: TO INIT THE STUDENT LIST PAGE
 	students.findAll();
+	
 	//TODO: TO SET THE PAGINATION FOR THE GENERATION
 	students.setPagination = function(totalPage){
     	$('#PAGINATION').bootpag({
@@ -80,6 +107,22 @@ $(function() {
     	currentPage = page;
     	students.findAll();
     }); 
+	
+	//TODO: TO FIND ALL COURSES BY COURSE TYPE ID
+	courseType.findAllCourses(1, function(response){
+		$("#SELECT_COURSE").html("<option value=''>All Courses</option>");
+		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSE");
+		$(".selectpicker").selectpicker('refresh');
+	});
+	
+	//TODO: EVENT WHEN COURSE CHANGE
+	$("#SELECT_COURSE").change(function(){
+		course.findAllShiftsByCourseId($(this).val(), function(response){
+			$("#SELECT_SHIFT").html("<option value=''>All Shifts</option>");
+			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_SHIFT");
+			$(".selectpicker").selectpicker('refresh');
+		});
+	});
 	
 	//TODO: EVENT HANDLING ON THE PER PAGE CHANGE
 	$("#SELECT_PER_PAGE").change(function(){
