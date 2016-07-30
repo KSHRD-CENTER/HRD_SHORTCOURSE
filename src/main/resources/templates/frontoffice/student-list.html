@@ -51,8 +51,8 @@
 
 			<div class="animated-selector">
 				<ul class="navigation">
-					<li data-anchor="slide1" data-nav-link class="khmerfont">ការចុះឈ្មោះសិក្សា</li>
-					<li data-anchor="slide1" data-nav-link class="khmerfont">បញ្ជីសិស្សចុះឈ្មោះ</li>
+					<li data-anchor="slide1" data-nav-link class="khmerfont"><a th:href="@{/}">ការចុះឈ្មោះសិក្សា</a></li>
+					<li data-anchor="slide2" data-nav-link class="khmerfont"><a th:href="@{/student-list}">បញ្ជីសិស្សចុះឈ្មោះរូច</a></li>
 					<!-- <li data-anchor="slide4" data-nav-link>ABOUT OUR INSTRUCTORS</li> -->
 				</ul>
 				<div class="selector"></div>
@@ -63,7 +63,7 @@
 		</div><!--.container-->
 	</div><!--.header-->
 
-	<div class="slide" data-nav="slide1">
+	<div class="slide" data-nav="slide2">
 
 		<div class="container">
 			<div class="panel indigo" style="border: 1px solid black;">
@@ -74,135 +74,74 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-6 col-xs-12">
-							<form action="#" class="form-horizontal">
-								<div class="form-content">
-									<div class="form-group">
-										<label class="control-label col-md-3">មុខវិជ្ជាសិក្សា:</label>
-										<div class="col-md-9">
-											<select class="selectpicker" style="display: none;" id="SELECT_COURSE">
-												<option>Choose Course</option>
-											</select>
-										</div>
-									</div><!--.form-group-->
-									<div class="form-group">
-										<label class="control-label col-md-3">ម៉ោងសិក្សា:</label>
-										<div class="col-md-9">
-											<select class="selectpicker" style="display: none;" id="SELECT_SHIFT">
-												<option>Choose Shift</option>
-											</select>
-										</div>
-									</div><!--.form-group-->
-									<div class="form-group">
-										<label class="control-label col-md-3">ឈ្មោះ:</label>
-										<div class="col-md-9">
-											<div class="inputer">
-												<div class="input-wrapper">
-													<input type="text" name="" class="form-control" id="txtStudentName">
-												</div>
-											</div>
-										</div>
-									</div><!--.form-group-->
+						<div class="panel-body">
+								<div class="row" id="FILTERING">
 									
-									<div class="form-group">
-										<label class="control-label col-md-3">លេខទូរស័ព្ទ:</label>
-										<div class="col-md-9">
-											<div class="inputer">
-												<div class="input-wrapper">
-													<input type="text" name="" class="form-control" id="txtTelephone">
-												</div>
-											</div>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">អ៊ីម៉ែល:</label>
-										<div class="col-md-9">
-											<div class="inputer">
-												<div class="input-wrapper">
-													<input type="email" name="" class="form-control" id="txtEmail">
-												</div>
-											</div>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">ភេទ:</label>
-										<div class="col-md-9">
-											<select class="selectpicker" style="display: none;" id="SELECT_GENDER">
-												<option>Choose Gender</option>
-												<option value="M">Male</option>
-												<option value="F">Female</option>
-											</select>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">សាកលវិទ្យាល័យ:</label>
-										<div class="col-md-9">
-											<select class="selectpicker" style="display: none;" id="SELECT_UNIVERSITY">
-												<option>Choose University</option>
-												<option value="1">Royal University of Phnom Penh</option>
-												<option value="2">ICT</option>
-												<option value="3">Norton</option>
-												<option value="4">AEU</option>
-											</select>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">ឆ្នាំសិក្សា:</label>
-										<div class="col-md-9">
-											<select class="selectpicker" style="display: none;" id="SELECT_YEAR">
-												<option>Choose Year</option>
-												<option value="1">1st Year</option>
-												<option value="2">2nd Year</option>
-												<option value="3">3rd Year</option>
-												<option value="4">4th Year</option>
-												<option value="5">Others</option>
-											</select>
-										</div>
-									</div><!--.form-group-->
-									
-									<div class="form-group">
-										<label class="control-label col-md-3">អាសយដ្ឋាន:</label>
-										<div class="col-md-9">
-											<div class="inputer">
-												<div class="input-wrapper">
-													<textarea name="" class="form-control" id="textAreaAddress" row="2"></textarea>
-												</div>
-											</div>
-										</div>
+								</div>
+								<div class="row" id="ACTION">
+									<div class="col-md-8">
+										<select class="selectpicker" style="display: none;" id="SELECT_COURSETYPE">
+											<option value=''>Choose Course</option>
+											<option value="1">Pre-Course</option>
+											<option value="2">Short-Course</option>
+										</select>
+										<select class="selectpicker" style="display: none;" id="SELECT_COURSE">
+											<option value=''>All Courses</option>
+											<option value="1">iOS</option>
+											<option value="2">Android</option>
+										</select>
+										<select class="selectpicker" style="display: none;" id="SELECT_SHIFT">
+											<option value=''>All Shifts</option>
+											<option value="1">Mon-Fri (06:00PM-08:00PM)</option>
+											<option value="2">Sat-Sun (08:00AM-11:00AM)</option>
+										</select>
 									</div>
-
-									<div class="form-group">
-										<label class="control-label col-md-3">ផ្តល់មតិបន្ថែម:</label>
-										<div class="col-md-9">
-											<div class="inputer">
-												<div class="input-wrapper">
-													<textarea name="" class="form-control" id="textAreaComment" row="2"></textarea>
-												</div>
+									<div class="col-md-4">
+										<div class="inputer col-md-8">
+											<div class="input-wrapper">
+												<input type="text" class="form-control" id="txtSearch" placeholder="Searching">
 											</div>
 										</div>
-									</div>
-									<div class="form-group">
-										<input type="button" id="btnRegister" class="btn btn-indigo pull-right btn-ripple" value="Register"/>
+										<div class="col-md-4">
+											<input type="button" class="btn btn-indigo btn-ripple pull-right" id="btnSearch" value="SEARCH"/>
+										</div>
 									</div>
 								</div>
-							</form>
-						</div>
-						<div class="col-md-6 col-xs-12">
-							<img width="100%"​ height="730px;" src="/static/shortcourse.jpg">
-						</div>
-						<div>
-							<strong><h4>ព័ត៌មានលម្អិតបន្ថែមសូមចូលទៅកាន់តំណភ្ជាប់៖</h4>
-							<h4><a href="https://goo.gl/51Mc3Q" target="_blank">- ខិត្តប័ណ្ណៈ https://goo.gl/51Mc3Q</a></h4>
-							<h4><a href="https://goo.gl/is4JiS" target="_blank">- កម្មវិធីសិក្សាៈ https://goo.gl/is4JiS</a></h4>
-							<h4></h4>
-							
-							<h4>ទូរស័ព្ទទំនាក់ទំនងៈ ០២៣ ២៩ ១៣ ១៤/ ០៨៦ ២៩ ២៩ ១៤/ ០៩៩ ៧៦ ៨៤ ៨១/ ០១៧ ២២០ ៧០៧</h4>
-							</strong>
-						</div>
+								<div class="flip-scroll">
+									<table class="table table-bordered table-striped table-condensed cf">
+										<thead class="cf">
+											<tr>
+												<th style="text-align:center;">No</th>
+												<th>Student Name</th>
+												<th>Course</th>
+												<th>Shift</th>
+												<th>Status</th>
+										  	</tr>
+										</thead>
+										<tbody id="STUDENT">
+										</tbody>
+									</table>
+								</div><!--.flip-scroll-->
+								<div class="row">
+									<div class="col-md-6">
+										<div id="INFORMATION">Showing 1 to <span id="limitPage">10</span> of <span id="totalRecords"></span> entries</div>
+										<select class="selectpicker" style="display: none;" id="SELECT_PER_PAGE">
+											<option value="15">Total Rows</option>
+											<option value="15">15</option>
+											<option value="30">30</option>
+											<option value="50">50</option>
+											<option value="100">100</option>
+										</select>
+									</div>
+									<div class="col-md-6">
+										<!-- BEGIN PAGINATION -->
+										<div id="PAGINATION" class="pull-right">
+										</div>
+										<!-- END PAGINATION -->
+									</div>
+								</div>
+								
+							</div><!--.panel-body-->						
 					</div>
 				</div>
 			</div><!--.container-->
@@ -221,11 +160,25 @@
 
 		</div><!--.container-->
 	</div><!--.footer-->
-	
-	<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
-		<option value="{{= ID}}" data-cost="{{= COST}}">{{= NAME}}</option>
-	</script>
-	
+	<script id="USER_TEMPLATE" type="text/x-jquery-tmpl">
+			<tr data-id="{{= ID}}">
+				<td></td>
+				<td><strong></strong></td>
+				<td></td>
+				<td>
+					{{if STATUS=='1'}}
+						<span class="label label-success label-as-badge">ACTIVE</span>
+					{{else}}
+						<span class="label label-danger label-as-badge">INACTIVE</span>
+					{{/if}}
+				</td>
+				<td>
+					<input type="button" class="btn btn-success btn-ripple" id="btnEdit" value="Edit"/>
+					<input type="button" class="btn btn-danger btn-ripple" id="btnDelete" value="Delete"/>
+					<input type="button" class="btn btn-primary btn-ripple" id="btnChangePassword" value="Change Password"/>
+				</td>
+			</tr>
+		</script>
 	<!-- BEGIN ALERT MODAL -->
 	<div class="modal fade in" id="modalMessage" tabindex="-2" role="dialog" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog modal-md">
@@ -262,11 +215,11 @@
 	<!-- One page parallax functions and events -->
 	<script src="/static/assets/one-page-parallax/js/one-page-parallax.js"></script>
 	
-	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/course-type.js}"></script>
+	<!-- <script type="text/javascript" th:src="@{/static/javascripts/backoffice/course-type.js}"></script>
 	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/shift.js}"></script>
 	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/generation.js}"></script>
 	<script th:src="@{/static/javascripts/libraries/jquery.tmpl.min.js}"></script>
-	<script type="text/javascript" th:src="@{/static/javascripts/frontoffice/registration.js}"></script>
-
+	<script type="text/javascript" th:src="@{/static/javascripts/frontoffice/registration.js}"></script> -->
+	<script type="text/javascript" th:src="@{/static/javascripts/frontoffice/student-list.js}"></script>
 </body>
 </html>
