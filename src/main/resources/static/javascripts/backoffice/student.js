@@ -48,7 +48,7 @@ $(function() {
 		    				checkPagination=false;
 		    			}
 		    		}else{
-		    			$("#STUDENT").html("<tr style='text-align:center;'><td colspan='12'>NO CONTENT</td></tr>");
+		    			$("#STUDENT").html("<tr style='text-align:center;'><td colspan='13'>NO CONTENT</td></tr>");
 		    			$("#PAGINATION").html("");
 		    		}
 					$("#ALERT").attr("data-toastr-notification", response.MESSAGE);

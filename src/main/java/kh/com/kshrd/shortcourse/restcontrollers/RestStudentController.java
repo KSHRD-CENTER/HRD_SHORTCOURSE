@@ -11,6 +11,7 @@ import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wordnik.swagger.annotations.ApiImplicitParam;
 import com.wordnik.swagger.annotations.ApiImplicitParams;
 
+import kh.com.kshrd.shortcourse.configurations.UserSession;
 import kh.com.kshrd.shortcourse.filtering.StudentFilter;
 import kh.com.kshrd.shortcourse.forms.PaymentForm;
 import kh.com.kshrd.shortcourse.forms.StudentForm;
@@ -89,6 +90,54 @@ public class RestStudentController {
 			student.setStatus(form.getStatus());
 			
 			User user = new User();
+			user.setId(UserSession.getUserSession().getId());
+			student.setCreatedBy(user);
+			
+			for(StudentForm.CourseDetails courseDetails : form.getCourseDetails()){
+				StudentDetails studentDetails = new StudentDetails();
+				studentDetails.setCost(courseDetails.getCostPrice());
+				studentDetails.setDiscount(courseDetails.getDiscount());
+				studentDetails.setPaidAmount(courseDetails.getPaid());
+				studentDetails.setStatus(form.getStatus());
+				
+				Course course = new Course();
+				course.setId(courseDetails.getCourse());
+				studentDetails.setCourse(course);
+				
+				Shift shift = new Shift();
+				shift.setId(courseDetails.getShift());
+				studentDetails.setShift(shift);
+				
+				studentDetails.setRegisteredBy(user);
+				
+				student.getStudentDetails().add(studentDetails);
+			}
+			if(studentService.save(student)!=null){
+				response.setCode("0000");
+			}else{
+				response.setCode("9999");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@RequestMapping(value = "/shortcourse", method = RequestMethod.POST)
+	public Response addNewShortCourseStudent(@RequestBody StudentForm.RegisterStudentForm form){
+		Response response = new Response();
+		try{
+			Student student = new Student();
+			student.setName(form.getStudentName());
+			student.setGender(form.getGender());
+			student.setEmail(form.getEmail());
+			student.setTelephone(form.getTelephone());
+			student.setAddress(form.getAddress());
+			student.setUniversity(form.getUniversity());
+			student.setYear(form.getYear());
+			student.setStatus(form.getStatus());
+			
+			User user = new User();
 			user.setId(1L);
 			student.setCreatedBy(user);
 			
@@ -145,7 +194,7 @@ public class RestStudentController {
 			studentDetails.setId(id);
 			
 			User user = new User();
-			user.setId(1L);
+			user.setId(UserSession.getUserSession().getId());
 			paymentHistory.setStudentDetails(studentDetails);
 			paymentHistory.setCreatedBy(user);
 			paymentHistory.setPaidBy(user);

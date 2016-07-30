@@ -57,7 +57,6 @@ public class CourseRepositoryImpl implements CourseRepository{
 				   + "AND B.id::TEXT LIKE ? "
 				   + "AND E.course_id::TEXT LIKE ? "
 				   + "AND LOWER(E.shift::TEXT) LIKE LOWER(?) "
-				   + "AND A.status = '1' "
 				   + "ORDER BY 1"
 				   + "LIMIT ? "
 				   + "OFFSET ? ";
@@ -116,8 +115,7 @@ public class CourseRepositoryImpl implements CourseRepository{
 				   + "AND C.id::TEXT LIKE LOWER(?) "
 				   + "AND B.id::TEXT LIKE LOWER(?) "
 				   + "AND E.course_id::TEXT LIKE LOWER(?) "
-				   + "AND LOWER(E.shift::TEXT) LIKE LOWER(?) "
-				   + "AND A.status = '1' ";
+				   + "AND LOWER(E.shift::TEXT) LIKE LOWER(?) ";
 		return jdbcTemplate.queryForObject(
 				sql,
 				new Object[]{

@@ -46,7 +46,7 @@ $(function() {
 		    				course.setPagination(response.PAGINATION.TOTAL_PAGES);
 		    			}
 		    		}else{
-		    			$("#COURSE").html("<tr style='text-align:center;'><td colspan='8'>NO CONTENT</td></tr>");
+		    			$("#COURSE").html("<tr style='text-align:center;'><td colspan='9'>NO CONTENT</td></tr>");
 		    			$("#PAGINATION").html("");
 		    		}
 		    	}
