@@ -63,7 +63,7 @@ $(function(){
 	
 	//TODO: TO FIND ALL COURSES BY GENERATION ID
 	courseType.findAllCourses(1, function(response){
-		$("#SELECT_COURSE").html("<option value=''>All Courses</option>");
+		$("#SELECT_COURSE").html("<option value=''>Choose Course</option>");
 		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSE");
 		$(".selectpicker").selectpicker('refresh');
 	});
@@ -71,7 +71,7 @@ $(function(){
 	//TODO: EVENT WHEN COURSE CHANGE
 	$("#SELECT_COURSE").change(function(){
 		course.findAllShiftsByCourseId($(this).val(), function(response){
-			$("#SELECT_SHIFT").html("<option value=''>All Shifts</option>");
+			$("#SELECT_SHIFT").html("<option value=''>Choose Shift</option>");
 			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_SHIFT");
 			$(".selectpicker").selectpicker('refresh');
 		});
