@@ -12,6 +12,13 @@ $(function() {
 	    }
 	});
 	
+	$body = $("body");
+
+	$(document).on({
+	    ajaxStart: function() { $body.addClass("loading"); },
+	    ajaxStop: function() { $body.removeClass("loading"); }    
+	});
+	
 	//TODO: TO FIND ALL GENERATION
 	students.findAll = function(){
 		$.ajax({ 
