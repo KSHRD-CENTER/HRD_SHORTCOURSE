@@ -220,13 +220,17 @@
 						<span class="label label-danger label-as-badge">DELETED</span>
 					{{/if}}
 				</td>
-				<td>
-					<input type="button" class="btn btn-primary btn-ripple" id="btnUpdate" value="UPDATE"/>
-					<input type="button" class="btn btn-danger btn-ripple" id="btnDelete" value="DELETE"/>
-					<input type="button" class="btn btn-success btn-ripple" id="btnPayment" value="PAYMENT"/>
+				<td style="width:12%;">
+					<a class="btn btn-danger btn-ripple" id="btnDelete"><li><span class="glyphicon glyphicon-trash"></span></li></a>
+					<a class="btn btn-success btn-ripple" id="btnUpdate"><li><span class="glyphicon glyphicon-pencil"></span></li></a>
+					<a class="btn btn-light-blue btn-ripple" id="btnPayment"><li><span class="glyphicon glyphicon-usd"></span></li></a>
 				</td>
 			</tr>
 		</script>
+		
+		<!-- <input type="button" class="btn btn-primary btn-ripple" id="btnUpdate" value="UPDATE"/>
+		<input type="button" class="btn btn-danger btn-ripple" id="btnDelete" value="DELETE"/>
+		<input type="button" class="btn btn-success btn-ripple" id="btnPayment" value="PAYMENT"/> -->
 		
 		<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
 			<option value="{{= ID}}" data-cost="{{= COST}}">{{= NAME}}</option>
@@ -244,7 +248,7 @@
 			<div class="modal-dialog modal-lg" style="width:100%">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title">REGISTER NEW STUDENT</h4>
+						<h4 class="modal-title" id="TITLE">REGISTER NEW STUDENT</h4>
 					</div>
 					<div class="modal-body">
 						<div class="panel-body">

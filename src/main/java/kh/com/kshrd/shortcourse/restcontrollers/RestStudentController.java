@@ -112,7 +112,7 @@ public class RestStudentController {
 				
 				student.getStudentDetails().add(studentDetails);
 			}
-			if(studentService.save(student)!=null){
+			if(studentService.saveStudent(student)!=null){
 				response.setCode("0000");
 			}else{
 				response.setCode("9999");
@@ -160,7 +160,7 @@ public class RestStudentController {
 				
 				student.getStudentDetails().add(studentDetails);
 			}
-			if(studentService.save(student)!=null){
+			if(studentService.saveStudent(student)!=null){
 				response.setCode("0000");
 			}else{
 				response.setCode("9999");
@@ -205,6 +205,21 @@ public class RestStudentController {
 			}
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
+	public Response deleteStudent(@PathVariable("id")Long id){
+		Response response = new Response();
+		try{
+			if(studentService.deleteStudent(id)){
+				response.setCode(StatusCode.SUCCESS);
+			}else{
+				response.setCode(StatusCode.NOT_SUCCESS);
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
 		return response;
 	}

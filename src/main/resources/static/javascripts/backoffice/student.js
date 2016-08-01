@@ -105,6 +105,48 @@ $(function() {
 	};
 	
 	//TODO: TO ADD NEW STUDENT 
+	student.deleteStudent = function(id, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/students/"+id, 
+		    type: 'PUT', 
+		    dataType: 'JSON', 
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});			
+	};
+	
+	//TODO: TO FIND A STUDENT BY ID
+	student.findStudent = function(id, fnCallback){
+		$.ajax({
+			url: "/v1/api/admin/students/"+id, 
+		    type: 'GET', 
+		    dataType: 'JSON', 
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});
+	};
+	
+	//TODO: TO ADD NEW STUDENT 
 	student.addNewPayment = function(studentDetailsId, data, fnCallback){
 		$.ajax({ 
 		    url: "/v1/api/admin/students/"+studentDetailsId+"/payment-histories", 
@@ -385,5 +427,34 @@ $(function() {
 		checkPagination = true;
 		currentPage = 1;
 		student.findAll();
+	});
+	
+	//TODO: TO DELETE THE STUDENT 
+	$(document).on('click', "#btnDelete", function(){
+		var id = $(this).parents("tr").data("id");
+		student.deleteStudent(id, function(response){
+			if(response.CODE=="0000"){
+				student.findAll();
+			}
+		});
+	});
+	
+	//TODO: TO OPEN THE UPDATE FORM
+	$(document).on('click', "#btnUpdate", function(){
+		var id = $(this).parents("tr").data("id");
+		student.findStudent(id, function(response){
+			console.log(response);
+			$("#txtStudentName").val(response.DATA.STUDENT.NAME);
+			$("#txtTelephone").val(response.DATA.STUDENT.TELEPHONE);
+			$("#txtEmail").val(response.DATA.STUDENT.EMAIL);
+			$("#SELECT_GENDER").val(response.DATA.STUDENT.GENDER);
+			$("#SELECT_UNIVERSITY").val(response.DATA.STUDENT.UNIVERSITY);
+			$("#SELECT_YEAR").val(response.DATA.STUDENT.YEAR);
+			$("#textAreaAddress").val(response.DATA.STUDENT.ADDRESS);
+			
+			$(".selectpicker").selectpicker('refresh');
+		});
+		$("#TITLE").html("UPDATE EXISING STUDENT");
+		$("#modalAddNewStudent").modal("show");
 	});
 });

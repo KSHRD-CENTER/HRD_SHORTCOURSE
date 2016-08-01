@@ -33,8 +33,18 @@ public class StudentServiceImpl implements StudentService{
 	}
 
 	@Override
+	public StudentDetails findStudent(Long id) throws BusinessException {
+		try {
+			return studentRepository.findOne(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BusinessException();
+		}
+	}
+
+	@Override
 	@Transactional
-	public Long save(Student student) throws BusinessException {
+	public Long saveStudent(Student student) throws BusinessException {
 		try{
 			Long studentId = studentRepository.save(student);
 			student.setId(studentId);
@@ -47,15 +57,14 @@ public class StudentServiceImpl implements StudentService{
 	}
 
 	@Override
-	public StudentDetails findStudent(Long id) throws BusinessException {
-		try {
-			return studentRepository.findOne(id);
-		} catch (SQLException e) {
+	@Transactional
+	public boolean deleteStudent(Long id) throws BusinessException {
+		try{
+			return studentRepository.delete(id);
+		}catch(SQLException e){
 			e.printStackTrace();
 			throw new BusinessException();
 		}
 	}
-	
-	
 
 }

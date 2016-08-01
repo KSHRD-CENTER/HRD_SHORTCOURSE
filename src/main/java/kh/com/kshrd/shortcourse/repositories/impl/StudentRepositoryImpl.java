@@ -240,32 +240,36 @@ public class StudentRepositoryImpl implements StudentRepository{
 	public StudentDetails findOne(Long id) throws SQLException {
 		try{
 			String sql = "SELECT A.id, " +
-						 "		 A.name, " +  
-						 "		 A.gender, " + 
-						 "		 A.email, " + 
-						 "		 A.university, " +
-						 "		 A.address, " +
-						 "		 A.telephone, " +
-						 "		 E.name AS generation, " +
-						 "		 TO_CHAR(TO_TIMESTAMP(B.registered_date,'YYYYMMDDHH24MI'),'DD-Mon-YYYY HH24:MI') AS registered_date, " +
-						 "		 B.registered_by, " + 
-						 "		 (  SELECT STRING_AGG(BB.name,', ') " + 
-						 "		 	FROM student_details AA " +
-						 "		 	INNER JOIN shifts BB ON AA.shift = BB.id " + 
-						 "	 	 	WHERE AA.student_details_id = B.student_details_id" + 
-						 "	     	GROUP BY AA.student_id " + 
-						 "		 ) AS shift, " +
-						 "		 D.course, " +
-						 "		 B.cost, " +
-						 " 		 (SELECT SUM(paid_amount) " +
-						 "	 	 FROM payment_histories " +
-						 "		 WHERE student_details_id = B.student_details_id " +
-						 "	 	 AND status='1') AS paid_amount, " +
-						 "	 	 B.student_details_id, " +
-						 "	 	 B.status " + 
-						 "FROM students A " +
-						 "LEFT JOIN student_details B ON A.id = B.student_id " +
-						 "WHERE A.id = ?" ;
+					 "		 A.name, " +  
+					 "		 A.gender, " + 
+					 "		 A.email, " + 
+					 "		 A.university, " +
+					 "		 A.address, " +
+					 "		 A.telephone, " +
+					 "		 E.name AS generation, " +
+					 "		 TO_CHAR(TO_TIMESTAMP(B.registered_date,'YYYYMMDDHH24MI'),'DD-Mon-YYYY HH24:MI') AS registered_date, " +
+					 "		 B.registered_by, " + 
+					 "		 (  SELECT STRING_AGG(BB.name,', ') " + 
+					 "		 	FROM student_details AA " +
+					 "		 	INNER JOIN shifts BB ON AA.shift = BB.id " + 
+					 "	 	 	WHERE AA.student_details_id = B.student_details_id" + 
+					 "	     	GROUP BY AA.student_id " + 
+					 "		 ) AS shift, " +
+					 "		 D.course, " +
+					 "		 B.cost, " +
+					 " 		 (SELECT SUM(paid_amount) " +
+					 "	 	 FROM payment_histories " +
+					 "		 WHERE student_details_id = B.student_details_id " +
+					 "	 	 AND status='1') AS paid_amount, " +
+					 "	 	 B.student_details_id, " +
+					 "	 	 B.status, " + 
+					 "		 A.year " + 
+					 "FROM students A " +
+					 "LEFT JOIN student_details B ON A.id = B.student_id " + 
+					 "LEFT JOIN shifts C ON B.shift = C.id AND C.status = '1' " +
+					 "LEFT JOIN courses D ON B.course_id = D.id AND D.status = '1' " +
+					 "LEFT JOIN generations E ON D.generation = E.id AND E.status = '1' " +
+				     "WHERE B.student_details_id = ?" ;
 			return jdbcTemplate.queryForObject(
 					sql,
 					new Object[]{
@@ -296,6 +300,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 					student.setUniversity(rs.getString("university"));
 					student.setTelephone(rs.getString("telephone"));
 					student.setAddress(rs.getString("address"));
+					student.setYear(rs.getString("year"));
 					
 					Course course = new Course();
 					course.setCourse(rs.getString("course"));
@@ -316,5 +321,22 @@ public class StudentRepositoryImpl implements StudentRepository{
 			throw new SQLException();
 		}
 	}
-	
+
+
+
+	@Override
+	public boolean delete(Long id) throws SQLException {
+		try{
+			String sql = "UPDATE student_details SET status='0' WHERE student_details_id = ? ";
+			int result = jdbcTemplate.update(sql, new Object[]{id});
+			if(result > 0 ){
+				return true;
+			}else{
+				return false;
+			}
+		}catch(NullPointerException ex){
+			ex.printStackTrace();
+		}
+		return false;
+	}
 }
