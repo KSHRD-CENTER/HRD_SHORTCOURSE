@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:th="http://www.thymeleaf.org" 
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" 
+	  class="no-js"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<title>HRD COURSE MANAGEMENT SYSTEM</title>
+
+	<meta name="description" content="Pleasure is responsive, material admin dashboard panel">
+	<meta name="author" content="Teamfox">
+
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-touch-fullscreen" content="yes">
+
+	<link href='https://fonts.googleapis.com/css?family=Hanuman' rel='stylesheet' type='text/css'>
+
+	<!-- BEGIN CORE CSS -->
+	<link rel="stylesheet" href="/static/assets/one-page-parallax/css/layout.css">
+	<link rel="stylesheet" href="/static/assets/globals/css/elements.css">
+	<!-- END CORE CSS -->
+
+	<!-- BEGIN SHORTCUT AND TOUCH ICONS -->
+	<link rel="shortcut icon" href="/static/assets/globals/img/icons/favicon.ico">
+	<link rel="apple-touch-icon" href="/static/assets/globals/img/icons/apple-touch-icon.png">
+	<!-- END SHORTCUT AND TOUCH ICONS -->
+
+	<script src="/static/assets/globals/plugins/modernizr/modernizr.min.js"></script>
+	<style>
+		label, h4, .khmerfont{
+			font-family: 'Hanuman', serif;
+		}
+		/* Start by setting display:none to make this hidden.
+		   Then we position it in relation to the viewport window
+		   with position:fixed. Width, height, top and left speak
+		   for themselves. Background we set to 80% white with
+		   our animation centered, and no-repeating */
+		.modal {
+		    display:    none;
+		    position:   fixed;
+		    z-index:    9999999;
+		    top:        0;
+		    left:       0;
+		    height:     100%;
+		    width:      100%;
+		    background: rgba( 255, 255, 255, .8 ) 
+		                url('http://i.stack.imgur.com/FhHRx.gif') 
+		                50% 50% 
+		                no-repeat;
+		}
+		
+		/* When the body has the loading class, we turn
+		   the scrollbar off with overflow:hidden */
+		body.loading {
+		    overflow: hidden;   
+		}
+		
+		/* Anytime the body has the loading class, our
+		   modal element will be visible */
+		body.loading .modal {
+		    display: block;
+		}
+	</style>
+</head>
+<body class="one-page">
+
+	<div class="header">
+		<div class="container">
+
+			<div class="logo">
+				<strong><p style="font-size:24px;">KOREA SOFTWARE HRD CENTER</p></strong>
+			</div><!--.logo-->
+
+			<div class="animated-selector">
+				<ul class="navigation">
+					<li data-anchor="slide1" data-nav-link class="khmerfont"><a th:href="@{/}">ការចុះឈ្មោះសិក្សា</a></li>
+					<li data-anchor="slide2" data-nav-link class="khmerfont"><a th:href="@{/student-list}">បញ្ជីសិស្សដែលបានចុះឈ្មោះរូច</a></li>
+					<!-- <li data-anchor="slide4" data-nav-link>ABOUT OUR INSTRUCTORS</li> -->
+				</ul>
+				<div class="selector"></div>
+			</div><!--.animated-selector-->
+
+			<div class="hamburger-btn"></div><!--.hamburger-btn-->
+
+		</div><!--.container-->
+	</div><!--.header-->
+
+	<div class="slide" data-nav="slide1">
+
+		<div class="container">
+			<div class="panel indigo" style="border: 1px solid black;">
+				<div class="panel-heading">
+					<div class="panel-title">
+						<h4 class="text-black text-center">ការចុះឈ្មោះសិក្សា</h4>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-6 col-xs-12">
+							<form action="#" class="form-horizontal">
+								<div class="form-content">
+									<div class="form-group">
+										<label class="control-label col-md-3">មុខវិជ្ជាសិក្សា:</label>
+										<div class="col-md-9">
+											<select class="selectpicker" style="display: none;" id="SELECT_COURSE">
+												<option>Choose Course</option>
+											</select>
+										</div>
+									</div><!--.form-group-->
+									<div class="form-group">
+										<label class="control-label col-md-3">ម៉ោងសិក្សា:</label>
+										<div class="col-md-9">
+											<select class="selectpicker" style="display: none;" id="SELECT_SHIFT">
+												<option>Choose Shift</option>
+											</select>
+										</div>
+									</div><!--.form-group-->
+									<div class="form-group">
+										<label class="control-label col-md-3">ឈ្មោះ:</label>
+										<div class="col-md-9">
+											<div class="inputer">
+												<div class="input-wrapper">
+													<input type="text" name="" class="form-control" id="txtStudentName">
+												</div>
+											</div>
+										</div>
+									</div><!--.form-group-->
+									
+									<div class="form-group">
+										<label class="control-label col-md-3">ភេទ:</label>
+										<div class="col-md-9">
+											<select class="selectpicker" style="display: none;" id="SELECT_GENDER">
+												<option>Choose Gender</option>
+												<option value="M">Male</option>
+												<option value="F">Female</option>
+											</select>
+										</div>
+									</div><!--.form-group-->
+									
+									<div class="form-group">
+										<label class="control-label col-md-3">លេខទូរស័ព្ទ:</label>
+										<div class="col-md-9">
+											<div class="inputer">
+												<div class="input-wrapper">
+													<input type="text" name="" class="form-control" id="txtTelephone">
+												</div>
+											</div>
+										</div>
+									</div><!--.form-group-->
+									
+									<div class="form-group">
+										<label class="control-label col-md-3">អ៊ីម៉ែល:</label>
+										<div class="col-md-9">
+											<div class="inputer">
+												<div class="input-wrapper">
+													<input type="email" name="" class="form-control" id="txtEmail">
+												</div>
+											</div>
+										</div>
+									</div><!--.form-group-->								
+									
+									<div class="form-group">
+										<label class="control-label col-md-3">អាសយដ្ឋាន:</label>
+										<div class="col-md-9">
+											<div class="inputer">
+												<div class="input-wrapper">
+													<textarea name="" class="form-control" id="textAreaAddress" row="2"></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="control-label col-md-3">សាកលវិទ្យាល័យ:</label>
+										<div class="col-md-9">
+											<select class="selectpicker" style="display: none;" id="SELECT_UNIVERSITY">
+												<option>Choose University</option>
+												<option value="BBU">BBU</option>
+												<option value="RUPP">RUPP</option>
+												<option value="SETEC">SETEC</option>
+												<option value="PUC">PUC</option>
+												<option value="PPIU">PPIU</option>
+												<option value="NU">NU</option>
+												<option value="UBB">UBB</option>
+												<option value="AEU">AEU</option>
+												<option value="UME">UME</option>
+												<option value="RAC">RAC</option>
+												<option value="CARDI">CARDI</option>
+												<option value="ITC">ITC</option>
+												<option value="CSUK">CSUK</option>
+												<option value="NIE">NIE</option>
+												<option value="NTTI">NTTI</option>
+												<option value="PNCA">PNCA</option>
+												<option value="RUA">RUA</option>
+												<option value="RUFA">RUFA</option>
+												<option value="RULE">RULE</option>
+												<option value="SRU">SRU</option>
+												<option value="UHS">UHS</option>
+												<option value="IIC">IIC</option>
+												<option value="UC">UC</option>
+												<option value="UP">UP</option>
+												<option value="PPIT">PPIT</option>
+												<option value="CamEd">CamEd</option>
+												<option value="SPI">SPI</option>
+												<option value="BELTEI">BELTEI</option>
+												<option value="CMU">CMU</option>
+												<option value="AUPP">AUPP</option>
+												<option value="ZAMAN">ZAMAN</option>
+												<option value="CUS">CUS</option>
+												<option value="NUM">NUM</option>
+												<option value="PCU">PCU</option>
+												<option value="Other">Other</option>
+											</select>
+										</div>
+									</div><!--.form-group-->
+									
+									<div class="form-group">
+										<label class="control-label col-md-3">ឆ្នាំសិក្សា:</label>
+										<div class="col-md-9">
+											<select class="selectpicker" style="display: none;" id="SELECT_YEAR">
+												<option>Choose Year</option>
+												<option value="1">1st Year</option>
+												<option value="2">2nd Year</option>
+												<option value="3">3rd Year</option>
+												<option value="4">4th Year</option>
+												<option value="5">Others</option>
+											</select>
+										</div>
+									</div><!--.form-group-->
+
+									<div class="form-group">
+										<label class="control-label col-md-3">ផ្តល់មតិបន្ថែម:</label>
+										<div class="col-md-9">
+											<div class="inputer">
+												<div class="input-wrapper">
+													<textarea name="" class="form-control" id="textAreaComment" row="2"></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<input type="button" id="btnRegister" data-loading-text="កំពុងធ្វើការចុះឈ្មោះ..." class="demo-btn-loading khmerfont btn btn-indigo pull-right btn-ripple" value="ចុះឈ្មោះ"/>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="col-md-6 col-xs-12">
+							<img width="100%"​ height="730px;" src="/static/shortcourse.jpg">
+						</div>
+						<div>
+							<strong><h4>ព័ត៌មានលម្អិតបន្ថែមសូមចូលទៅកាន់តំណភ្ជាប់៖</h4>
+							<h4><a href="https://goo.gl/C6d6EW" target="_blank">- ខិត្តប័ណ្ណៈ https://goo.gl/C6d6EW</a></h4>
+							<h4><a href="https://goo.gl/X8R3Bp" target="_blank">- កម្មវិធីសិក្សាៈ https://goo.gl/X8R3Bp</a></h4>
+							<h4></h4>
+							
+							<h4>ទូរស័ព្ទទំនាក់ទំនងៈ ០២៣ ៩៩១ ៣១៤ / ០១៦ ៦០០ ៧០១ / ០១៧ ៨៦៨ ៩០៨ / ០១០ ៧៣៨ ៣១៩</h4>
+							</strong>
+						</div>
+					</div>
+				</div>
+			</div><!--.container-->
+
+		</div><!--.slide-->
+	</div>
+
+	<div class="footer bg-black">
+		<div class="container">
+
+			<ul class="social-list">
+				<li><a href="javascript:;" class="facebook"><i class="ion-social-facebook"></i></a></li>
+			</ul>
+
+			<div class="copyright v-text"><center><strong>Copyright &copy; 2016 <a href="javascript:;">HRD COURSE SYSTEM of KSHRD CENTER</a>.</strong> All rights reserved.</center></div>
+
+		</div><!--.container-->
+	</div><!--.footer-->
+	
+	<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
+		<option value="{{= ID}}" data-cost="{{= COST}}">{{= NAME}}</option>
+	</script>
+	
+	<div class="modal"><!-- Place at bottom of page --></div>
+	<!-- BEGIN ALERT MODAL -->
+	<div class="modal fade in" id="modalMessage" tabindex="-2" role="dialog" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="TITLE">MESSAGE</h5>
+				</div>
+				<div class="modal-body">
+					<h6 id="MESSAGE"><strong></strong></h6>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-red btn-default btn-ripple" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div><!--.modal-content-->
+		</div><!--.modal-dialog-->
+	</div>
+	<!-- END ALERT MODAL -->
+	
+
+	<!-- Global Vendors for Pleasure Theme -->
+	<script src="/static/assets/globals/js/global-vendors.js"></script>
+
+	<!-- ScrollMonitor plugin for navigation tracker -->
+	<script src="/static/assets/globals/plugins/scrollMonitor/scrollMonitor.js"></script>
+
+	<!-- Skrollr plugin for parallax elements -->
+	<script src="/static/assets/globals/plugins/skrollr/skrollr.min.js"></script>
+
+	<!-- Typer plugin for retyping text in the hero section -->
+	<script src="/static/assets/globals/plugins/typer/jquery.typer.min.js"></script>
+
+	<!-- Pleasure.js for all necessary functions -->
+	<script src="/static/assets/globals/js/pleasure.js"></script>
+
+	<!-- One page parallax functions and events -->
+	<script src="/static/assets/one-page-parallax/js/one-page-parallax.js"></script>
+	
+	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/course-type.js}"></script>
+	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/shift.js}"></script>
+	<script type="text/javascript" th:src="@{/static/javascripts/backoffice/generation.js}"></script>
+	<script th:src="@{/static/javascripts/libraries/jquery.tmpl.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/javascripts/frontoffice/pre-courses/registration.js}"></script>
+
+</body>
+</html>

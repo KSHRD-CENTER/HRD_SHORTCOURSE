@@ -28,11 +28,11 @@ $(function() {
 		    data:{
 		    	"limit" : $("#SELECT_PER_PAGE").val(),
 		    	"page" : currentPage,
-		    	"courseTypeId" 	: 1,
+		    	"courseTypeId" 	: 2,
 		    	"generationId" 	: 2,
 		    	"studentName" : $("#txtSearch").val(),
 		    	"courseId" : $("#SELECT_COURSE").val(),
-		    	"shiftId" : $("#SELECT_SHIFT").val()
+		    	"shiftId" : $("#SELECT_SHIFT").val(),
 		    },
 		    beforeSend: function(xhr) {
 		    	$body.addClass("loading");
@@ -141,6 +141,8 @@ $(function() {
 		checkPagination = true;
 		students.findAll();
 	});
+	
+	//TODO: EVENT HANDLING ON THE SEARCH BUTTON
 	$("#btnSearch").click(function(){
 		checkPagination = true;
 		currentPage = 1;

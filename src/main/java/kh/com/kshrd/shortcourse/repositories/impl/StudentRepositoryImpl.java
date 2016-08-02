@@ -61,6 +61,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 						 "LEFT JOIN courses D ON B.course_id = D.id AND D.status = '1' " +
 						 "LEFT JOIN generations E ON D.generation = E.id AND E.status = '1' " +
 						 "WHERE LOWER(A.name) LIKE LOWER(?) " +
+						 "AND E.course_type::TEXT LIKE ? " +
 						 "AND E.id::TEXT LIKE ? " +
 						 "AND C.id::TEXT LIKE ? " +
 						 "AND D.id::TEXT LIKE ? " +
@@ -71,6 +72,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 					sql,
 					new Object[]{
 						"%" + filter.getStudentName() + "%",
+						"%" + filter.getCourseTypeId() + "%",
 						"%" + filter.getGenerationId() + "%",
 						"%" + filter.getShiftId() + "%",
 						"%" + filter.getCourseId() + "%",
@@ -136,6 +138,7 @@ public class StudentRepositoryImpl implements StudentRepository{
 					 "LEFT JOIN courses D ON B.course_id = D.id AND D.status = '1' " +
 					 "LEFT JOIN generations E ON D.generation = E.id AND E.status = '1' " +
 					 "WHERE LOWER(A.name) LIKE LOWER(?) " +
+					 "AND E.course_type::TEXT LIKE ? " +
 					 "AND E.id::TEXT LIKE ? " +
 					 "AND C.id::TEXT LIKE ? " +
 					 "AND D.id::TEXT LIKE ? ";
@@ -143,9 +146,10 @@ public class StudentRepositoryImpl implements StudentRepository{
 				sql,
 				new Object[]{
 					"%" + filter.getStudentName() + "%",
+					"%" + filter.getCourseTypeId() + "%",
 					"%" + filter.getGenerationId() + "%",
 					"%" + filter.getShiftId() + "%",
-					"%" + filter.getCourseId() + "%"
+					"%" + filter.getCourseId() + "%",
 				},
 				Long.class);
 	}
