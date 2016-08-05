@@ -259,6 +259,23 @@ $(function() {
 		student.findAll();
 	});
 	
+	$.fn.enterKey = function (fnc) {
+	    return this.each(function () {
+	        $(this).keypress(function (ev) {
+	            var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+	            if (keycode == '13') {
+	                fnc.call(this, ev);
+	            }
+	        })
+	    })
+	}
+	
+	$("#txtSearch").enterKey(function(){
+		checkPagination = true;
+		currentPage = 1;
+		student.findAll();
+	});
+	
 	$("#SELECT_COURSETYPE").change(function(){
 		courseType.findAllGenerations($(this).val(), function(response){
 			$("#SELECT_GENERATION").html("<option value=''>All Generations</option>");
@@ -421,6 +438,10 @@ $(function() {
 				$("#ALERT").trigger("click");
 			}
 		});
+	});
+	
+	$("#txtPaymentAmount").enterKey(function(){
+		$("#btnSaveNewPayment").trigger("click");
 	});
 	
 	//TODO: TO SEARCH WHEN CLICK ON THE BUTTON SEARCH 
