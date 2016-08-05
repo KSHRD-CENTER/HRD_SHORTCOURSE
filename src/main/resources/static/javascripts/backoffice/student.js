@@ -225,22 +225,22 @@ $(function() {
 	});
 	
 	//TODO: LOADING THE GENERATION TO COMBO BOX
-	generation.findAll(function(response){
-		$("#SELECT_GENERATION").html("<option value=''>All Generations</option>");
-		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_GENERATION");
-		$("#SELECT_REGISTER_GENERATION").html("<option value=''>Choose Generations</option>");
-		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_GENERATION");
-		$(".selectpicker").selectpicker('refresh');
-	});
+//	generation.findAll(function(response){
+//		$("#SELECT_GENERATION").html("<option value=''>All Generations</option>");
+//		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_GENERATION");
+//		$("#SELECT_REGISTER_GENERATION").html("<option value=''>Choose Generations</option>");
+//		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_GENERATION");
+//		$(".selectpicker").selectpicker('refresh');
+//	});
 	
 	//TODO: LOADING THE SHIFT TO COMBO BOX
-	shift.findAll(function(response){
-		$("#SELECT_SHIFT").html("<option value=''>All Shifts</option>");
-		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_SHIFT");
-		$("#SELECT_REGISTER_SHIFT").html("<option value=''>Choose Shifts</option>");
-		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_SHIFT");
-		$(".selectpicker").selectpicker('refresh');
-	});
+//	shift.findAll(function(response){
+//		$("#SELECT_SHIFT").html("<option value=''>All Shifts</option>");
+//		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_SHIFT");
+//		$("#SELECT_REGISTER_SHIFT").html("<option value=''>Choose Shifts</option>");
+//		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_SHIFT");
+//		$(".selectpicker").selectpicker('refresh');
+//	});
 	
 	student.findAll();
 	
@@ -412,8 +412,9 @@ $(function() {
 					});
 					$("#TABLE_PAYMENT_HISTORY tbody").html('');
 					$("#PAYMENT_HISTORY_TEMPLATE").tmpl(response.DATA).appendTo("#TABLE_PAYMENT_HISTORY tbody");
-					$("#modalPaymentHistories").show();
+					$("#modalPaymentHistories").modal("show");
 				});
+				$("#modalAddNewPayment").modal("hide");
 				student.findAll();
 			}else{
 				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
