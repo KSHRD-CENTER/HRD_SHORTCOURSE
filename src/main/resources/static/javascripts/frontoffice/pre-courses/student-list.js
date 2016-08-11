@@ -29,7 +29,7 @@ $(function() {
 		    	"limit" : $("#SELECT_PER_PAGE").val(),
 		    	"page" : currentPage,
 		    	"courseTypeId" 	: 2,
-		    	"generationId" 	: 2,
+		    	"generationId" 	: 7,
 		    	"studentName" : $("#txtSearch").val(),
 		    	"courseId" : $("#SELECT_COURSE").val(),
 		    	"shiftId" : $("#SELECT_SHIFT").val(),
@@ -120,7 +120,7 @@ $(function() {
     }); 
 	
 	//TODO: TO FIND ALL COURSES BY COURSE TYPE ID
-	courseType.findAllCourses(1, function(response){
+	courseType.findAllCourses(2, function(response){
 		$("#SELECT_COURSE").html("<option value=''>All Courses</option>");
 		$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_COURSE");
 		$(".selectpicker").selectpicker('refresh');
