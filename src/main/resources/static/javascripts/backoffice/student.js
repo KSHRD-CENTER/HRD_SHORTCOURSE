@@ -14,6 +14,8 @@ $(function() {
 	    }
 	});
 	
+	$body = $("body");
+	
 	//TODO: TO FIND ALL STUDENT BY FILTERING AND PAGINATION
 	student.findAll = function(){
 		$.ajax({ 
@@ -431,6 +433,7 @@ $(function() {
 		var data ={
 				"PAID_AMOUNT" : $("#txtPaymentAmount").val()
 		}
+		$body.addClass("loading");
 		student.addNewPayment(id, data, function(response){
 			if(response.CODE=="0000"){
 				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
@@ -451,6 +454,7 @@ $(function() {
 				$("#ALERT").trigger("click");
 			}
 		});
+		$body.removeClass("loading");
 	});
 	
 	//TODO: TO SEARCH WHEN CLICK ON THE BUTTON SEARCH 
