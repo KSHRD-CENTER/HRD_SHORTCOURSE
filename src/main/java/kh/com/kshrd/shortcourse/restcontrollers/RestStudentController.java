@@ -221,11 +221,11 @@ public class RestStudentController {
 		return response;
 	}
 	
-	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public Response deleteStudent(@PathVariable("id")Long id){
+	@RequestMapping(value="/{id}/{stuId}", method = RequestMethod.PUT)
+	public Response deleteStudent(@PathVariable("id")Long id, @PathVariable("stuId")Long stuId){
 		Response response = new Response();
 		try{
-			if(studentService.deleteStudent(id)){
+			if(studentService.deleteStudent(id, stuId)){
 				response.setCode(StatusCode.SUCCESS);
 			}else{
 				response.setCode(StatusCode.NOT_SUCCESS);

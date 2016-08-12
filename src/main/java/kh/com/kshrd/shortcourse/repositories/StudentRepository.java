@@ -20,6 +20,8 @@ public interface StudentRepository {
 	
 	public int[] save(List<StudentDetails> studentDetails, Long studentId);
 	
-	public boolean delete(Long id) throws SQLException;
+	public boolean delete(Long id, Long stuId) throws SQLException;
+	
+	public Long update(Student student) throws SQLException;
 	
 }

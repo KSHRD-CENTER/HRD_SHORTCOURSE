@@ -80,6 +80,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 					+ "		 SUM(paid_amount) AS PAID_AMOUNT, "
 					+ "		 (A.total_paid - SUM(paid_amount)) AS LEFT_AMOUNT "
 					+ "FROM(SELECT S.NAME AS s_name, "
+					+ "			   S.id, "
 					+ "			   G.name AS g_name, "
 					+ "			   CT.name AS ct_name, "
 					+ "			   C.course, "
@@ -104,6 +105,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 					+ "ORDER BY S.id DESC "
 					+ ") A "
 					+ "GROUP BY 1,2,3,4,5 "
+					+ "ORDER BY A.id "
 					+ "LIMIT ? "
 					+ "OFFSET ? ";
 		return jdbcTemplate.query(

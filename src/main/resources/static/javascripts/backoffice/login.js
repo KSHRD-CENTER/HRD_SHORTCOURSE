@@ -29,6 +29,21 @@ users.login = function(user, callback){
 	});
 }
 
+$.fn.enterKey = function (fnc) {
+    return this.each(function () {
+        $(this).keypress(function (ev) {
+            var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+            if (keycode == '13') {
+                fnc.call(this, ev);
+            }
+        })
+    })
+}
+
+$("#txtPassword").enterKey(function(){
+	$("#btnLogin").trigger("click");
+});
+
 $("#btnLogin").click(function(){
 	var data = {
 			"EMAIL": $("#txtEmail").val(),

@@ -326,13 +326,27 @@ public class StudentRepositoryImpl implements StudentRepository{
 		}
 	}
 
-
-
 	@Override
-	public boolean delete(Long id) throws SQLException {
+	public boolean delete(Long id, Long stuId) throws SQLException {
 		try{
-			String sql = "UPDATE student_details SET status='0' WHERE student_details_id = ? ";
+			String sql = "DELETE FROM student_details WHERE student_details_id = ?";
 			int result = jdbcTemplate.update(sql, new Object[]{id});
+			boolean status = deleteStudent(stuId);
+			if(result > 0 && status){
+				return true;
+			}else{
+				return false;
+			}
+		}catch(NullPointerException ex){
+			ex.printStackTrace();
+		}
+		return false;
+	}
+	
+	private boolean deleteStudent(Long stuId){
+		try{
+			String sql = "DELETE FROM students WHERE id = ?";
+			int result = jdbcTemplate.update(sql, new Object[]{stuId});
 			if(result > 0 ){
 				return true;
 			}else{
@@ -342,5 +356,13 @@ public class StudentRepositoryImpl implements StudentRepository{
 			ex.printStackTrace();
 		}
 		return false;
+	}
+
+
+
+	@Override
+	public Long update(Student student) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

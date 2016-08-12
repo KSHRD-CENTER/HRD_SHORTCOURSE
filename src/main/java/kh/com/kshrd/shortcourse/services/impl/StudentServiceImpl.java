@@ -58,9 +58,9 @@ public class StudentServiceImpl implements StudentService{
 
 	@Override
 	@Transactional
-	public boolean deleteStudent(Long id) throws BusinessException {
+	public boolean deleteStudent(Long id, Long stuId) throws BusinessException {
 		try{
-			return studentRepository.delete(id);
+			return studentRepository.delete(id, stuId);
 		}catch(SQLException e){
 			e.printStackTrace();
 			throw new BusinessException();

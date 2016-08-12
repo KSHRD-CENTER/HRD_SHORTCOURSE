@@ -105,9 +105,9 @@ $(function() {
 	};
 	
 	//TODO: TO ADD NEW STUDENT 
-	student.deleteStudent = function(id, fnCallback){
+	student.deleteStudent = function(id,stuId, fnCallback){
 		$.ajax({ 
-		    url: "/v1/api/admin/students/"+id, 
+		    url: "/v1/api/admin/students/"+id+"/"+stuId, 
 		    type: 'PUT', 
 		    dataType: 'JSON', 
 		    beforeSend: function(xhr) {
@@ -454,7 +454,8 @@ $(function() {
 	//TODO: TO DELETE THE STUDENT 
 	$(document).on('click', "#btnDelete", function(){
 		var id = $(this).parents("tr").data("id");
-		student.deleteStudent(id, function(response){
+		var stuId = $(this).parents("tr").data("stuid");
+		student.deleteStudent(id,stuId, function(response){
 			if(response.CODE=="0000"){
 				student.findAll();
 			}

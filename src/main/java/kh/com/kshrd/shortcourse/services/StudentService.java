@@ -16,6 +16,6 @@ public interface StudentService {
 	
 	public Long saveStudent(Student student) throws BusinessException;
 	
-	public boolean deleteStudent(Long id) throws BusinessException;
+	public boolean deleteStudent(Long id, Long stuId) throws BusinessException;
 	
 }
