@@ -139,6 +139,7 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 	public Long save(PaymentHistory paymentHistory) throws SQLException {
 		Long id = jdbcTemplate.queryForObject("SELECT nextval('payment_history_id_seq')",Long.class);
 		String sql = "INSERT INTO payment_histories( "
+				   + "		id, "
 				   + "		student_details_id, "
 				   + "		paid_amount, "
 				   + "		paid_by, "
@@ -146,11 +147,12 @@ public class PaymentHistoryRepositoryImpl implements PaymentHistoryRepository{
 				   + "		created_date, "
 				   + "		created_by, "
 				   + "		status) "
-				   + "VALUES( ?, ?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), ?,'1') ";
+				   + "VALUES(?, ?, ?, ?, TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), TO_CHAR(NOW(),'YYYYMMDDHH24MISS'), ?,'1') ";
 		
 		int result = jdbcTemplate.update(
 					sql,
 					new Object[]{
+						id,
 						paymentHistory.getStudentDetails().getId(),
 						paymentHistory.getPaidAmount(),
 						paymentHistory.getPaidBy().getId(),

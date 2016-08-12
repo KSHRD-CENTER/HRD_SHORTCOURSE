@@ -64,6 +64,8 @@ $(function() {
         });			
 	};
 	
+	
+	
 	//TODO: TO FIND ALL STUDENT PAYMENT BY STUDENT DETAILS ID
 	student.findAllPaymentHistories = function(id, fnCallback){
 		$.ajax({ 
@@ -279,6 +281,10 @@ $(function() {
 		student.findAll();
 	});
 	
+	$("#txtPaymentAmount").enterKey(function(){
+		$("#btnSaveNewPayment").trigger("click");
+	});
+	
 	$("#SELECT_COURSETYPE").change(function(){
 		courseType.findAllGenerations($(this).val(), function(response){
 			$("#SELECT_GENERATION").html("<option value=''>All Generations</option>");
@@ -326,6 +332,10 @@ $(function() {
 			$("#OPTION_TEMPLATE").tmpl(response.DATA).appendTo("#SELECT_REGISTER_SHIFT");
 			$(".selectpicker").selectpicker('refresh');
 		});
+	});
+	
+	$(document).on('click',"#registerNewPayment", function(){
+		$("#txtPaymentAmount").focus();
 	});
 	
 	var index = 0;
@@ -390,8 +400,8 @@ $(function() {
 	
 	$(document).on('click', "#btnPayment", function(){
 		var id = $(this).parents("tr").data("id");
-		$("#txtPaymentAmount").val("0")
 		$("#btnSaveNewPayment").data("id", id);
+		
 		student.findAllPaymentHistories(id, function(response){
 			$.each(response.DATA, function(key,value){
 				response.DATA[key]["NO"] = (key+1);
@@ -441,10 +451,6 @@ $(function() {
 				$("#ALERT").trigger("click");
 			}
 		});
-	});
-	
-	$("#txtPaymentAmount").enterKey(function(){
-		$("#btnSaveNewPayment").trigger("click");
 	});
 	
 	//TODO: TO SEARCH WHEN CLICK ON THE BUTTON SEARCH 

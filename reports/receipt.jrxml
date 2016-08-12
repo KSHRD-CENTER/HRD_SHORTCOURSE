@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e79a197a-60f2-4a98-b0c2-1c9ccf09054d">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="79"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -12,6 +12,7 @@ S.name AS s_name,
 S.university,
 S.year,
 S.gender,
+SH.name,
 C.course AS c_name,
 PH.paid_amount AS ph_paid_amount,
 TO_CHAR(TO_TIMESTAMP(PH.paid_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MI:SS') AS ph_paid_date,
@@ -24,6 +25,7 @@ FROM payment_histories PH
 INNER JOIN student_details SD ON PH.student_details_id = SD.student_details_id
 INNER JOIN students S ON SD.student_id = S.id
 INNER JOIN courses C ON SD.course_id = C.id
+INNER JOIN shifts SH ON SD.shift = SH.id
 WHERE PH.id = $P{id}]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer"/>
@@ -31,6 +33,7 @@ WHERE PH.id = $P{id}]]>
 	<field name="university" class="java.lang.String"/>
 	<field name="year" class="java.lang.String"/>
 	<field name="gender" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
 	<field name="c_name" class="java.lang.String"/>
 	<field name="ph_paid_amount" class="java.math.BigDecimal"/>
 	<field name="ph_paid_date" class="java.lang.String"/>
@@ -112,14 +115,14 @@ WHERE PH.id = $P{id}]]>
 			</staticText>
 			<staticText>
 				<reportElement x="9" y="34" width="564" height="20" uuid="9cc0176a-d1ce-409a-b225-f6282451d687"/>
-				<text><![CDATA[Year:___________________For:___________________________________Amount:($)_______________________________]]></text>
+				<text><![CDATA[Year:_______________For:_________________________________Shift:_________________________________________]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="9" y="58" width="564" height="20" uuid="983ec9a0-a84c-445b-926d-f629d7962ccf"/>
-				<text><![CDATA[ Paid Amount:($)___________________________Remain Amount:($)_____________________________________________]]></text>
+				<reportElement x="9" y="57" width="564" height="20" uuid="983ec9a0-a84c-445b-926d-f629d7962ccf"/>
+				<text><![CDATA[Total Amount:($)_______________ Paid Amount:($)_________________Remain Amount:($)_________________________]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="98" y="10" width="114" height="20" uuid="ee5698c0-c0dc-471c-b542-d0c799e9e8de"/>
+				<reportElement x="98" y="11" width="114" height="20" uuid="ee5698c0-c0dc-471c-b542-d0c799e9e8de"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -133,67 +136,74 @@ WHERE PH.id = $P{id}]]>
 				<textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="427" y="32" width="100" height="20" uuid="046870ae-1c94-4c90-aff5-f6fabbb453ed"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{total_paid})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="442" y="9" width="74" height="20" uuid="b3a46689-7ac9-4edf-83c3-4ab700cadc08"/>
+				<reportElement x="442" y="11" width="74" height="20" uuid="b3a46689-7ac9-4edf-83c3-4ab700cadc08"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{university}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="357" y="57" width="77" height="20" uuid="6bacd173-cc43-4639-81a6-db7518fd0a57"/>
+				<reportElement x="442" y="57" width="77" height="20" uuid="6bacd173-cc43-4639-81a6-db7518fd0a57"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[( $F{left_amount} == 0 ? 0.00 : new java.text.DecimalFormat("#,##0.00").format($F{left_amount}))]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="28" y="81" width="299" height="20" uuid="eb996b9f-3f27-4c66-a58b-c27324e96cdd"/>
+				<reportElement x="28" y="83" width="299" height="20" uuid="eb996b9f-3f27-4c66-a58b-c27324e96cdd"/>
 				<textElement>
 					<font isItalic="true"/>
 				</textElement>
 				<text><![CDATA[*Please keep the receipt for your payment evidence]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="28" y="101" width="299" height="20" uuid="d68aef80-581d-4e45-a65d-a21cc0eab85e"/>
+				<reportElement x="28" y="103" width="299" height="20" uuid="d68aef80-581d-4e45-a65d-a21cc0eab85e"/>
 				<textElement>
 					<font isItalic="true"/>
 				</textElement>
 				<text><![CDATA[*Please bring the receipt when the class start]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="28" y="121" width="299" height="20" uuid="7e519444-ecd2-4302-8a9c-31622371a8ae"/>
+				<reportElement x="28" y="123" width="299" height="20" uuid="7e519444-ecd2-4302-8a9c-31622371a8ae"/>
 				<textElement>
 					<font isItalic="true"/>
 				</textElement>
 				<text><![CDATA[*Payment can not be refunded or transferred to another]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="173" y="33" width="100" height="20" uuid="059c635d-4fdb-488b-b81a-962686ef073c"/>
+				<reportElement x="146" y="33" width="100" height="20" uuid="059c635d-4fdb-488b-b81a-962686ef073c"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="251" y="10" width="61" height="20" uuid="e4901230-0f83-464e-8c3b-0206b453f4bc"/>
+				<reportElement x="251" y="11" width="61" height="20" uuid="e4901230-0f83-464e-8c3b-0206b453f4bc"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[( $F{gender}=='M' ? 'MALE' : 'FEMALE' )]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="98" y="57" width="100" height="20" uuid="7c85f587-81db-4749-b4da-339b0e5f842e"/>
+				<reportElement x="251" y="57" width="100" height="20" uuid="7c85f587-81db-4749-b4da-339b0e5f842e"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{ph_paid_amount})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="357" y="33" width="185" height="20" uuid="640d92f6-6f39-4f24-ac21-6857635ce44f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="57" width="109" height="20" uuid="046870ae-1c94-4c90-aff5-f6fabbb453ed"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{total_paid})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

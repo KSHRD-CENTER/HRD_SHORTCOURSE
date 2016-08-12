@@ -1,8 +1,9 @@
 package kh.com.kshrd.shortcourse.restcontrollers;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +45,8 @@ public class RestStudentController {
 	
 	@Autowired
 	private StudentService studentService;
-	
+	@Autowired
+	private DataSource dataSource;
 	@Autowired
 	private PaymentHistoryService paymentHistoryService;
 
@@ -207,10 +209,10 @@ public class RestStudentController {
 			paymentHistory.setStudentDetails(studentDetails);
 			paymentHistory.setCreatedBy(user);
 			paymentHistory.setPaidBy(user);
-			if(paymentHistoryService.save(paymentHistory)!=null){
+			Long paymentId = paymentHistoryService.save(paymentHistory);
+			if(paymentId != null){
 				response.setCode(StatusCode.SUCCESS);
-				//System.out.println("=====================>" + id.intValue());
-				//printInvoice(id.intValue());
+				printInvoice(paymentId.intValue());
 				
 			}else{
 				response.setCode(StatusCode.NOT_SUCCESS);
@@ -247,18 +249,12 @@ public class RestStudentController {
 		return response;
 	}
 	
-	/*private Collection data(){
-		
-	}*/
-	
 	private void printInvoice(int id) throws Exception{
 		JasperReport jp = JasperCompileManager.compileReport("reports/receipt.jrxml");
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("id", id);
-		System.out.println("==============>MAP"+param.get("id"));
-		//JRBeanCollectionDataSource jcd = new JRBeanCollectionDataSource(data());
-		JasperPrint print = JasperFillManager.fillReport(jp, param);
+		JasperPrint print = JasperFillManager.fillReport(jp, param, dataSource.getConnection());
 		//JasperViewer.viewReport(print, false);
-		JasperPrintManager.printReport(print, true);
+		JasperPrintManager.printReport(print, false);
 	}
 }
