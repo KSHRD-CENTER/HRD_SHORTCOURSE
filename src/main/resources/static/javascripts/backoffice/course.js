@@ -29,6 +29,7 @@ $(function() {
 		    	"shiftId" : $("#SELECT_SHIFT").val()
 		    },
 		    beforeSend: function(xhr) {
+		    	$body.addClass("loading");
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
@@ -54,7 +55,9 @@ $(function() {
 		    error:function(data,status,err) { 
 		        console.log("error: "+data+" status: "+status+" err:"+err);
 		    }
-		});			
+		}).complete(function() {
+			$body.removeClass("loading");   
+        });				
 	};
 	
 	//TODO: TO FIND COURSE BY ID
