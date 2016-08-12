@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e79a197a-60f2-4a98-b0c2-1c9ccf09054d">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="79"/>
+	<parameter name="id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT PH.id,
+S.name AS s_name,
+S.university,
+S.year,
+S.gender,
+C.course AS c_name,
+PH.paid_amount AS ph_paid_amount,
+TO_CHAR(TO_TIMESTAMP(PH.paid_date,'YYYYMMDDHH24MISS'),'DD-Mon-YYYY HH24:MI:SS') AS ph_paid_date,
+(C.COST - ((C.COST *(C.discount / 100.0))) - (C.cost * SD.discount/100.0)) AS total_paid,
+((C.COST - ((C.COST *(C.discount / 100.0))) - (C.cost * SD.discount/100.0)) - (SELECT SUM(paid_amount)
+FROM payment_histories
+WHERE student_details_id = PH.student_details_id
+AND paid_date <= PH.paid_date)) AS left_amount
+FROM payment_histories PH
+INNER JOIN student_details SD ON PH.student_details_id = SD.student_details_id
+INNER JOIN students S ON SD.student_id = S.id
+INNER JOIN courses C ON SD.course_id = C.id
+WHERE PH.id = $P{id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="s_name" class="java.lang.String"/>
+	<field name="university" class="java.lang.String"/>
+	<field name="year" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="c_name" class="java.lang.String"/>
+	<field name="ph_paid_amount" class="java.math.BigDecimal"/>
+	<field name="ph_paid_date" class="java.lang.String"/>
+	<field name="total_paid" class="java.math.BigDecimal"/>
+	<field name="left_amount" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="149" splitType="Stretch">
+			<image>
+				<reportElement x="9" y="6" width="73" height="95" uuid="cbd8ee4a-5091-47ab-ad14-50b5028ae482"/>
+				<imageExpression><![CDATA["C:\\Users\\Bunrong\\Desktop\\logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="182" y="6" width="246" height="20" uuid="ab7804cd-46de-412c-8d99-79da71db0e9c"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[KOREA SOFTWARE HRD CENTER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="26" width="300" height="20" uuid="3dd3d927-178f-491a-b330-e829fa31d701"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[#12, St 323, Sangkat Boeung Kak II, Khan Toul Kork, Phnom Penh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="193" y="46" width="210" height="20" uuid="71448097-979b-41b2-a442-c0671ca3baa5"/>
+				<text><![CDATA[Tel: 023 99 13 14, 078 33 31 02, 077 77 12 36]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="166" y="66" width="271" height="20" uuid="038950f7-ac57-44be-845e-cb5158218535"/>
+				<text><![CDATA[Email: info.kshrd@gmail.com, Website: www.kshrd.com.kh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="259" y="94" width="69" height="20" uuid="d52a1171-1466-4c5d-a6d1-ff60666810b5"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECEIPT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="387" y="110" width="22" height="16" uuid="202895d6-fcc7-46d2-896c-87f995728829"/>
+				<text><![CDATA[Nº:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="428" y="110" width="100" height="16" uuid="aef123ae-d59c-47e4-b30d-7a2ca5cd8f46"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[('0000'+$F{id}).toString()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="387" y="126" width="41" height="20" uuid="c3191534-c3d5-4de9-a10f-4c9c494b7184"/>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="428" y="126" width="127" height="20" uuid="6b1598e2-edf3-4cfc-ab05-bf578edd2bfd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ph_paid_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="143" splitType="Stretch">
+			<staticText>
+				<reportElement x="9" y="11" width="564" height="20" uuid="7345c3d7-3d71-4ba3-bfdf-8d1756a00b51"/>
+				<text><![CDATA[Reveived from:_________________________Sex:________________University / Institution:___________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="34" width="564" height="20" uuid="9cc0176a-d1ce-409a-b225-f6282451d687"/>
+				<text><![CDATA[Year:___________________For:___________________________________Amount:($)_______________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="58" width="564" height="20" uuid="983ec9a0-a84c-445b-926d-f629d7962ccf"/>
+				<text><![CDATA[ Paid Amount:($)___________________________Remain Amount:($)_____________________________________________]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="98" y="10" width="114" height="20" uuid="ee5698c0-c0dc-471c-b542-d0c799e9e8de"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{s_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="44" y="33" width="49" height="20" uuid="13bf3c3a-bdbc-41d1-8234-93baa60012bd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="32" width="100" height="20" uuid="046870ae-1c94-4c90-aff5-f6fabbb453ed"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{total_paid})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="442" y="9" width="74" height="20" uuid="b3a46689-7ac9-4edf-83c3-4ab700cadc08"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{university}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="357" y="57" width="77" height="20" uuid="6bacd173-cc43-4639-81a6-db7518fd0a57"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{left_amount} == 0 ? 0.00 : new java.text.DecimalFormat("#,##0.00").format($F{left_amount}))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="81" width="299" height="20" uuid="eb996b9f-3f27-4c66-a58b-c27324e96cdd"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[*Please keep the receipt for your payment evidence]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="101" width="299" height="20" uuid="d68aef80-581d-4e45-a65d-a21cc0eab85e"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[*Please bring the receipt when the class start]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="121" width="299" height="20" uuid="7e519444-ecd2-4302-8a9c-31622371a8ae"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[*Payment can not be refunded or transferred to another]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="173" y="33" width="100" height="20" uuid="059c635d-4fdb-488b-b81a-962686ef073c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="251" y="10" width="61" height="20" uuid="e4901230-0f83-464e-8c3b-0206b453f4bc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{gender}=='M' ? 'MALE' : 'FEMALE' )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="98" y="57" width="100" height="20" uuid="7c85f587-81db-4749-b4da-339b0e5f842e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format($F{ph_paid_amount})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="420" y="0" width="100" height="20" uuid="2b524029-3c20-4d8a-80d5-76d70b9f9a1d"/>
+				<text><![CDATA[Received by:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="69" width="135" height="20" uuid="60c1c972-8b3a-4db5-9fe1-a5de897c1198"/>
+				<text><![CDATA[_________________________]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
