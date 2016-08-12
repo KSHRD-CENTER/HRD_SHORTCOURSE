@@ -36,7 +36,7 @@ $("#btnLogin").click(function(){
 	};
 	users.login(data, function(response){
 		if(response.CODE=="0000"){
-			document.location = "/administrator/dashboards";
+			document.location = "/administrator/students";
 		}else{
 			$("#modalMessage").modal("show");
 			$("#txtEmail").val("");
