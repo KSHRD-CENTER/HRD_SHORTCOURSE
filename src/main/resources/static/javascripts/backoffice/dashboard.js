@@ -156,6 +156,23 @@ $(function() {
     	dashboards.findAll();
     });
 	
+	$.fn.enterKey = function (fnc) {
+	    return this.each(function () {
+	        $(this).keypress(function (ev) {
+	            var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+	            if (keycode == '13') {
+	                fnc.call(this, ev);
+	            }
+	        })
+	    })
+	}
+	
+	$("#txtSearch").enterKey(function(){
+		checkPagination = true;
+		currentPage = 1;
+		dashboards.findAll();
+	});
+	
 	//TODO: LOADING THE COURSE TYPE TO COMBO BOX
 	courseType.findAll(function(response){
 		$("#selectCourseType").html("<option value=''>SELECT COURSE TYPES</option>");

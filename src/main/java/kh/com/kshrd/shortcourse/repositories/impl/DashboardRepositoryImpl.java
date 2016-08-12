@@ -101,7 +101,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 					+ "AND CT.id::TEXT LIKE ? "
 					+ "AND C.id::TEXT LIKE ? "
 					+ "AND LOWER(C.course) LIKE LOWER(?) "
-					+ "ORDER BY S.ID "
+					+ "ORDER BY S.id DESC "
 					+ ") A "
 					+ "GROUP BY 1,2,3,4,5 "
 					+ "LIMIT ? "

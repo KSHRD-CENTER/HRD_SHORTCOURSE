@@ -1,5 +1,9 @@
 package kh.com.kshrd.shortcourse.restcontrollers;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +32,11 @@ import kh.com.kshrd.shortcourse.models.User;
 import kh.com.kshrd.shortcourse.services.PaymentHistoryService;
 import kh.com.kshrd.shortcourse.services.StudentService;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
 
 @RestController
 @RequestMapping("/v1/api/admin/students")
@@ -200,6 +209,9 @@ public class RestStudentController {
 			paymentHistory.setPaidBy(user);
 			if(paymentHistoryService.save(paymentHistory)!=null){
 				response.setCode(StatusCode.SUCCESS);
+				System.out.println("=====================>" + id.intValue());
+				printInvoice(id.intValue());
+				
 			}else{
 				response.setCode(StatusCode.NOT_SUCCESS);
 			}
@@ -224,4 +236,29 @@ public class RestStudentController {
 		return response;
 	}
 	
+	@RequestMapping(value = "/certificate/{id}", method = RequestMethod.GET)
+	public Response printCertificate(@PathVariable("id") Long id){
+		Response response = new Response();
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	/*private Collection data(){
+		
+	}*/
+	
+	private void printInvoice(int id) throws Exception{
+		JasperReport jp = JasperCompileManager.compileReport("reports/receipt.jrxml");
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("id", id);
+		System.out.println("==============>MAP"+param.get("id"));
+		//JRBeanCollectionDataSource jcd = new JRBeanCollectionDataSource(data());
+		JasperPrint print = JasperFillManager.fillReport(jp, param);
+		//JasperViewer.viewReport(print, false);
+		JasperPrintManager.printReport(print, true);
+	}
 }
