@@ -209,8 +209,8 @@ public class RestStudentController {
 			paymentHistory.setPaidBy(user);
 			if(paymentHistoryService.save(paymentHistory)!=null){
 				response.setCode(StatusCode.SUCCESS);
-				System.out.println("=====================>" + id.intValue());
-				printInvoice(id.intValue());
+				//System.out.println("=====================>" + id.intValue());
+				//printInvoice(id.intValue());
 				
 			}else{
 				response.setCode(StatusCode.NOT_SUCCESS);
