@@ -1,11 +1,14 @@
 package kh.com.kshrd.shortcourse.restcontrollers;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -250,11 +253,16 @@ public class RestStudentController {
 	}
 	
 	private void printInvoice(int id) throws Exception{
+		final DefaultResourceLoader loader = new DefaultResourceLoader();
+	    Resource resource = loader.getResource("classpath:static/logo.png");
+	    File myFile = resource.getFile();
 		JasperReport jp = JasperCompileManager.compileReport("reports/receipt.jrxml");
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("id", id);
+		param.put("logo_image", myFile.toString());
 		JasperPrint print = JasperFillManager.fillReport(jp, param, dataSource.getConnection());
 		//JasperViewer.viewReport(print, false);
 		JasperPrintManager.printReport(print, false);
+		
 	}
 }
