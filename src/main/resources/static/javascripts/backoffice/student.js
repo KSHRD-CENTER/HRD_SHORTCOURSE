@@ -335,7 +335,7 @@ $(function() {
 	});
 	
 	$(document).on('click',"#registerNewPayment", function(){
-		$("#txtPaymentAmount").focus();
+		$('input', "#txtPaymentAmount").focus();
 	});
 	
 	var index = 0;
