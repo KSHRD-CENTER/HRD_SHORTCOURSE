@@ -73,6 +73,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 	public List<PaymentHistory> findAll(DashboardFilter filter, Pagination pagination) throws SQLException{
 		pagination.setTotalCount(countRecord(filter));
 		String sql = "SELECT A.s_name, "
+					+"		 A.id, "
 					+ "		 A.g_name, "
 					+ "		 A.ct_name, "
 					+ "		 A.course, "
@@ -104,7 +105,7 @@ public class DashboardRepositoryImpl implements DashboardRepository{
 					+ "AND LOWER(C.course) LIKE LOWER(?) "
 					+ "ORDER BY S.id DESC "
 					+ ") A "
-					+ "GROUP BY 1,2,3,4,5 "
+					+ "GROUP BY 1,2,3,4,5,6 "
 					+ "ORDER BY A.id "
 					+ "LIMIT ? "
 					+ "OFFSET ? ";

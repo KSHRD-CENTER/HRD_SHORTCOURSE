@@ -108,6 +108,27 @@ $(function() {
 		});			
 	};
 	
+	//TODO: PRINT CERTIFICATE
+	student.exportCertificateToPdf = function(id, name, fnCallback){
+		$.ajax({ 
+		    url: "/v1/api/admin/students/certificate/pdf/"+id+"/"+name, 
+		    type: 'GET', 
+		    dataType: 'JSON', 
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(response) { 
+		    	if(fnCallback){
+		    		fnCallback(response);
+		    	}
+		    },
+		    error:function(data,status,err) { 
+		        console.log("error: "+data+" status: "+status+" err:"+err);
+		    }
+		});			
+	};
+	
 	//TODO: TO ADD NEW STUDENT 
 	student.addNewStudent = function(data, fnCallback){
 		$.ajax({ 
@@ -408,6 +429,7 @@ $(function() {
 				$("#ALERT").trigger("click");
 				checkPagination = true;
 				student.findAll();
+				$("#modalAddNewStudent").modal("hide");
 			}else{
 				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
 				$("#ALERT").trigger("click");
@@ -500,6 +522,19 @@ $(function() {
 		var id = $(this).parents("tr").data("id");
 		var stuId = $(this).parents("tr").data("stuid");
 		student.printCertificate(stuId, function(response){
+			if(response.CODE=="0000"){
+				
+			}
+			$body.removeClass("loading"); 
+		});
+	});
+	
+	//TODO: TO DELETE THE STUDENT 
+	$(document).on('click', "#btnExport", function(){
+		$body.addClass("loading"); 
+		var stuId = $(this).parents("tr").data("stuid");
+		var stuName = $(this).parents("tr").data("stuname");
+		student.exportCertificateToPdf(stuId,stuName, function(response){
 			if(response.CODE=="0000"){
 				
 			}

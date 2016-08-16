@@ -39,6 +39,7 @@ import kh.com.kshrd.shortcourse.services.PaymentHistoryService;
 import kh.com.kshrd.shortcourse.services.StudentService;
 import kh.com.kshrd.shortcourse.utilities.Pagination;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -267,6 +268,43 @@ public class RestStudentController {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		return response;
+	}
+	
+	@RequestMapping(value = "/certificate/pdf/{id}/{name}", method = RequestMethod.GET)
+	public Response exportCertificateToPdf(@PathVariable("id") Long id, @PathVariable("name") String name){
+		Response response = new Response();
+		try{
+			final DefaultResourceLoader loader = new DefaultResourceLoader();
+		    Resource resource = loader.getResource("classpath:static/certificate.png");
+		    File myFile = resource.getFile();
+			JasperReport jp = JasperCompileManager.compileReport("reports/certificate.jrxml");
+			Map<String, Object> param = new HashMap<String, Object>();
+			Date date = new Date();
+			SimpleDateFormat publishedDate = new SimpleDateFormat("MMMM dd, yyyy");
+			String publishedDateString = publishedDate.format(date);
+			param.put("id", id.intValue());
+			param.put("publish_date", publishedDateString);
+			param.put("bg_image", myFile.toString());
+			JasperPrint print = JasperFillManager.fillReport(jp, param, dataSource.getConnection());
+			String filename = "C:/"+name+new Date().getTime()+".pdf";
+			JasperExportManager.exportReportToPdfFile(print, filename);
+			response.setCode(StatusCode.SUCCESS);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		/*try { 
+			HashMap hm = new HashMap<>();
+			String filePath=System.getProperty("user.dir") + "\\somexmldatasource.xml";
+			InputStream inputStream = new FileInputStream(new File(filePath));
+			JRXmlDataSource ds=new JRXmlDataSource(inputStream,"/some/xpath/query");
+			JasperReport jasperReport;
+			JasperPrint jasperPrint;
+			jasperReport = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\yourreport.jrxml");
+			jasperPrint = JasperFillManager.fillReport(jasperReport, hm, ds);
+			
+		} catch (Exception e) { e.printStackTrace(); }*/
 		return response;
 	}
 	
