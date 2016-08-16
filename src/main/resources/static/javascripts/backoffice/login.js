@@ -8,6 +8,8 @@ $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
     }
 });
 
+$body = $("body");
+
 users.login = function(user, callback){
 	$.ajax({ 
 	    url: "/v1/api/admin/users/login",
@@ -45,6 +47,7 @@ $("#txtPassword").enterKey(function(){
 });
 
 $("#btnLogin").click(function(){
+	$body.addClass("loading");
 	var data = {
 			"EMAIL": $("#txtEmail").val(),
 			"PASSWORD": $("#txtPassword").val()
@@ -59,4 +62,5 @@ $("#btnLogin").click(function(){
 			return;
 		}
 	});
+	//$body.removeClass("loading");
 });

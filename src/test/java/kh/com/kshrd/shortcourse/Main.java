@@ -2,7 +2,7 @@ package kh.com.kshrd.shortcourse;
 
 import java.util.HashMap;
 
-import net.sf.jasperreports.engine.JREmptyDataSource;
+/*import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -10,13 +10,13 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.util.JRProperties;
+import net.sf.jasperreports.engine.util.JRProperties;*/
 
 public class Main {
 
 	public static final String REPORT_DIRECTORY = "reports";
 
-	public static void main(String[] args) throws JRException {
+	/*public static void main(String[] args) throws JRException {
 
 		String reportName = "Certificate";
 		
@@ -84,5 +84,5 @@ public class Main {
 		// } catch (JRException e) {
 		// e.printStackTrace();
 		// }
-	}
+	}*/
 }
