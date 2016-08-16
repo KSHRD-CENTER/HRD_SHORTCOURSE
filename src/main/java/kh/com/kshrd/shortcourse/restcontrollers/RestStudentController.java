@@ -293,18 +293,6 @@ public class RestStudentController {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		/*try { 
-			HashMap hm = new HashMap<>();
-			String filePath=System.getProperty("user.dir") + "\\somexmldatasource.xml";
-			InputStream inputStream = new FileInputStream(new File(filePath));
-			JRXmlDataSource ds=new JRXmlDataSource(inputStream,"/some/xpath/query");
-			JasperReport jasperReport;
-			JasperPrint jasperPrint;
-			jasperReport = JasperCompileManager.compileReport(System.getProperty("user.dir")+"\\yourreport.jrxml");
-			jasperPrint = JasperFillManager.fillReport(jasperReport, hm, ds);
-			
-		} catch (Exception e) { e.printStackTrace(); }*/
 		return response;
 	}
 	
