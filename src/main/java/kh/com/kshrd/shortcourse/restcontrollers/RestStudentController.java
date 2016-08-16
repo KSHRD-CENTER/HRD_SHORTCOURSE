@@ -1,6 +1,8 @@
 package kh.com.kshrd.shortcourse.restcontrollers;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -245,7 +247,23 @@ public class RestStudentController {
 	public Response printCertificate(@PathVariable("id") Long id){
 		Response response = new Response();
 		try{
-			
+			final DefaultResourceLoader loader = new DefaultResourceLoader();
+		    Resource resource = loader.getResource("classpath:static/certificate.png");
+		    File myFile = resource.getFile();
+			JasperReport jp = JasperCompileManager.compileReport("reports/certificate.jrxml");
+			Map<String, Object> param = new HashMap<String, Object>();
+			Date date = new Date();
+			SimpleDateFormat publishedDate = new SimpleDateFormat("MMMM dd, yyyy");
+			String publishedDateString = publishedDate.format(date);
+			param.put("id", id.intValue());
+			param.put("publish_date", publishedDateString);
+			param.put("bg_image", myFile.toString());
+			JasperPrint print = JasperFillManager.fillReport(jp, param, dataSource.getConnection());
+			if(JasperPrintManager.printReport(print, false)){
+				response.setCode(StatusCode.SUCCESS);
+			}else{
+				response.setCode(StatusCode.NOT_SUCCESS);
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -262,7 +280,6 @@ public class RestStudentController {
 		param.put("logo_image", myFile.toString());
 		JasperPrint print = JasperFillManager.fillReport(jp, param, dataSource.getConnection());
 		//JasperViewer.viewReport(print, false);
-		JasperPrintManager.printReport(print, false);
-		
+		JasperPrintManager.printReport(print, false);	
 	}
 }

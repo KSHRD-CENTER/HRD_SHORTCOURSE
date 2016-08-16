@@ -9,12 +9,13 @@
 	<parameter name="publish_date" class="java.lang.String"/>
 	<parameter name="bg_image" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT S.name, C.course, C.total_hours FROM students S
+		<![CDATA[SELECT S.name, S.gender, C.course, C.total_hours FROM students S
 INNER JOIN student_details SD ON S.id = SD.student_id
 INNER JOIN courses C ON SD.course_id = C.id
 WHERE S.id = $P{id}]]>
 	</queryString>
 	<field name="name" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
 	<field name="course" class="java.lang.String"/>
 	<field name="total_hours" class="java.lang.Integer"/>
 	<background>
@@ -40,7 +41,7 @@ WHERE S.id = $P{id}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Calibri" size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{gender} == 'M' ? "Mr. "+$F{name} : "Mrs. "+$F{name} )]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="47" y="283" width="730" height="20" uuid="ed70dfd6-1db9-4647-a6fb-dd13d02beb9b"/>

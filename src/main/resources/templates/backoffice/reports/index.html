@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:th="http://www.thymeleaf.org" 
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" 
+	  class="no-js"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	  layout:decorator="backoffice/layout">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<title>PAYMENT HISTORY MANAGEMENT HRD COURSE MANAGEMENT SYSTEM</title>
+	<style>
+		td:first-child,
+		th:first-child,
+		th:nth-child(3),
+		td:nth-child(3),
+		th:nth-child(4),
+		td:nth-child(4),
+		th:nth-child(5),
+		td:nth-child(5),
+		th:nth-child(6),
+		td:nth-child(6),
+		th:nth-child(7),
+		td:nth-child(7),
+		th:nth-child(8),
+		td:nth-child(8),
+		th:nth-child(9),
+		td:nth-child(9),
+		th:nth-child(10),
+		td:nth-child(10),
+		th:nth-child(11),
+		td:nth-child(11),
+		th:last-child,
+		td:last-child { text-align: center }
+	
+	</style>
+</head>
+<body>
+	<div layout:fragment="backoffice/content">
+		<div class="nav-bar-container">
+	
+			<!-- BEGIN ICONS -->
+			<div class="nav-menu">
+				<div class="hamburger">
+					<span class="patty"></span>
+					<span class="patty"></span>
+					<span class="patty"></span>
+					<span class="patty"></span>
+					<span class="patty"></span>
+					<span class="patty"></span>
+				</div><!--.hamburger-->
+			</div><!--.nav-menu-->
+	
+			<div class="nav-bar-border"></div><!--.nav-bar-border-->
+	
+			<!-- BEGIN OVERLAY HELPERS -->
+			<div class="overlay">
+				<div class="starting-point">
+					<span></span>
+				</div><!--.starting-point-->
+				<div class="logo">HRD COURSE</div><!--.logo-->
+			</div><!--.overlay-->
+	
+			<div class="overlay-secondary"></div><!--.overlay-secondary-->
+			<!-- END OF OVERLAY HELPERS -->
+	
+		</div><!--.nav-bar-container-->
+	
+		<div class="content">
+	
+			<div class="page-header full-content">
+				<div class="row">
+					<div class="col-sm-6">
+						<h1>PAYMENT TRANSACTION</h1>
+					</div><!--.col-->
+					<div class="col-sm-6">
+						<ol class="breadcrumb">
+							<li>
+								<a href="#" class="active"><i class="glyphicon glyphicon-user"></i> 
+									WELCOME TO: <span th:if="${#httpServletRequest.remoteUser != null}">
+	                  								<strong><span class="hidden-xs" th:text="${#httpServletRequest.remoteUser}"></span></strong>
+												</span>
+								</a>
+							</li>
+							<li><span class="btn btn-danger"><a th:href="@{/administrator/logout}">Logout</a></span></li>
+						</ol>
+					</div><!--.col-->
+				</div><!--.row-->
+			</div><!--.page-header-->
+	
+			<div class="display-animation">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel indigo">
+							<div class="panel-body">
+								<div class="row" id="ACTION">
+									<div class="row example-row">
+										<div class="col-md-9">
+											<div class="btn btn-danger bootstrap-daterangepicker-dropdown" >
+												<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+												<span></span>
+												<b class="caret"></b>
+											</div>
+										</div><!--.col-md-9-->
+										
+									</div><!--.row-->
+									
+									
+									<!-- <div class="col-md-2">
+										<select class="selectpicker" style="display: none;" id="SELECT_COURSETYPE">
+											<option value="">Choose Course</option>
+											<option value="1">Pre-Course</option>
+											<option value="2">Short-Course</option>
+										</select>
+									</div>
+									<div class="col-md-1">
+										<label>TO</label>
+									</div>
+									<div class="col-md-2">
+										<select class="selectpicker" style="display: none;" id="SELECT_COURSETYPE">
+											<option value="">Choose Course</option>
+											<option value="1">Pre-Course</option>
+											<option value="2">Short-Course</option>
+										</select>
+									</div> -->
+								</div>
+								<div class="flip-scroll">
+									<table class="table table-bordered table-striped table-condensed cf">
+										<thead class="cf">
+											<tr>
+												<th style="text-align:center;">No</th>
+												<th>Name</th>
+												<th>Course</th>
+												<th>Paid Date</th>
+												<th>Paid Amount</th>
+												<th>Remaining Amount</th>
+												<th>Total Payment</th>
+										  	</tr>
+										</thead>
+										<tbody id="TRANSACTION">
+
+										</tbody>
+									</table>
+								</div><!--.flip-scroll-->
+ 								<div class="row">
+									<div class="col-md-6">
+										<div id="INFORMATION">Showing 1 to <span id="limitPage">10</span> of <span id="TotalRecords"></span> entries</div>
+										<select class="selectpicker" style="display: none;" id="SELECT_PER_PAGE">
+											<option value="10">Total Rows</option>
+											<option value="15">15</option>
+											<option value="30">30</option>
+											<option value="50">50</option>
+											<option value="100">100</option>
+										</select>
+									</div>
+									<div class="col-md-6">
+										<div id="PAGINATION" class="pull-right">
+										</div>
+									</div>
+								</div>
+								
+							</div><!--.panel-body-->
+						</div><!--.panel-->
+					</div>
+				</div><!--.row-->
+	
+			</div><!--.display-animation-->
+	
+		</div><!--.content-->
+		
+		<script id="TRANSACTION_TEMPLATE" type="text/x-jquery-tmpl">
+			<tr data-id="{{= ID}}">
+				<td>{{= NO}}</td>
+				<td><strong>{{= STUDENT_DETAILS.STUDENT.NAME}}</strong></td>
+				<td>{{= STUDENT_DETAILS.COURSE.NAME}}</td>
+				<td>{{= PAID_DATE}}</td>
+				<td><span class="badge badge-success">{{= PAID_AMOUNT}}</span></td>
+				<td><span class="badge badge-danger">{{= LEFT_COST}}</span></td>
+				<td><span class="badge badge-warning">{{= TOTAL_PAID}}</span></td>
+			</tr>
+		</script>
+		 
+		<!--<script id="OPTION_TEMPLATE" type="text/x-jquery-tmpl">
+			<option value="{{= ID}}">{{= NAME}}</option>
+		</script> -->
+	</div>
+	<!-- END REGISTER NEW COURSE MODAL -->
+	<th:block layout:fragment="backoffice/javascript">
+		<script type="text/javascript" th:src="@{/static/javascripts/backoffice/report.js}"></script>
+    </th:block>
+</body>
+</html>
