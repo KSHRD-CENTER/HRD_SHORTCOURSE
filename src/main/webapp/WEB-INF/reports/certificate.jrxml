@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificate" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="95470b41-6576-4cb7-b39b-009e3f4b558e">
+	<property name="ireport.zoom" value="1.2100000000000029"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="30"/>
+	<parameter name="id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="publish_date" class="java.lang.String"/>
+	<parameter name="bg_image" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT S.name, S.gender, C.course, C.total_hours FROM students S
+INNER JOIN student_details SD ON S.id = SD.student_id
+INNER JOIN courses C ON SD.course_id = C.id
+WHERE S.id = $P{id}]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="course" class="java.lang.String"/>
+	<field name="total_hours" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="595" splitType="Stretch">
+			<image>
+				<reportElement x="-11" y="0" width="848" height="595" uuid="49afe6db-9a88-4064-b5cd-bdc1948a18bd"/>
+				<imageExpression><![CDATA[$P{bg_image}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="47" y="238" width="730" height="20" uuid="d67e1fe8-1d1f-44ab-946d-95e13fe02c7f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{gender} == 'M' ? "Mr. "+$F{name} : "Mrs. "+$F{name} )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="47" y="283" width="730" height="20" uuid="ed70dfd6-1db9-4647-a6fb-dd13d02beb9b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["has successfully completed Short Course of " + $F{course}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="47" y="320" width="730" height="20" uuid="65a3b910-2cce-4045-8d79-365bb9e51aea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(Full-time course comprising "+$F{total_hours}+" hours including lecturers, lab practice and projects)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="47" y="363" width="730" height="20" uuid="922b5cf2-a075-4556-8931-5b6289685c29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Phnom Penh, "+$P{publish_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="47" y="395" width="730" height="20" uuid="d1df51d3-4035-42d9-a261-e43563538f73"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="14"/>
+				</textElement>
+				<text><![CDATA[Director]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

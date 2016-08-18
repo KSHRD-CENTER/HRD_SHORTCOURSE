@@ -1,11 +1,13 @@
 package kh.com.kshrd.shortcourse.restcontrollers;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,7 +203,7 @@ public class RestStudentController {
 	}
 	
 	@RequestMapping(value="/{id}/payment-histories", method = RequestMethod.POST)
-	public Response saveNewPayment(@PathVariable("id")Long id, @RequestBody PaymentForm.RegisterNewPayment form){
+	public Response saveNewPayment(@PathVariable("id")Long id, @RequestBody PaymentForm.RegisterNewPayment form, HttpServletRequest request){
 		Response response = new Response();
 		try{
 			PaymentHistory paymentHistory = new PaymentHistory();
@@ -218,7 +220,7 @@ public class RestStudentController {
 			Long paymentId = paymentHistoryService.save(paymentHistory);
 			if(paymentId != null){
 				response.setCode(StatusCode.SUCCESS);
-				printInvoice(paymentId.intValue());
+				printInvoice(paymentId.intValue(), request);
 				
 			}else{
 				response.setCode(StatusCode.NOT_SUCCESS);
@@ -245,13 +247,13 @@ public class RestStudentController {
 	}
 	
 	@RequestMapping(value = "/certificate/{id}", method = RequestMethod.GET)
-	public Response printCertificate(@PathVariable("id") Long id){
+	public Response printCertificate(@PathVariable("id") Long id, HttpServletRequest request){
 		Response response = new Response();
 		try{
 			final DefaultResourceLoader loader = new DefaultResourceLoader();
 		    Resource resource = loader.getResource("classpath:static/certificate.png");
 		    File myFile = resource.getFile();
-			JasperReport jp = JasperCompileManager.compileReport("reports/certificate.jrxml");
+			JasperReport jp = JasperCompileManager.compileReport(request.getServletContext().getRealPath("/WEB-INF/reports/certificate.jrxml"));
 			Map<String, Object> param = new HashMap<String, Object>();
 			String publishedDateString = dateFormat();
 			param.put("id", id.intValue());
@@ -270,13 +272,13 @@ public class RestStudentController {
 	}
 	
 	@RequestMapping(value = "/certificate/pdf/{id}/{name}", method = RequestMethod.GET)
-	public Response exportCertificateToPdf(@PathVariable("id") Long id, @PathVariable("name") String name){
+	public Response exportCertificateToPdf(@PathVariable("id") Long id, @PathVariable("name") String name, HttpServletRequest request){
 		Response response = new Response();
 		try{
 			final DefaultResourceLoader loader = new DefaultResourceLoader();
 		    Resource resource = loader.getResource("classpath:static/certificate.png");
 		    File myFile = resource.getFile();
-			JasperReport jp = JasperCompileManager.compileReport("reports/certificate.jrxml");
+			JasperReport jp = JasperCompileManager.compileReport(request.getServletContext().getRealPath("/WEB-INF/reports/certificate.jrxml"));
 			Map<String, Object> param = new HashMap<String, Object>();
 			String publishedDateString = dateFormat();
 			param.put("id", id.intValue());
@@ -292,11 +294,12 @@ public class RestStudentController {
 		return response;
 	}
 	
-	private void printInvoice(int id) throws Exception{
+	private void printInvoice(int id, HttpServletRequest request) throws Exception{
 		final DefaultResourceLoader loader = new DefaultResourceLoader();
 	    Resource resource = loader.getResource("classpath:static/logo.png");
 	    File myFile = resource.getFile();
-		JasperReport jp = JasperCompileManager.compileReport("reports/receipt.jrxml");
+	
+		JasperReport jp = JasperCompileManager.compileReport(request.getServletContext().getRealPath("/WEB-INF/reports/receipt.jrxml"));
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("id", id);
 		param.put("logo_image", myFile.toString());
