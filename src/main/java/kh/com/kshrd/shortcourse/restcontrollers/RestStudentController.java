@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,8 +203,8 @@ public class RestStudentController {
 	}
 	
 	@RequestMapping(value="/{id}/payment-histories", method = RequestMethod.POST)
-	public Response saveNewPayment(@PathVariable("id")Long id, @RequestBody PaymentForm.RegisterNewPayment form, HttpServletRequest request){
-		Response response = new Response();
+	public Response saveNewPayment(@PathVariable("id")Long id, @RequestBody PaymentForm.RegisterNewPayment form, HttpServletRequest request, HttpServletResponse res){
+		ResponseRecord<String> response = new ResponseRecord<String>();
 		try{
 			PaymentHistory paymentHistory = new PaymentHistory();
 			paymentHistory.setPaidAmount(form.getPaidAmount());
@@ -219,8 +220,7 @@ public class RestStudentController {
 			Long paymentId = paymentHistoryService.save(paymentHistory);
 			if(paymentId != null){
 				response.setCode(StatusCode.SUCCESS);
-				printInvoice(paymentId.intValue(), request);
-				
+				printInvoice(paymentId.intValue(), request, response);
 			}else{
 				response.setCode(StatusCode.NOT_SUCCESS);
 			}
@@ -272,7 +272,7 @@ public class RestStudentController {
 	
 	@RequestMapping(value = "/certificate/pdf/{id}/{name}", method = RequestMethod.GET)
 	public Response exportCertificateToPdf(@PathVariable("id") Long id, @PathVariable("name") String name, HttpServletRequest request){
-		Response response = new Response();
+		ResponseRecord<String> response = new ResponseRecord<String>();
 		try{
 			final DefaultResourceLoader loader = new DefaultResourceLoader();
 		    Resource resource = loader.getResource("classpath:static/certificate.png");
@@ -284,8 +284,14 @@ public class RestStudentController {
 			param.put("publish_date", publishedDateString);
 			param.put("bg_image", myFile.toString());
 			JasperPrint print = JasperFillManager.fillReport(jp, param, dataSource.getConnection());
-			String filename = "C:/"+name+new Date().getTime()+".pdf";
+			File file = new File("/opt/certificate/pdf/");
+			if(!file.exists()){
+				file.mkdirs();
+			}
+			String date = new Date().getTime()+"";
+			String filename = "/opt/certificate/pdf/"+name + date +".pdf";
 			JasperExportManager.exportReportToPdfFile(print, filename);
+			response.setData("/certificate/"+ name + date +".pdf");
 			response.setCode(StatusCode.SUCCESS);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -293,7 +299,7 @@ public class RestStudentController {
 		return response;
 	}
 	
-	private void printInvoice(int id, HttpServletRequest request) throws Exception{
+	private void printInvoice(int id, HttpServletRequest request, ResponseRecord<String> response) throws Exception{
 		final DefaultResourceLoader loader = new DefaultResourceLoader();
 	    Resource resource = loader.getResource("classpath:static/logo.png");
 	    File myFile = resource.getFile();
@@ -303,8 +309,18 @@ public class RestStudentController {
 		param.put("id", id);
 		param.put("logo_image", myFile.toString());
 		JasperPrint print = JasperFillManager.fillReport(jp, param, dataSource.getConnection());
+		
+		File file = new File("/opt/payment/pdf/");
+		if(!file.exists()){
+			file.mkdirs();
+		}
+		String date = new Date().getTime()+"";
+		String filename = "/opt/payment/pdf/"+ date +".pdf";
+		JasperExportManager.exportReportToPdfFile(print, filename);
+		response.setData("/payment/"+ date +".pdf");
+		response.setCode(StatusCode.SUCCESS);
 		//JasperViewer.viewReport(print, false);
-		JasperPrintManager.printReport(print, false);	
+		//JasperPrintManager.printReport(print, false);	
 	}
 	
 	private static String dateFormat(){

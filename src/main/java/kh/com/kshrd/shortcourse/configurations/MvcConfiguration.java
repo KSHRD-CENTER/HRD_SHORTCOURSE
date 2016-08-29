@@ -47,6 +47,8 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 		
 		//TODO: FROM LOGIN ROUTING
 		registry.addViewController("/administrator/login").setViewName("backoffice/users/user-login");
+		
+		registry.addViewController("/404").setViewName("error/404");
 	}
 
 	@Override
@@ -54,6 +56,8 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 		registry.addResourceHandler("/webjars/**").addResourceLocations("/resources/");
 		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		registry.addResourceHandler("/certificate/**").addResourceLocations("file:/opt/certificate/pdf/");
+		registry.addResourceHandler("/payment/**").addResourceLocations("file:/opt/payment/pdf/");
 	}
 	
 	@Bean

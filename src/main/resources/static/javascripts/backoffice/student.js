@@ -490,6 +490,9 @@ $(function() {
 				});
 				$("#modalAddNewPayment").modal("hide");
 				student.findAll();
+				//TODO: TO REDIRECT TO RECEIPT
+				var win = window.open(response.DATA, '_blank');
+				win.focus();
 			}else{
 				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
 				$("#ALERT").trigger("click");
@@ -536,7 +539,8 @@ $(function() {
 		var stuName = $(this).parents("tr").data("stuname");
 		student.exportCertificateToPdf(stuId,stuName, function(response){
 			if(response.CODE=="0000"){
-				
+				var win = window.open(response.DATA, '_blank');
+			    win.focus();
 			}
 			$body.removeClass("loading"); 
 		});
