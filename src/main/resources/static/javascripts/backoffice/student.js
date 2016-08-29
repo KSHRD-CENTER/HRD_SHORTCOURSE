@@ -467,38 +467,41 @@ $(function() {
 	});
 	
 	$("#btnSaveNewPayment").click(function(){
-		var id = $(this).data("id");
-		if($("#txtPaymentAmount").val()==""){
-			alert("PLEASE FILL YOUR PAYMENT AMOUNT.")
-		}
-		var data ={
-				"PAID_AMOUNT" : $("#txtPaymentAmount").val()
-		}
-		$body.addClass("loading");
-		student.addNewPayment(id, data, function(response){
-			if(response.CODE=="0000"){
-				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
-				$("#ALERT").trigger("click");
-				checkPagination = true;
-				student.findAllPaymentHistories(id, function(response){
-					$.each(response.DATA, function(key,value){
-						response.DATA[key]["NO"] = (key+1);
-					});
-					$("#TABLE_PAYMENT_HISTORY tbody").html('');
-					$("#PAYMENT_HISTORY_TEMPLATE").tmpl(response.DATA).appendTo("#TABLE_PAYMENT_HISTORY tbody");
-					$("#modalPaymentHistories").modal("show");
-				});
-				$("#modalAddNewPayment").modal("hide");
-				student.findAll();
-				//TODO: TO REDIRECT TO RECEIPT
-				var win = window.open(response.DATA, '_blank');
-				win.focus();
-			}else{
-				$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
-				$("#ALERT").trigger("click");
+		result = window.confirm("DO YOU REALLY WANT TO PAYMENT?");
+		if(result){
+			var id = $(this).data("id");
+			if($("#txtPaymentAmount").val()==""){
+				alert("PLEASE FILL YOUR PAYMENT AMOUNT.")
 			}
-		});
-		$body.removeClass("loading");
+			var data ={
+					"PAID_AMOUNT" : $("#txtPaymentAmount").val()
+			}
+			$body.addClass("loading");
+			student.addNewPayment(id, data, function(response){
+				if(response.CODE=="0000"){
+					$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+					$("#ALERT").trigger("click");
+					checkPagination = true;
+					student.findAllPaymentHistories(id, function(response){
+						$.each(response.DATA, function(key,value){
+							response.DATA[key]["NO"] = (key+1);
+						});
+						$("#TABLE_PAYMENT_HISTORY tbody").html('');
+						$("#PAYMENT_HISTORY_TEMPLATE").tmpl(response.DATA).appendTo("#TABLE_PAYMENT_HISTORY tbody");
+						$("#modalPaymentHistories").modal("show");
+					});
+					$("#modalAddNewPayment").modal("hide");
+					student.findAll();
+					//TODO: TO REDIRECT TO RECEIPT
+					var win = window.open(response.DATA, '_blank');
+					win.focus();
+				}else{
+					$("#ALERT").attr("data-toastr-notification", response.MESSAGE);
+					$("#ALERT").trigger("click");
+				}
+			});
+			$body.removeClass("loading");
+		}
 	});
 	
 	//TODO: TO SEARCH WHEN CLICK ON THE BUTTON SEARCH 
