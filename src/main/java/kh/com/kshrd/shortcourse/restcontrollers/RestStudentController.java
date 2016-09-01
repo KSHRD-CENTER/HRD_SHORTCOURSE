@@ -253,9 +253,7 @@ public class RestStudentController {
 		    File myFile = resource.getFile();
 			JasperReport jp = JasperCompileManager.compileReport("reports/certificate.jrxml");
 			Map<String, Object> param = new HashMap<String, Object>();
-			Date date = new Date();
-			SimpleDateFormat publishedDate = new SimpleDateFormat("MMMM dd, yyyy");
-			String publishedDateString = publishedDate.format(date);
+			String publishedDateString = dateFormat();
 			param.put("id", id.intValue());
 			param.put("publish_date", publishedDateString);
 			param.put("bg_image", myFile.toString());
@@ -280,9 +278,7 @@ public class RestStudentController {
 		    File myFile = resource.getFile();
 			JasperReport jp = JasperCompileManager.compileReport("reports/certificate.jrxml");
 			Map<String, Object> param = new HashMap<String, Object>();
-			Date date = new Date();
-			SimpleDateFormat publishedDate = new SimpleDateFormat("MMMM dd, yyyy");
-			String publishedDateString = publishedDate.format(date);
+			String publishedDateString = dateFormat();
 			param.put("id", id.intValue());
 			param.put("publish_date", publishedDateString);
 			param.put("bg_image", myFile.toString());
@@ -307,5 +303,34 @@ public class RestStudentController {
 		JasperPrint print = JasperFillManager.fillReport(jp, param, dataSource.getConnection());
 		//JasperViewer.viewReport(print, false);
 		JasperPrintManager.printReport(print, false);	
+	}
+	
+	public static void main(String[] args) {
+		
+	}
+	
+	private String dateFormat(){
+		Date date = new Date();
+		SimpleDateFormat publishedDate = new SimpleDateFormat("MMMM dd, yyyy");
+		String publishedDateString = publishedDate.format(date);
+		String month = publishedDateString.substring(0, 6);
+		String day = publishedDateString.substring(7, 9);
+		String year = publishedDateString.substring(9, 15);
+		int d = Integer.parseInt(day);
+		switch(d % 10){
+			case 1:
+				day += "st";
+				break;
+			case 2:
+				day += "nd";
+				break;
+			case 3:
+				day += "rd";
+				break;
+			default:
+				day += "th";
+		}
+		String dateString = month + " " + day + year;
+		return dateString;
 	}
 }
