@@ -1,6 +1,5 @@
 package kh.com.kshrd.shortcourse.restcontrollers;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -308,32 +307,31 @@ public class RestStudentController {
 		JasperPrintManager.printReport(print, false);	
 	}
 	
-	public static void main(String[] args) {
-		
-	}
-	
-	private String dateFormat(){
-		Date date = new Date();
-		SimpleDateFormat publishedDate = new SimpleDateFormat("MMMM dd, yyyy");
-		String publishedDateString = publishedDate.format(date);
-		String month = publishedDateString.substring(0, 6);
-		String day = publishedDateString.substring(7, 9);
-		String year = publishedDateString.substring(9, 15);
-		int d = Integer.parseInt(day);
-		switch(d % 10){
-			case 1:
-				day += "st";
-				break;
-			case 2:
-				day += "nd";
-				break;
-			case 3:
-				day += "rd";
-				break;
-			default:
-				day += "th";
+	private static String dateFormat(){
+		try{
+			Date date = new Date();
+			String month = new SimpleDateFormat("MMMM").format(date);
+			String day = new SimpleDateFormat("dd").format(date);
+			String year = new SimpleDateFormat("yyyy").format(date);
+			int d = Integer.parseInt(day);
+			switch(d % 10){
+				case 1:
+					day += "st";
+					break;
+				case 2:
+					day += "nd";
+					break;
+				case 3:
+					day += "rd";
+					break;
+				default:
+					day += "th";
+			}
+			String dateString = month + " " + day + ", " + year;
+			return dateString;
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
-		String dateString = month + " " + day + year;
-		return dateString;
+		return "";
 	}
 }
