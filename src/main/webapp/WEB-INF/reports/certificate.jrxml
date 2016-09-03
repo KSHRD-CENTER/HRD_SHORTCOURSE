@@ -37,9 +37,9 @@ WHERE S.id = $P{id}]]>
 				<imageExpression><![CDATA[$P{bg_image}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="47" y="238" width="730" height="20" uuid="d67e1fe8-1d1f-44ab-946d-95e13fe02c7f"/>
+				<reportElement x="47" y="224" width="730" height="43" uuid="d67e1fe8-1d1f-44ab-946d-95e13fe02c7f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="16" isBold="true"/>
+					<font fontName="Calibri" size="26" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[( $F{gender} == 'M' ? "Mr. "+$F{name} : "Mrs. "+$F{name} )]]></textFieldExpression>
 			</textField>
