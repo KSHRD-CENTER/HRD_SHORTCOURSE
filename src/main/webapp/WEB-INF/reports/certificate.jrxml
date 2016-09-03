@@ -41,7 +41,7 @@ WHERE S.id = $P{id}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Calibri" size="26" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{gender} == 'M' ? "Mr. "+$F{name} : "Mrs. "+$F{name} )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{gender} == 'M' ? "Mr. "+$F{name} : "Ms. "+$F{name} )]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="47" y="283" width="730" height="20" uuid="ed70dfd6-1db9-4647-a6fb-dd13d02beb9b"/>
