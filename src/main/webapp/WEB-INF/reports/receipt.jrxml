@@ -111,10 +111,10 @@ WHERE PH.id = $P{id}]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="143" splitType="Stretch">
+		<band height="151" splitType="Stretch">
 			<staticText>
 				<reportElement x="9" y="11" width="564" height="20" uuid="7345c3d7-3d71-4ba3-bfdf-8d1756a00b51"/>
-				<text><![CDATA[Reveived from:_________________________Sex:________________University / Institution:___________________________]]></text>
+				<text><![CDATA[Received from:_________________________Sex:________________University / Institution:___________________________]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="9" y="34" width="564" height="20" uuid="9cc0176a-d1ce-409a-b225-f6282451d687"/>
@@ -136,7 +136,7 @@ WHERE PH.id = $P{id}]]>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{year} == '5' ? "Other" : $F{year} )]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="442" y="11" width="74" height="20" uuid="b3a46689-7ac9-4edf-83c3-4ab700cadc08"/>
@@ -146,28 +146,28 @@ WHERE PH.id = $P{id}]]>
 				<textFieldExpression><![CDATA[$F{university}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="442" y="57" width="77" height="20" uuid="6bacd173-cc43-4639-81a6-db7518fd0a57"/>
+				<reportElement x="456" y="57" width="77" height="20" uuid="6bacd173-cc43-4639-81a6-db7518fd0a57"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[( $F{left_amount} == 0 ? 0.00 : new java.text.DecimalFormat("#,##0.00").format($F{left_amount}))]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="28" y="83" width="299" height="20" uuid="eb996b9f-3f27-4c66-a58b-c27324e96cdd"/>
+				<reportElement x="28" y="90" width="299" height="20" uuid="eb996b9f-3f27-4c66-a58b-c27324e96cdd"/>
 				<textElement>
 					<font isItalic="true"/>
 				</textElement>
 				<text><![CDATA[*Please keep the receipt for your payment evidence]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="28" y="103" width="299" height="20" uuid="d68aef80-581d-4e45-a65d-a21cc0eab85e"/>
+				<reportElement x="28" y="110" width="299" height="20" uuid="d68aef80-581d-4e45-a65d-a21cc0eab85e"/>
 				<textElement>
 					<font isItalic="true"/>
 				</textElement>
 				<text><![CDATA[*Please bring the receipt when the class start]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="28" y="123" width="299" height="20" uuid="7e519444-ecd2-4302-8a9c-31622371a8ae"/>
+				<reportElement x="28" y="130" width="299" height="20" uuid="7e519444-ecd2-4302-8a9c-31622371a8ae"/>
 				<textElement>
 					<font isItalic="true"/>
 				</textElement>
@@ -188,7 +188,7 @@ WHERE PH.id = $P{id}]]>
 				<textFieldExpression><![CDATA[( $F{gender}=='M' ? 'MALE' : 'FEMALE' )]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="251" y="57" width="100" height="20" uuid="7c85f587-81db-4749-b4da-339b0e5f842e"/>
+				<reportElement x="258" y="57" width="100" height="20" uuid="7c85f587-81db-4749-b4da-339b0e5f842e"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -202,7 +202,7 @@ WHERE PH.id = $P{id}]]>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="95" y="57" width="109" height="20" uuid="046870ae-1c94-4c90-aff5-f6fabbb453ed"/>
+				<reportElement x="99" y="57" width="109" height="20" uuid="046870ae-1c94-4c90-aff5-f6fabbb453ed"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -211,13 +211,13 @@ WHERE PH.id = $P{id}]]>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="89" splitType="Stretch">
+		<band height="81" splitType="Stretch">
 			<staticText>
-				<reportElement x="420" y="0" width="100" height="20" uuid="2b524029-3c20-4d8a-80d5-76d70b9f9a1d"/>
+				<reportElement x="420" y="1" width="100" height="20" uuid="2b524029-3c20-4d8a-80d5-76d70b9f9a1d"/>
 				<text><![CDATA[Received by:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="420" y="69" width="135" height="20" uuid="60c1c972-8b3a-4db5-9fe1-a5de897c1198"/>
+				<reportElement x="420" y="61" width="135" height="20" uuid="60c1c972-8b3a-4db5-9fe1-a5de897c1198"/>
 				<text><![CDATA[_________________________]]></text>
 			</staticText>
 		</band>
