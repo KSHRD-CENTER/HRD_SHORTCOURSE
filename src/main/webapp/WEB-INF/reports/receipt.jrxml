@@ -56,30 +56,32 @@ WHERE PH.id = $P{id}]]>
 				<imageExpression><![CDATA[$P{logo_image}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="182" y="6" width="246" height="20" uuid="ab7804cd-46de-412c-8d99-79da71db0e9c"/>
-				<textElement>
+				<reportElement x="0" y="6" width="555" height="20" uuid="ab7804cd-46de-412c-8d99-79da71db0e9c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[KOREA SOFTWARE HRD CENTER]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="150" y="26" width="300" height="20" uuid="3dd3d927-178f-491a-b330-e829fa31d701"/>
-				<textElement>
+				<reportElement x="0" y="26" width="555" height="20" uuid="3dd3d927-178f-491a-b330-e829fa31d701"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[#12, St 323, Sangkat Boeung Kak II, Khan Toul Kork, Phnom Penh]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="193" y="46" width="210" height="20" uuid="71448097-979b-41b2-a442-c0671ca3baa5"/>
+				<reportElement x="0" y="46" width="555" height="20" uuid="71448097-979b-41b2-a442-c0671ca3baa5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Tel: 023 99 13 14, 078 33 31 02, 077 77 12 36]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="166" y="66" width="271" height="20" uuid="038950f7-ac57-44be-845e-cb5158218535"/>
+				<reportElement x="0" y="66" width="555" height="20" uuid="038950f7-ac57-44be-845e-cb5158218535"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Email: info.kshrd@gmail.com, Website: www.kshrd.com.kh]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="259" y="94" width="69" height="20" uuid="d52a1171-1466-4c5d-a6d1-ff60666810b5"/>
-				<textElement>
+				<reportElement x="0" y="94" width="555" height="20" uuid="d52a1171-1466-4c5d-a6d1-ff60666810b5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[RECEIPT]]></text>
